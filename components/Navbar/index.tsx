@@ -4,6 +4,8 @@ import { Button } from "../Button"
 import { HoverDropdown } from "../Dropdown"
 import { Logo } from "../Logo"
 import { useConnect, useDisconnect, useAccount } from "graz"
+import { getShortAddress } from "../../utils/getShortAddress"
+import Image from "next/image"
 
 const MODULES = [
   "Fee",
@@ -24,10 +26,12 @@ export const Navbar = () => {
   const { data: account, isConnected } = useAccount()
   const { disconnect } = useDisconnect()
 
-  console.log(account)
-
-  function handleConnect() {
+  const handleConnect = () => {
     return isConnected ? disconnect() : connect()
+  }
+
+  const copyAddress = () => {
+    navigator.clipboard.writeText(account?.bech32Address || "")
   }
 
   return (
@@ -50,7 +54,38 @@ export const Navbar = () => {
       </div>
 
       <div className="w-[200px] flex justify-end">
-        <Button text="Connect wallet" onClick={handleConnect} />
+        {isConnected ? (
+          <div>
+            <div className="flex justify-end items-center">
+              <button onClick={handleConnect}>
+                <Image
+                  src="/icons/disconnect.svg"
+                  alt="Disconnect Logo"
+                  height={14}
+                  width={13}
+                  className="mr-1"
+                />
+              </button>
+              <div className="text-white font-bold">{account?.name}</div>
+            </div>
+            <div className="flex justify-end items-center">
+              <button onClick={copyAddress}>
+                <Image
+                  src="/icons/copy.svg"
+                  alt="Copy Logo"
+                  height={14}
+                  width={12}
+                  className="mr-1 poi"
+                />
+              </button>
+              <div className="text-komple-black-100">
+                {getShortAddress(account?.bech32Address || "")}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <Button text="Connect wallet" onClick={handleConnect} />
+        )}
       </div>
     </div>
   )

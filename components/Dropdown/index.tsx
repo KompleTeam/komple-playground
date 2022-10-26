@@ -26,7 +26,7 @@ export const HoverDropdown = ({
           className={clsx(
             "p-[8px] rounded-[4px]",
             "hidden absolute z-10 group-hover:grid",
-            "bg-komple-black-200",
+            "bg-komple-black-300",
             left && "left-0",
             right && "right-0"
           )}
@@ -37,7 +37,7 @@ export const HoverDropdown = ({
                 href={`/${item.toLowerCase()}`}
                 className={clsx(
                   "px-3 py-[4px] rounded-[4px]",
-                  "text-white hover:bg-komple-black-100"
+                  "text-white hover:bg-komple-black-200"
                 )}
                 key={item}
               >
