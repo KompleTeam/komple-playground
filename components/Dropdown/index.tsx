@@ -21,7 +21,7 @@ export const HoverDropdown = ({
       )}
     >
       <button className="text-white uppercase">{text}</button>
-      <div className="group-hover:grid pt-3">
+      <div className="group-hover:grid">
         <div
           className={clsx(
             "p-[8px] rounded-[4px]",
@@ -34,7 +34,7 @@ export const HoverDropdown = ({
           {data.map((item) => {
             return (
               <Link
-                href={`/${item.toLowerCase()}`}
+                href={`${text.toLowerCase()}/${item.toLowerCase()}/create`}
                 className={clsx(
                   "px-3 py-[4px] rounded-[4px]",
                   "text-white hover:bg-komple-black-200"
