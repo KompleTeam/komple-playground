@@ -17,11 +17,9 @@ export const ContractTabs = ({
 }) => {
   const router = useRouter()
 
-  console.log(router)
-
   return (
     <div className="flex">
-      <div className="border-r border-komple-black-300">
+      <div>
         {ITEMS.map((item) => {
           return (
             <Link
@@ -33,7 +31,7 @@ export const ContractTabs = ({
               <div
                 key={item.text}
                 className={clsx(
-                  "px-[24px] pr-10 py-4 rounded-md w-fit",
+                  "px-[24px] py-4 rounded-md w-fit",
                   router.route.includes(item.href) && "bg-komple-black-300"
                 )}
               >
@@ -62,6 +60,7 @@ export const ContractTabs = ({
           )
         })}
       </div>
+      <div className="ml-5 border border-komple-black-300" />
     </div>
   )
 }

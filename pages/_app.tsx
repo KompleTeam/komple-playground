@@ -9,6 +9,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <GrazProvider
       grazOptions={{
         defaultChain: mainnetChains.juno,
+        defaultSigningClient: "cosmWasm",
       }}
     >
       <Navbar />
