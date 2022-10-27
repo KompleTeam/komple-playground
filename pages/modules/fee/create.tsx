@@ -5,6 +5,7 @@ import { ContractTabs } from "../../../components/ContractTabs"
 import { TextInput } from "../../../components/TextInput"
 import { useOfflineSigners, useAccount } from "graz"
 import { getSigningClient } from "../../../utils/getSigningClient"
+import { JsonViewer } from "../../../components/JsonViewer"
 
 export default function FeeModuleCreate() {
   const { data: account } = useAccount()
@@ -12,6 +13,7 @@ export default function FeeModuleCreate() {
 
   const [codeId, setCodeId] = useState("")
   const [admin, setAdmin] = useState("")
+  const [response, setResponse] = useState({})
 
   const instantiate = async () => {
     const client = await getSigningClient(signerAuto)
@@ -27,7 +29,7 @@ export default function FeeModuleCreate() {
       { admin: account?.bech32Address }
     )
 
-    console.log(res)
+    setResponse(res)
   }
 
   const disabled = codeId === "" || admin === ""
@@ -41,7 +43,7 @@ export default function FeeModuleCreate() {
       />
       <div className="mt-20 flex">
         <ContractTabs contract="Fee" isModule />
-        <div className="w-10" />
+        <div className="w-20" />
         <div>
           <TextInput
             title="Code ID"
@@ -61,6 +63,8 @@ export default function FeeModuleCreate() {
             disabled={disabled}
           />
         </div>
+        <div className="w-20" />
+        {response && <JsonViewer json={response} />}
       </div>
     </div>
   )

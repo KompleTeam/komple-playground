@@ -19,7 +19,7 @@ export const ContractTabs = ({
 
   return (
     <div className="flex">
-      <div>
+      <div className="w-[350px]">
         {ITEMS.map((item) => {
           return (
             <Link
@@ -31,7 +31,7 @@ export const ContractTabs = ({
               <div
                 key={item.text}
                 className={clsx(
-                  "px-[24px] py-4 rounded-md w-fit",
+                  "px-[24px] py-4 rounded-md mb-6",
                   router.route.includes(item.href) && "bg-komple-black-300"
                 )}
               >
@@ -47,7 +47,7 @@ export const ContractTabs = ({
                 </div>
                 <div
                   className={clsx(
-                    "text-[16px] mt-[8px]",
+                    "text-[16px]",
                     router.route.includes(item.href)
                       ? "text-white"
                       : "text-komple-black-100"
