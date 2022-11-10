@@ -1,8 +1,20 @@
 import { useState } from "react"
-import { Button } from "../../../components/Button"
-import { ContractForm } from "../../../components/ContractForm"
-import { ContractHeader } from "../../../components/ContractHeader"
-import { TextInput } from "../../../components/TextInput"
+import { Button } from "components/Button"
+import { ContractForm } from "components/ContractForm"
+import { ContractHeader } from "components/ContractHeader"
+import { Dropdown } from "components/Dropdown"
+import { TextInput } from "components/TextInput"
+
+const QUERIES = [
+  "config",
+  "percentage_fee",
+  "fixed_fee",
+  "percentage_fees",
+  "fixed_fees",
+  "total_percentage_fees",
+  "total_fixed_fees",
+  "keys",
+]
 
 export default function FeeModuleQuery() {
   const [feeType, setFeeType] = useState("")
@@ -23,6 +35,7 @@ export default function FeeModuleQuery() {
         documentation="https://docs.komple.io/komple/framework-fundamentals/modules/fee-module"
       />
       <ContractForm name="Fee" isModule={true} response={response}>
+        <Dropdown items={QUERIES} title="Query Messages" />
         <TextInput
           title="Fee Type"
           subtitle="dasdsa"

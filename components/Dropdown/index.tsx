@@ -1,5 +1,7 @@
 import clsx from "clsx"
+import Image from "next/image"
 import Link from "next/link"
+import { useState } from "react"
 
 export const HoverDropdown = ({
   text,
@@ -46,6 +48,70 @@ export const HoverDropdown = ({
             )
           })}
         </div>
+      </div>
+    </div>
+  )
+}
+
+export const Dropdown = ({
+  items,
+  title,
+  subtitle,
+}: {
+  items: string[]
+  title: string
+  subtitle?: string
+}) => {
+  const [opened, setOpened] = useState(false)
+  const [selected, setSelected] = useState<number | null>(null)
+
+  const open = () => {
+    setOpened(!opened)
+  }
+
+  const select = (index: number) => {
+    setSelected(index)
+    setOpened(false)
+  }
+
+  return (
+    <div className="mb-6 relative">
+      {title && <div className="text-[18px] text-white mb-1">{title}</div>}
+      {subtitle && (
+        <div className="text-[16px] text-komple-black-100 mb-2">{subtitle}</div>
+      )}
+      <button
+        className="h-[48px] w-[380px] px-4 bg-komple-black-300 rounded-md text-komple-black-100 flex items-center justify-between cursor-pointer capitalize"
+        onClick={open}
+      >
+        {selected
+          ? items[selected].split("_").join(" ")
+          : "Select query message"}
+        <Image
+          src="/icons/arrow.svg"
+          alt="Arrow"
+          height={4}
+          width={10}
+          className="mr-1"
+        />
+      </button>
+      <div
+        className={clsx(
+          "absolute bg-komple-black-300 p-5 py-1 w-full left-0 top-20 rounded",
+          !opened && "hidden"
+        )}
+      >
+        {items.map((item, index) => {
+          return (
+            <button
+              key={item}
+              className="flex my-[10px] capitalize text-white hover:text-komple-red-400"
+              onClick={() => select(index)}
+            >
+              {item.split("_").join(" ")}
+            </button>
+          )
+        })}
       </div>
     </div>
   )
