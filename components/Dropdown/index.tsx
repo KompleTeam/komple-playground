@@ -59,11 +59,13 @@ export const Dropdown = ({
   title,
   subtitle,
   onChange,
+  placeholder,
 }: {
   items: string[]
   title: string
   subtitle?: string
   onChange: (index: number) => void
+  placeholder?: string
 }) => {
   const ref = useRef(null)
 
@@ -92,9 +94,7 @@ export const Dropdown = ({
         className="h-[48px] w-[380px] px-4 bg-komple-black-300 rounded-md text-komple-black-100 flex items-center justify-between cursor-pointer capitalize"
         onClick={open}
       >
-        {idx !== null
-          ? items[idx].split("_").join(" ")
-          : "Select query message"}
+        {idx !== null ? items[idx].split("_").join(" ") : placeholder}
         <Image
           src="/icons/arrow.svg"
           alt="Arrow"

@@ -39,6 +39,11 @@ export default function FeeModuleQuery() {
       setContract(router.query.contractAddress)
   }, [router.query])
 
+  const contractOnChange = (value: string) => {
+    window.history.replaceState(null, "", `?contractAddress=${value}`)
+    setContract(value)
+  }
+
   const dropdownOnChange = (index: number) => {
     let value = QUERIES[index]
 
@@ -49,13 +54,10 @@ export default function FeeModuleQuery() {
     setQueryMsg(value)
   }
 
-  const contractOnChange = (value: string) => {
-    window.history.replaceState(null, "", `?contractAddress=${value}`)
-    setContract(value)
-  }
-
   const query = async () => {
     try {
+      setResponse({})
+
       const client = await connect()
       const res = await client.queryContractSmart(contract, {
         [`${queryMsg}`]: msg,
@@ -88,6 +90,7 @@ export default function FeeModuleQuery() {
           items={QUERIES}
           title="Select Query Messages"
           onChange={dropdownOnChange}
+          placeholder="Select query message"
         />
 
         {(queryMsg === "percentage_fee" || queryMsg === "fixed_fee") && (

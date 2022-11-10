@@ -8,17 +8,29 @@ export const Fees = ({ onChange }: { onChange: (msg: any) => void }) => {
 
   const moduleNameOnChange = (value: string) => {
     setModuleName(value)
-    onChange({ module_name: value, start_after: startAfter, limit: limit })
+    onChange({
+      module_name: value,
+      start_after: startAfter === "" ? null : startAfter,
+      limit: limit === "" ? null : startAfter,
+    })
   }
 
   const startAfterOnChange = (value: string) => {
     setStartAfter(value)
-    onChange({ module_name: moduleName, start_after: value, limit: limit })
+    onChange({
+      module_name: moduleName,
+      start_after: value === "" ? null : value,
+      limit: limit === "" ? null : limit,
+    })
   }
 
   const limitOnChange = (value: string) => {
     setLimit(value)
-    onChange({ module_name: moduleName, start_after: startAfter, limit: value })
+    onChange({
+      module_name: moduleName,
+      start_after: startAfter === "" ? null : startAfter,
+      limit: value === "" ? null : value,
+    })
   }
 
   return (
