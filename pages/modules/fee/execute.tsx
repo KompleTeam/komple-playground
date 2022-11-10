@@ -1,13 +1,14 @@
 import { Dropdown } from "components/Dropdown"
+import { DOC_LINKS } from "config/docs"
 import { RemoveFee, SetFee } from "forms/execute"
 import { useAccount } from "graz"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { connect } from "utils/wallet"
-import { Button } from "../../../components/Button"
-import { ContractForm } from "../../../components/ContractForm"
-import { ContractHeader } from "../../../components/ContractHeader"
-import { TextInput } from "../../../components/TextInput"
+import { Button } from "components/Button"
+import { ContractForm } from "components/ContractForm"
+import { ContractHeader } from "components/ContractHeader"
+import { TextInput } from "components/TextInput"
 
 const EXECUTES = [
   "set_fee",
@@ -19,7 +20,7 @@ const EXECUTES = [
 
 export default function FeeModuleExecute() {
   const router = useRouter()
-  const { data: account, isConnected } = useAccount()
+  const { data: account } = useAccount()
 
   const [contract, setContract] = useState(
     typeof router.query.contractAddress === "string"
@@ -79,8 +80,8 @@ export default function FeeModuleExecute() {
     <div className="h-full w-full">
       <ContractHeader
         title="Fee Module"
-        description="Fee module is used for defining dadhsahdas dasj dajajh whajdwhjdw dajdahd dwadad."
-        documentation="https://docs.komple.io/komple/framework-fundamentals/modules/fee-module"
+        description="Fee module is used for general fee adjustment and distribution."
+        documentation={DOC_LINKS.modules.fee}
       />
       <ContractForm name="Fee" isModule={true} response={response}>
         <TextInput

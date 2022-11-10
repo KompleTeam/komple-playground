@@ -17,7 +17,12 @@ export const ContractHeader = ({
       </div>
       <div className="text-[18px] text-komple-black-100">
         Learn more in the{" "}
-        <a className="text-komple-red-400" href={documentation}>
+        <a
+          className="text-komple-red-400"
+          href={documentation}
+          target="_blank"
+          rel="noreferrer"
+        >
           documentation
         </a>
         .

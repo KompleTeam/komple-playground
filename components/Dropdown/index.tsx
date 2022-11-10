@@ -58,41 +58,48 @@ export const Dropdown = ({
   items,
   title,
   subtitle,
-  onChange,
   placeholder,
+  isRequired,
+  onChange,
 }: {
   items: string[]
   title: string
   subtitle?: string
-  onChange: (index: number) => void
   placeholder?: string
+  isRequired?: boolean
+  onChange: (index: number) => void
 }) => {
   const ref = useRef(null)
 
-  const [opened, setOpened] = useState(false)
+  const [isActive, setIsActive] = useState(false)
   const [idx, setIdx] = useState<number | null>(null)
 
-  useDropdownClose(ref, opened, () => setOpened(false))
+  useDropdownClose(ref, isActive, () => setIsActive(false))
 
-  const open = () => {
-    setOpened(!opened)
+  const handleDropdown = () => {
+    setIsActive(!isActive)
   }
 
   const select = (index: number) => {
     setIdx(index)
-    setOpened(false)
+    setIsActive(false)
     onChange(index)
   }
 
   return (
     <div className="mb-6 relative">
-      {title && <div className="text-[18px] text-white mb-1">{title}</div>}
+      {title && (
+        <div className="text-[18px] text-white mb-1">
+          {title}
+          {isRequired && <div className="text-komple-red-400 ml-2">*</div>}
+        </div>
+      )}
       {subtitle && (
         <div className="text-[16px] text-komple-black-100 mb-2">{subtitle}</div>
       )}
       <button
         className="h-[48px] w-[380px] px-4 bg-komple-black-300 rounded-md text-komple-black-100 flex items-center justify-between cursor-pointer capitalize"
-        onClick={open}
+        onClick={handleDropdown}
       >
         {idx !== null ? items[idx].split("_").join(" ") : placeholder}
         <Image
@@ -105,8 +112,8 @@ export const Dropdown = ({
       </button>
       <div
         className={clsx(
-          "absolute bg-komple-black-300 p-5 py-1 w-full left-0 top-20 rounded z-10",
-          !opened && "hidden"
+          "absolute bg-komple-black-200 p-5 py-1 w-full left-0 top-20 rounded z-10",
+          !isActive && "hidden"
         )}
         ref={ref}
       >

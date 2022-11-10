@@ -2,12 +2,12 @@ import clsx from "clsx"
 
 export const Button = ({
   text,
-  onClick,
   disabled = false,
+  onClick,
 }: {
   text: string
-  onClick: () => void
   disabled?: boolean
+  onClick: () => void
 }) => {
   return (
     <button

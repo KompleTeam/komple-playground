@@ -1,16 +1,14 @@
 import { useState } from "react"
-import { Button } from "../../../components/Button"
-import { ContractHeader } from "../../../components/ContractHeader"
-import { ContractTabs } from "../../../components/ContractTabs"
-import { TextInput } from "../../../components/TextInput"
-import { useOfflineSigners, useAccount } from "graz"
-import { connect } from "../../../utils/wallet"
-import { JsonViewer } from "../../../components/JsonViewer"
-import { ContractForm } from "../../../components/ContractForm"
+import { Button } from "components/Button"
+import { ContractHeader } from "components/ContractHeader"
+import { TextInput } from "components/TextInput"
+import { useAccount } from "graz"
+import { connect } from "utils/wallet"
+import { ContractForm } from "components/ContractForm"
+import { DOC_LINKS } from "config/docs"
 
 export default function FeeModuleCreate() {
   const { data: account } = useAccount()
-  const { signerAuto } = useOfflineSigners()
 
   const [codeId, setCodeId] = useState("")
   const [admin, setAdmin] = useState("")
@@ -39,8 +37,8 @@ export default function FeeModuleCreate() {
     <div className="h-full w-full">
       <ContractHeader
         title="Fee Module"
-        description="Fee module is used for defining dadhsahdas dasj dajajh whajdwhjdw dajdahd dwadad."
-        documentation="https://docs.komple.io/komple/framework-fundamentals/modules/fee-module"
+        description="Fee module is used for general fee adjustment and distribution."
+        documentation={DOC_LINKS.modules.fee}
       />
       <ContractForm name="Fee" isModule={true} response={response}>
         <TextInput

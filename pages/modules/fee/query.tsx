@@ -7,6 +7,7 @@ import { Fee, Fees } from "forms/query/fee"
 import { connect } from "utils/wallet"
 import { TextInput } from "components/TextInput"
 import { useRouter } from "next/router"
+import { DOC_LINKS } from "config/docs"
 
 const QUERIES = [
   "config",
@@ -75,8 +76,8 @@ export default function FeeModuleQuery() {
     <div className="h-full w-full">
       <ContractHeader
         title="Fee Module"
-        description="Fee module is used for defining dadhsahdas dasj dajajh whajdwhjdw dajdahd dwadad."
-        documentation="https://docs.komple.io/komple/framework-fundamentals/modules/fee-module"
+        description="Fee module is used for general fee adjustment and distribution."
+        documentation={DOC_LINKS.modules.fee}
       />
       <ContractForm name="Fee" isModule={true} response={response}>
         <TextInput
