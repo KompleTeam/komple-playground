@@ -1,9 +1,12 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Button } from "components/Button"
 import { ContractForm } from "components/ContractForm"
 import { ContractHeader } from "components/ContractHeader"
 import { Dropdown } from "components/Dropdown"
+import { Fee, Fees } from "forms/query/fee"
+import { connect } from "utils/wallet"
 import { TextInput } from "components/TextInput"
+import { useRouter } from "next/router"
 
 const QUERIES = [
   "config",
@@ -17,15 +20,54 @@ const QUERIES = [
 ]
 
 export default function FeeModuleQuery() {
-  const [feeType, setFeeType] = useState("")
-  const [moduleName, setModuleName] = useState("")
-  const [feeName, setFeeName] = useState("")
-  const [data, setData] = useState({})
-  const [response, setResponse] = useState({})
+  const router = useRouter()
 
-  const query = async () => {}
+  const [contract, setContract] = useState(
+    typeof router.query.contractAddress === "string"
+      ? router.query.contractAddress
+      : ""
+  )
+  const [queryMsg, setQueryMsg] = useState<string | null>(null)
+  const [msg, setMsg] = useState({})
+  const [response, setResponse] = useState<any>({})
 
-  const disabled = feeType === "" || moduleName === "" || feeName === ""
+  useEffect(() => {
+    if (
+      router.query.contractAddress &&
+      typeof router.query.contractAddress === "string"
+    )
+      setContract(router.query.contractAddress)
+  }, [router.query])
+
+  const dropdownOnChange = (index: number) => {
+    let value = QUERIES[index]
+
+    if (value === "config") {
+      setMsg({})
+    }
+
+    setQueryMsg(value)
+  }
+
+  const contractOnChange = (value: string) => {
+    window.history.replaceState(null, "", `?contractAddress=${value}`)
+    setContract(value)
+  }
+
+  const query = async () => {
+    try {
+      const client = await connect()
+      const res = await client.queryContractSmart(contract, {
+        [`${queryMsg}`]: msg,
+      })
+      setResponse(res)
+    } catch (error: any) {
+      console.log(error)
+      setResponse(error.message)
+    }
+  }
+
+  const disabled = false
 
   return (
     <div className="h-full w-full">
@@ -35,31 +77,31 @@ export default function FeeModuleQuery() {
         documentation="https://docs.komple.io/komple/framework-fundamentals/modules/fee-module"
       />
       <ContractForm name="Fee" isModule={true} response={response}>
-        <Dropdown items={QUERIES} title="Query Messages" />
         <TextInput
-          title="Fee Type"
-          subtitle="dasdsa"
-          placeholder="juno..."
-          onChange={setFeeType}
+          title="Contract Address"
+          onChange={contractOnChange}
+          placeholder="junoa1b2c3d4..."
+          value={contract}
         />
-        <TextInput
-          title="Module Name"
-          subtitle="Name of the module that will be used"
-          placeholder="mint"
-          onChange={setModuleName}
+
+        <Dropdown
+          items={QUERIES}
+          title="Select Query Messages"
+          onChange={dropdownOnChange}
         />
-        <TextInput
-          title="Fee Name"
-          subtitle="Name of the fee that will be used as identifier"
-          placeholder="price"
-          onChange={setFeeName}
-        />
-        <TextInput
-          title="Data"
-          subtitle="Data that will determine the fee value and payment address"
-          onChange={setData}
-        />
-        <Button text="Query Fee Module" onClick={query} disabled={disabled} />
+
+        {(queryMsg === "percentage_fee" || queryMsg === "fixed_fee") && (
+          <Fee onChange={setMsg} />
+        )}
+
+        {(queryMsg === "percentage_fees" ||
+          queryMsg === "fixed_fees" ||
+          queryMsg === "total_percentage_fees" ||
+          queryMsg === "total_fixed_fees") && <Fees onChange={setMsg} />}
+
+        {queryMsg !== null && (
+          <Button text="Query Fee Module" onClick={query} disabled={disabled} />
+        )}
       </ContractForm>
     </div>
   )

@@ -4,7 +4,7 @@ import { ContractHeader } from "../../../components/ContractHeader"
 import { ContractTabs } from "../../../components/ContractTabs"
 import { TextInput } from "../../../components/TextInput"
 import { useOfflineSigners, useAccount } from "graz"
-import { getSigningClient } from "../../../utils/getSigningClient"
+import { connect } from "../../../utils/wallet"
 import { JsonViewer } from "../../../components/JsonViewer"
 import { ContractForm } from "../../../components/ContractForm"
 
@@ -17,7 +17,7 @@ export default function FeeModuleCreate() {
   const [response, setResponse] = useState({})
 
   const instantiate = async () => {
-    const client = await getSigningClient(signerAuto)
+    const client = await connect()
 
     const res = await client.instantiate(
       account?.bech32Address || "",

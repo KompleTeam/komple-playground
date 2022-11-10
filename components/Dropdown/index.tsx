@@ -1,7 +1,8 @@
 import clsx from "clsx"
+import { useDropdownClose } from "hooks/dropdownClose"
 import Image from "next/image"
 import Link from "next/link"
-import { useState } from "react"
+import { useRef, useState } from "react"
 
 export const HoverDropdown = ({
   text,
@@ -57,21 +58,28 @@ export const Dropdown = ({
   items,
   title,
   subtitle,
+  onChange,
 }: {
   items: string[]
   title: string
   subtitle?: string
+  onChange: (index: number) => void
 }) => {
+  const ref = useRef(null)
+
   const [opened, setOpened] = useState(false)
-  const [selected, setSelected] = useState<number | null>(null)
+  const [idx, setIdx] = useState<number | null>(null)
+
+  useDropdownClose(ref, opened, () => setOpened(false))
 
   const open = () => {
     setOpened(!opened)
   }
 
   const select = (index: number) => {
-    setSelected(index)
+    setIdx(index)
     setOpened(false)
+    onChange(index)
   }
 
   return (
@@ -84,8 +92,8 @@ export const Dropdown = ({
         className="h-[48px] w-[380px] px-4 bg-komple-black-300 rounded-md text-komple-black-100 flex items-center justify-between cursor-pointer capitalize"
         onClick={open}
       >
-        {selected
-          ? items[selected].split("_").join(" ")
+        {idx !== null
+          ? items[idx].split("_").join(" ")
           : "Select query message"}
         <Image
           src="/icons/arrow.svg"
@@ -97,15 +105,16 @@ export const Dropdown = ({
       </button>
       <div
         className={clsx(
-          "absolute bg-komple-black-300 p-5 py-1 w-full left-0 top-20 rounded",
+          "absolute bg-komple-black-300 p-5 py-1 w-full left-0 top-20 rounded z-10",
           !opened && "hidden"
         )}
+        ref={ref}
       >
         {items.map((item, index) => {
           return (
             <button
               key={item}
-              className="flex my-[10px] capitalize text-white hover:text-komple-red-400"
+              className="flex my-[10px] capitalize text-white hover:text-komple-red-400 w-full"
               onClick={() => select(index)}
             >
               {item.split("_").join(" ")}
