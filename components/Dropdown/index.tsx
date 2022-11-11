@@ -61,6 +61,7 @@ export const Dropdown = ({
   placeholder,
   isRequired,
   onChange,
+  initialIdx,
 }: {
   items: string[]
   title: string
@@ -68,11 +69,12 @@ export const Dropdown = ({
   placeholder?: string
   isRequired?: boolean
   onChange: (index: number) => void
+  initialIdx?: number
 }) => {
   const ref = useRef(null)
 
   const [isActive, setIsActive] = useState(false)
-  const [idx, setIdx] = useState<number | null>(null)
+  const [idx, setIdx] = useState<number | undefined>(initialIdx)
 
   useDropdownClose(ref, isActive, () => setIsActive(false))
 
@@ -101,7 +103,7 @@ export const Dropdown = ({
         className="h-[48px] w-[380px] px-4 bg-komple-black-300 rounded-md text-komple-black-100 flex items-center justify-between cursor-pointer capitalize"
         onClick={handleDropdown}
       >
-        {idx !== null ? items[idx].split("_").join(" ") : placeholder}
+        {idx !== undefined ? items[idx].split("_").join(" ") : placeholder}
         <Image
           src="/icons/arrow.svg"
           alt="Arrow"

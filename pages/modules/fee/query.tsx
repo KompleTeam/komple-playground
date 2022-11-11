@@ -3,13 +3,18 @@ import { Button } from "components/Button"
 import { ContractForm } from "components/ContractForm"
 import { ContractHeader } from "components/ContractHeader"
 import { Dropdown } from "components/Dropdown"
-import { Fee, Fees } from "forms/query/fee"
-import { connect } from "utils/wallet"
+import { getKeplrSigner, getSigningClient } from "utils/wallet"
 import { TextInput } from "components/TextInput"
 import { useRouter } from "next/router"
 import { DOC_LINKS } from "config/docs"
+import { KompleClient } from "komplejs"
+import {
+  FeeModuleQueryForm,
+  FeeModuleQueryFormMsg,
+  FeeModuleQueryType,
+} from "forms/query"
 
-const QUERIES = [
+const QUERIES: FeeModuleQueryType[] = [
   "config",
   "percentage_fee",
   "fixed_fee",
@@ -28,8 +33,8 @@ export default function FeeModuleQuery() {
       ? router.query.contractAddress
       : ""
   )
-  const [queryMsg, setQueryMsg] = useState<string | null>(null)
-  const [msg, setMsg] = useState({})
+  const [query, setQuery] = useState<FeeModuleQueryType>("")
+  const [msg, setMsg] = useState<FeeModuleQueryFormMsg>()
   const [response, setResponse] = useState<any>({})
 
   useEffect(() => {
@@ -47,23 +52,85 @@ export default function FeeModuleQuery() {
 
   const dropdownOnChange = (index: number) => {
     let value = QUERIES[index]
-
-    if (value === "config") {
-      setMsg({})
-    }
-
-    setQueryMsg(value)
+    setQuery(value)
   }
 
-  const query = async () => {
+  const queryOnClick = async () => {
     try {
-      setResponse({})
+      const signer = await getKeplrSigner()
+      const client = await getSigningClient(signer)
+      const kompleClient = new KompleClient(client, signer)
+      const feeModule = await kompleClient.feeModule(contract)
+      const queryClient = feeModule.queryClient
 
-      const client = await connect()
-      const res = await client.queryContractSmart(contract, {
-        [`${queryMsg}`]: msg,
-      })
-      setResponse(res)
+      if (!msg) throw Error("msg is undefined")
+
+      switch (query) {
+        case "config":
+          setResponse(await queryClient.config())
+          break
+        case "percentage_fee":
+          setResponse(
+            await queryClient.percentageFee({
+              moduleName: msg.moduleName,
+              feeName: msg.feeName,
+            })
+          )
+          break
+        case "fixed_fee":
+          setResponse(
+            await queryClient.fixedFee({
+              moduleName: msg.moduleName,
+              feeName: msg.feeName,
+            })
+          )
+          break
+        case "percentage_fees":
+          setResponse(
+            await queryClient.percentageFees({
+              moduleName: msg.moduleName,
+              startAfter: msg.startAfter,
+              limit: msg.limit,
+            })
+          )
+          break
+        case "fixed_fees":
+          setResponse(
+            await queryClient.fixedFees({
+              moduleName: msg.moduleName,
+              startAfter: msg.startAfter,
+              limit: msg.limit,
+            })
+          )
+          break
+        case "total_percentage_fees":
+          setResponse(
+            await queryClient.totalPercentageFees({
+              moduleName: msg.moduleName,
+              startAfter: msg.startAfter,
+              limit: msg.limit,
+            })
+          )
+          break
+        case "total_fixed_fees":
+          setResponse(
+            await queryClient.totalFixedFees({
+              moduleName: msg.moduleName,
+              startAfter: msg.startAfter,
+              limit: msg.limit,
+            })
+          )
+          break
+        case "keys":
+          setResponse(
+            await queryClient.keys({
+              feeType: msg.feeType,
+              startAfter: msg.startAfter,
+              limit: msg.limit,
+            })
+          )
+          break
+      }
     } catch (error: any) {
       console.log(error)
       setResponse(error.message)
@@ -79,6 +146,7 @@ export default function FeeModuleQuery() {
         description="Fee module is used for general fee adjustment and distribution in Komple Framework."
         documentation={DOC_LINKS.modules.fee}
       />
+
       <ContractForm name="Fee" isModule={true} response={response}>
         <TextInput
           title="Contract Address"
@@ -94,17 +162,14 @@ export default function FeeModuleQuery() {
           placeholder="Select query message"
         />
 
-        {(queryMsg === "percentage_fee" || queryMsg === "fixed_fee") && (
-          <Fee onChange={setMsg} />
-        )}
+        <FeeModuleQueryForm query={query} onChange={setMsg} />
 
-        {(queryMsg === "percentage_fees" ||
-          queryMsg === "fixed_fees" ||
-          queryMsg === "total_percentage_fees" ||
-          queryMsg === "total_fixed_fees") && <Fees onChange={setMsg} />}
-
-        {queryMsg !== null && (
-          <Button text="Query Fee Module" onClick={query} disabled={disabled} />
+        {query !== "" && (
+          <Button
+            text="Query Fee Module"
+            onClick={queryOnClick}
+            disabled={disabled}
+          />
         )}
       </ContractForm>
     </div>
