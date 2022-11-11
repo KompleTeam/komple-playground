@@ -9,13 +9,14 @@ import { Button } from "components/Button"
 import { ContractForm } from "components/ContractForm"
 import { ContractHeader } from "components/ContractHeader"
 import { TextInput } from "components/TextInput"
+import { HubExecuteRegisterModule } from "forms/execute/hub"
 
 const EXECUTES = [
-  "set_fee",
-  "remove_fee",
-  "distribute",
-  "lock_execute",
-  "receive",
+  "register_module",
+  "deregister_module",
+  "update_hub_info",
+  "update_operators",
+  "migrate_contracts",
 ]
 
 export default function FeeModuleExecute() {
@@ -46,18 +47,13 @@ export default function FeeModuleExecute() {
 
   const dropdownOnChange = (index: number) => {
     let value = EXECUTES[index]
-
-    if (value === "lock_execute") {
-      setMsg({})
-    }
-
     setExecuteMsg(value)
   }
 
   const execute = async () => {
     try {
       setResponse({})
-
+      console.log(msg)
       const client = await connect()
       const res = await client.execute(
         account?.bech32Address || "",
@@ -79,11 +75,11 @@ export default function FeeModuleExecute() {
   return (
     <div className="h-full w-full">
       <ContractHeader
-        title="Fee Module"
-        description="Fee module is used for general fee adjustment and distribution in Komple Framework."
-        documentation={DOC_LINKS.modules.fee}
+        title="Hub Module"
+        description="Hub module is the centre piece of the Komple Framework."
+        documentation={DOC_LINKS.modules.hub}
       />
-      <ContractForm name="Fee" isModule={true} response={response}>
+      <ContractForm name="Hub" isModule={true} response={response}>
         <TextInput
           title="Contract Address"
           onChange={contractOnChange}
@@ -97,9 +93,9 @@ export default function FeeModuleExecute() {
           placeholder="Select execute message"
         />
 
-        {executeMsg === "set_fee" && <SetFee onChange={setMsg} />}
-
-        {executeMsg === "remove_fee" && <RemoveFee onChange={setMsg} />}
+        {executeMsg === "register_module" && (
+          <HubExecuteRegisterModule onChange={setMsg} />
+        )}
 
         <Button
           text="Execute Fee Module"

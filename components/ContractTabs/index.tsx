@@ -53,7 +53,7 @@ export const ContractTabs = ({
                       : "text-komple-black-100"
                   )}
                 >
-                  {item.text} a {contract} {isModule ? "Module" : "Permission"}
+                  {item.text} {contract} {isModule ? "Module" : "Permission"}
                 </div>
               </div>
             </Link>

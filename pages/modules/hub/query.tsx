@@ -1,33 +1,26 @@
-import { Dropdown } from "components/Dropdown"
-import { DOC_LINKS } from "config/docs"
-import { RemoveFee, SetFee } from "forms/execute"
-import { useAccount } from "graz"
-import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
-import { connect } from "utils/wallet"
 import { Button } from "components/Button"
 import { ContractForm } from "components/ContractForm"
 import { ContractHeader } from "components/ContractHeader"
+import { Dropdown } from "components/Dropdown"
+import { Fee, Fees } from "forms/query/fee"
+import { connect } from "utils/wallet"
 import { TextInput } from "components/TextInput"
+import { useRouter } from "next/router"
+import { DOC_LINKS } from "config/docs"
+import { HubQueryModuleAddress } from "forms/query"
 
-const EXECUTES = [
-  "set_fee",
-  "remove_fee",
-  "distribute",
-  "lock_execute",
-  "receive",
-]
+const QUERIES = ["config", "module_address", "operators"]
 
-export default function FeeModuleExecute() {
+export default function FeeModuleQuery() {
   const router = useRouter()
-  const { data: account } = useAccount()
 
   const [contract, setContract] = useState(
     typeof router.query.contractAddress === "string"
       ? router.query.contractAddress
       : ""
   )
-  const [executeMsg, setExecuteMsg] = useState<string | null>(null)
+  const [queryMsg, setQueryMsg] = useState<string | null>(null)
   const [msg, setMsg] = useState({})
   const [response, setResponse] = useState<any>({})
 
@@ -45,28 +38,23 @@ export default function FeeModuleExecute() {
   }
 
   const dropdownOnChange = (index: number) => {
-    let value = EXECUTES[index]
+    let value = QUERIES[index]
 
-    if (value === "lock_execute") {
+    if (value === "config" || value === "operators") {
       setMsg({})
     }
 
-    setExecuteMsg(value)
+    setQueryMsg(value)
   }
 
-  const execute = async () => {
+  const query = async () => {
     try {
       setResponse({})
 
       const client = await connect()
-      const res = await client.execute(
-        account?.bech32Address || "",
-        contract,
-        {
-          [`${executeMsg}`]: msg,
-        },
-        "auto"
-      )
+      const res = await client.queryContractSmart(contract, {
+        [`${queryMsg}`]: msg,
+      })
       setResponse(res)
     } catch (error: any) {
       console.log(error)
@@ -79,33 +67,32 @@ export default function FeeModuleExecute() {
   return (
     <div className="h-full w-full">
       <ContractHeader
-        title="Fee Module"
-        description="Fee module is used for general fee adjustment and distribution in Komple Framework."
-        documentation={DOC_LINKS.modules.fee}
+        title="Hub Module"
+        description="Hub module is the centre piece of the Komple Framework."
+        documentation={DOC_LINKS.modules.hub}
       />
-      <ContractForm name="Fee" isModule={true} response={response}>
+      <ContractForm name="Hub" isModule={true} response={response}>
         <TextInput
           title="Contract Address"
           onChange={contractOnChange}
-          placeholder="junoa1b2c3d4..."
+          placeholder="juno1..."
           value={contract}
         />
+
         <Dropdown
-          items={EXECUTES}
-          title="Select Execute Messages"
+          items={QUERIES}
+          title="Select Query Messages"
           onChange={dropdownOnChange}
-          placeholder="Select execute message"
+          placeholder="Select query message"
         />
 
-        {executeMsg === "set_fee" && <SetFee onChange={setMsg} />}
+        {queryMsg === "module_address" && (
+          <HubQueryModuleAddress onChange={setMsg} />
+        )}
 
-        {executeMsg === "remove_fee" && <RemoveFee onChange={setMsg} />}
-
-        <Button
-          text="Execute Fee Module"
-          onClick={execute}
-          disabled={disabled}
-        />
+        {queryMsg !== null && (
+          <Button text="Query Fee Module" onClick={query} disabled={disabled} />
+        )}
       </ContractForm>
     </div>
   )

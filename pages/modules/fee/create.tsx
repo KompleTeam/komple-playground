@@ -37,7 +37,7 @@ export default function FeeModuleCreate() {
     <div className="h-full w-full">
       <ContractHeader
         title="Fee Module"
-        description="Fee module is used for general fee adjustment and distribution."
+        description="Fee module is used for general fee adjustment and distribution in Komple Framework."
         documentation={DOC_LINKS.modules.fee}
       />
       <ContractForm name="Fee" isModule={true} response={response}>
@@ -46,12 +46,14 @@ export default function FeeModuleCreate() {
           subtitle="Code ID of the contract"
           placeholder="123"
           onChange={setCodeId}
+          isRequired
         />
         <TextInput
           title="Admin"
           subtitle="Address of the contract admin"
           placeholder="juno..."
           onChange={setAdmin}
+          isRequired
         />
         <Button
           text="Create Fee Module"

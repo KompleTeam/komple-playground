@@ -76,7 +76,7 @@ export default function FeeModuleQuery() {
     <div className="h-full w-full">
       <ContractHeader
         title="Fee Module"
-        description="Fee module is used for general fee adjustment and distribution."
+        description="Fee module is used for general fee adjustment and distribution in Komple Framework."
         documentation={DOC_LINKS.modules.fee}
       />
       <ContractForm name="Fee" isModule={true} response={response}>
