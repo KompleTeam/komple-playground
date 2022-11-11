@@ -2115,6 +2115,14 @@ json5@^1.0.1:
     array-includes "^3.1.5"
     object.assign "^4.1.3"
 
+komplejs@./komplejs-v0.1.0.tgz:
+  version "0.1.0"
+  resolved "./komplejs-v0.1.0.tgz#c10e52d99a7c83d53d9323902ca9c81d04965a77"
+  dependencies:
+    "@cosmjs/cosmwasm-stargate" "^0.29.3"
+    "@cosmjs/proto-signing" "^0.29.3"
+    "@cosmjs/stargate" "^0.29.3"
+
 language-subtag-registry@~0.3.2:
   version "0.3.22"
   resolved "https://registry.yarnpkg.com/language-subtag-registry/-/language-subtag-registry-0.3.22.tgz#2e1500861b2e457eba7e7ae86877cbd08fa1fd1d"
