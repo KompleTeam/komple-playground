@@ -9,7 +9,7 @@ import {
   FeeModuleExecuteForm,
   FeeModuleExecuteType,
   FeeModuleExecuteFormMsg,
-} from "forms/execute"
+} from "components/forms/execute"
 import { toBinary } from "@cosmjs/cosmwasm-stargate"
 
 const EXECUTES: FeeModuleExecuteType[] = [

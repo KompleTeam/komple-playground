@@ -10,7 +10,7 @@ import {
   FeeModuleQueryForm,
   FeeModuleQueryFormMsg,
   FeeModuleQueryType,
-} from "forms/query/Fee"
+} from "components/forms/query/Fee"
 import { Button } from "components/Button"
 
 const QUERIES: FeeModuleQueryType[] = [

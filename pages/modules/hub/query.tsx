@@ -8,7 +8,7 @@ import { connect } from "utils/wallet"
 import { TextInput } from "components/TextInput"
 import { useRouter } from "next/router"
 import { DOC_LINKS } from "config/docs"
-import { HubQueryModuleAddress } from "forms/query"
+import { HubQueryModuleAddress } from "components/forms/query"
 
 const QUERIES = ["config", "module_address", "operators"]
 

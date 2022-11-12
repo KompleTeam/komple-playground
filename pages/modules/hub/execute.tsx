@@ -1,6 +1,6 @@
 import { Dropdown } from "components/Dropdown"
 import { DOC_LINKS } from "config/docs"
-import { RemoveFee, SetFee } from "forms/execute"
+import { RemoveFee, SetFee } from "components/forms/execute"
 import { useAccount } from "graz"
 import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
@@ -9,7 +9,7 @@ import { Button } from "components/Button"
 import { ContractForm } from "components/contracts/ContractLayout"
 import { ContractHeader } from "components/ContractHeader"
 import { TextInput } from "components/TextInput"
-import { HubExecuteRegisterModule } from "forms/execute/hub"
+import { HubExecuteRegisterModule } from "components/forms/execute/hub"
 
 const EXECUTES = [
   "register_module",
