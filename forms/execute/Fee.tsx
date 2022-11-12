@@ -1,5 +1,6 @@
 import { Dropdown } from "components/Dropdown"
 import { TextInput } from "components/TextInput"
+import { TextInputList } from "components/TextInputList"
 import { Fees } from "komplejs/lib/cjs/types/framework/FeeModule.types"
 import { useEffect, useState } from "react"
 
@@ -41,7 +42,7 @@ export const FeeModuleExecuteForm = ({
       feeValue,
       paymentAddress,
     })
-  }, [feeType, moduleName, feeName, feeValue, paymentAddress])
+  }, [onChange, feeType, moduleName, feeName, feeValue, paymentAddress])
 
   const feeTypeOnChange = (index: number) => {
     let value = (index === 0 ? "percentage" : "fixed") as Fees
@@ -85,6 +86,14 @@ export const FeeModuleExecuteForm = ({
           />
         </>
       )}
+
+      {/* {executeMsg === "distribute" && (
+        <TextInputList
+          title="Payment Addresses"
+          onChange={() => {}}
+          placeholder="juno1..."
+        />
+      )} */}
     </div>
   )
 }
