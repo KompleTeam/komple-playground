@@ -1,18 +1,17 @@
-import { useEffect, useState } from "react"
-import { Button } from "components/Button"
-import { ContractForm } from "components/ContractForm"
-import { ContractHeader } from "components/ContractHeader"
+import { useState } from "react"
+import { ContractForm } from "components/contracts/ContractLayout"
+import { ContractHeader } from "components/contracts/ContractHeader"
 import { Dropdown } from "components/Dropdown"
 import { getKeplrSigner, getSigningClient } from "utils/wallet"
-import { TextInput } from "components/TextInput"
-import { useRouter } from "next/router"
+
 import { DOC_LINKS } from "config/docs"
 import { KompleClient } from "komplejs"
 import {
   FeeModuleQueryForm,
   FeeModuleQueryFormMsg,
   FeeModuleQueryType,
-} from "forms/query"
+} from "forms/query/Fee"
+import { Button } from "components/Button"
 
 const QUERIES: FeeModuleQueryType[] = [
   "config",
@@ -26,36 +25,16 @@ const QUERIES: FeeModuleQueryType[] = [
 ]
 
 export default function FeeModuleQuery() {
-  const router = useRouter()
-
-  const [contract, setContract] = useState(
-    typeof router.query.contractAddress === "string"
-      ? router.query.contractAddress
-      : ""
-  )
   const [query, setQuery] = useState<FeeModuleQueryType>("")
   const [msg, setMsg] = useState<FeeModuleQueryFormMsg>()
   const [response, setResponse] = useState<any>({})
-
-  useEffect(() => {
-    if (
-      router.query.contractAddress &&
-      typeof router.query.contractAddress === "string"
-    )
-      setContract(router.query.contractAddress)
-  }, [router.query])
-
-  const contractOnChange = (value: string) => {
-    window.history.replaceState(null, "", `?contractAddress=${value}`)
-    setContract(value)
-  }
 
   const dropdownOnChange = (index: number) => {
     let value = QUERIES[index]
     setQuery(value)
   }
 
-  const queryOnClick = async () => {
+  const submit = async ({ contract }: { contract: string }) => {
     try {
       const signer = await getKeplrSigner()
       const client = await getSigningClient(signer)
@@ -137,8 +116,6 @@ export default function FeeModuleQuery() {
     }
   }
 
-  const disabled = false
-
   return (
     <div className="h-full w-full">
       <ContractHeader
@@ -147,14 +124,13 @@ export default function FeeModuleQuery() {
         documentation={DOC_LINKS.modules.fee}
       />
 
-      <ContractForm name="Fee" isModule={true} response={response}>
-        <TextInput
-          title="Contract Address"
-          onChange={contractOnChange}
-          placeholder="junoa1b2c3d4..."
-          value={contract}
-        />
-
+      <ContractForm
+        name="Fee"
+        isModule={true}
+        response={response}
+        action="query"
+        submit={submit}
+      >
         <Dropdown
           items={QUERIES}
           title="Select Query Messages"
@@ -164,13 +140,7 @@ export default function FeeModuleQuery() {
 
         <FeeModuleQueryForm query={query} onChange={setMsg} />
 
-        {query !== "" && (
-          <Button
-            text="Query Fee Module"
-            onClick={queryOnClick}
-            disabled={disabled}
-          />
-        )}
+        {query !== "" && <Button text="Query Fee Module" onClick={submit} />}
       </ContractForm>
     </div>
   )

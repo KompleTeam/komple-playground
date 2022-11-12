@@ -89,7 +89,7 @@ export const Dropdown = ({
   }
 
   return (
-    <div className="mb-6 relative">
+    <div className="mb-6 relative capitalize">
       {title && (
         <div className="text-[18px] text-white mb-1">
           {title}

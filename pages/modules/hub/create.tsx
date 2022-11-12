@@ -4,7 +4,7 @@ import { ContractHeader } from "components/ContractHeader"
 import { TextInput } from "components/TextInput"
 import { useAccount } from "graz"
 import { connect } from "utils/wallet"
-import { ContractForm } from "components/ContractForm"
+import { ContractForm } from "components/contracts/ContractLayout"
 import { DOC_LINKS } from "config/docs"
 import { toBinary } from "@cosmjs/cosmwasm-stargate"
 

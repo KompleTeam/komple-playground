@@ -6,8 +6,8 @@ import { useRouter } from "next/router"
 import { useEffect, useState } from "react"
 import { connect } from "utils/wallet"
 import { Button } from "components/Button"
-import { ContractForm } from "components/ContractForm"
-import { ContractHeader } from "components/ContractHeader"
+import { ContractForm } from "components/contracts/ContractLayout"
+import { ContractHeader } from "components/contracts/ContractHeader"
 import { TextInput } from "components/TextInput"
 
 const EXECUTES = [

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Button } from "components/Button"
-import { ContractForm } from "components/ContractForm"
+import { ContractForm } from "components/contracts/ContractLayout"
 import { ContractHeader } from "components/ContractHeader"
 import { Dropdown } from "components/Dropdown"
 import { Fee, Fees } from "forms/query/fee"
