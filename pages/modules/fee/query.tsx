@@ -139,8 +139,6 @@ export default function FeeModuleQuery() {
         />
 
         <FeeModuleQueryForm query={query} onChange={setMsg} />
-
-        {query !== "" && <Button text="Query Fee Module" onClick={submit} />}
       </ContractForm>
     </div>
   )

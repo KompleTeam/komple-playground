@@ -2,11 +2,10 @@ import { ReactNode, useEffect, useState } from "react"
 import { ContractTabs } from "../ContractTabs"
 import { JsonViewer } from "../../JsonViewer"
 import { TextInput } from "components/TextInput"
-import { Dropdown } from "components/Dropdown"
 import { useRouter } from "next/router"
 import { Button } from "components/Button"
 
-type ActionType = "instantiate" | "execute" | "query"
+type ActionType = "create" | "execute" | "query"
 
 export const ContractForm = ({
   children,
@@ -50,15 +49,21 @@ export const ContractForm = ({
       <ContractTabs contract={name} isModule={isModule} />
       <div className="w-20" />
       <div>
-        {action === "instantiate" && (
-          <TextInput title="Code ID" onChange={setCodeId} value={codeId} />
+        {action === "create" && (
+          <TextInput
+            title="Code ID"
+            onChange={setCodeId}
+            value={codeId}
+            placeholder="Code ID of the uploaded contract"
+            isRequired
+          />
         )}
 
         {(action === "query" || action === "execute") && (
           <TextInput
             title="Contract Address"
             onChange={contractOnChange}
-            placeholder="junoa1b2c3d4..."
+            placeholder="juno1..."
             value={contract}
           />
         )}

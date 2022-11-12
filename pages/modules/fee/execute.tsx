@@ -1,80 +1,82 @@
 import { Dropdown } from "components/Dropdown"
 import { DOC_LINKS } from "config/docs"
-import { RemoveFee, SetFee } from "forms/execute"
-import { useAccount } from "graz"
-import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
-import { connect } from "utils/wallet"
-import { Button } from "components/Button"
+import { useState } from "react"
+import { getKeplrSigner, getSigningClient } from "utils/wallet"
 import { ContractForm } from "components/contracts/ContractLayout"
 import { ContractHeader } from "components/contracts/ContractHeader"
-import { TextInput } from "components/TextInput"
+import { KompleClient } from "komplejs"
+import {
+  FeeModuleExecuteForm,
+  FeeModuleExecuteType,
+  FeeModuleExecuteFormMsg,
+} from "forms/execute"
+import { toBinary } from "@cosmjs/cosmwasm-stargate"
 
-const EXECUTES = [
+const EXECUTES: FeeModuleExecuteType[] = [
   "set_fee",
   "remove_fee",
   "distribute",
   "lock_execute",
-  "receive",
 ]
 
 export default function FeeModuleExecute() {
-  const router = useRouter()
-  const { data: account } = useAccount()
-
-  const [contract, setContract] = useState(
-    typeof router.query.contractAddress === "string"
-      ? router.query.contractAddress
-      : ""
-  )
-  const [executeMsg, setExecuteMsg] = useState<string | null>(null)
-  const [msg, setMsg] = useState({})
+  const [executeMsg, setExecuteMsg] = useState<FeeModuleExecuteType>("")
+  const [msg, setMsg] = useState<FeeModuleExecuteFormMsg>()
   const [response, setResponse] = useState<any>({})
-
-  useEffect(() => {
-    if (
-      router.query.contractAddress &&
-      typeof router.query.contractAddress === "string"
-    )
-      setContract(router.query.contractAddress)
-  }, [router.query])
-
-  const contractOnChange = (value: string) => {
-    window.history.replaceState(null, "", `?contractAddress=${value}`)
-    setContract(value)
-  }
 
   const dropdownOnChange = (index: number) => {
     let value = EXECUTES[index]
-
-    if (value === "lock_execute") {
-      setMsg({})
-    }
-
     setExecuteMsg(value)
   }
 
-  const execute = async () => {
+  const submit = async ({ contract }: { contract: string }) => {
     try {
-      setResponse({})
+      const signer = await getKeplrSigner()
+      const client = await getSigningClient(signer)
+      const kompleClient = new KompleClient(client, signer)
+      const feeModule = await kompleClient.feeModule(contract)
+      const executeClient = feeModule.client
 
-      const client = await connect()
-      const res = await client.execute(
-        account?.bech32Address || "",
-        contract,
-        {
-          [`${executeMsg}`]: msg,
-        },
-        "auto"
-      )
-      setResponse(res)
+      if (!msg) throw Error("msg is undefined")
+
+      switch (executeMsg) {
+        case "set_fee":
+          return setResponse(
+            await executeClient.setFee({
+              feeType: msg.feeType,
+              moduleName: msg.moduleName,
+              feeName: msg.feeName,
+              data: toBinary({
+                value: msg.feeValue,
+                address:
+                  msg.paymentAddress === "" ? undefined : msg.paymentAddress,
+              }),
+            })
+          )
+        case "remove_fee":
+          return setResponse(
+            await executeClient.removeFee({
+              feeType: msg.feeType,
+              moduleName: msg.moduleName,
+              feeName: msg.feeName,
+            })
+          )
+        case "distribute":
+          return setResponse(
+            await executeClient.distribute({
+              feeType: msg.feeType,
+              moduleName: msg.moduleName,
+              customPaymentAddresses: [],
+            })
+          )
+        case "lock_execute":
+          return setResponse(await executeClient.lockExecute())
+      }
     } catch (error: any) {
       console.log(error)
       setResponse(error.message)
     }
   }
-
-  const disabled = false
 
   return (
     <div className="h-full w-full">
@@ -83,13 +85,13 @@ export default function FeeModuleExecute() {
         description="Fee module is used for general fee adjustment and distribution in Komple Framework."
         documentation={DOC_LINKS.modules.fee}
       />
-      <ContractForm name="Fee" isModule={true} response={response}>
-        <TextInput
-          title="Contract Address"
-          onChange={contractOnChange}
-          placeholder="junoa1b2c3d4..."
-          value={contract}
-        />
+      <ContractForm
+        name="Fee"
+        isModule={true}
+        response={response}
+        action="execute"
+        submit={submit}
+      >
         <Dropdown
           items={EXECUTES}
           title="Select Execute Messages"
@@ -97,15 +99,7 @@ export default function FeeModuleExecute() {
           placeholder="Select execute message"
         />
 
-        {executeMsg === "set_fee" && <SetFee onChange={setMsg} />}
-
-        {executeMsg === "remove_fee" && <RemoveFee onChange={setMsg} />}
-
-        <Button
-          text="Execute Fee Module"
-          onClick={execute}
-          disabled={disabled}
-        />
+        <FeeModuleExecuteForm executeMsg={executeMsg} onChange={setMsg} />
       </ContractForm>
     </div>
   )
