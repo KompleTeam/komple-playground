@@ -1,68 +1,55 @@
-import { useEffect, useState } from "react"
-import { Button } from "components/Button"
+import { useState } from "react"
 import { ContractForm } from "components/contracts/ContractLayout"
-import { ContractHeader } from "components/ContractHeader"
+import { ContractHeader } from "components/contracts/ContractHeader"
 import { Dropdown } from "components/Dropdown"
-import { Fee, Fees } from "forms/query/fee"
-import { connect } from "utils/wallet"
-import { TextInput } from "components/TextInput"
-import { useRouter } from "next/router"
+import { getKeplrSigner, getSigningClient } from "utils/wallet"
 import { DOC_LINKS } from "config/docs"
-import { HubQueryModuleAddress } from "components/forms/query"
+import {
+  HubModuleQueryForm,
+  HubModuleQueryType,
+  HubModuleQueryFormMsg,
+} from "components/forms/query"
+import { KompleClient } from "komplejs"
 
-const QUERIES = ["config", "module_address", "operators"]
+const QUERIES: HubModuleQueryType[] = ["config", "module_address", "operators"]
 
 export default function FeeModuleQuery() {
-  const router = useRouter()
-
-  const [contract, setContract] = useState(
-    typeof router.query.contractAddress === "string"
-      ? router.query.contractAddress
-      : ""
-  )
-  const [queryMsg, setQueryMsg] = useState<string | null>(null)
-  const [msg, setMsg] = useState({})
+  const [queryMsg, setQueryMsg] = useState<HubModuleQueryType>("")
+  const [msg, setMsg] = useState<HubModuleQueryFormMsg>()
   const [response, setResponse] = useState<any>({})
-
-  useEffect(() => {
-    if (
-      router.query.contractAddress &&
-      typeof router.query.contractAddress === "string"
-    )
-      setContract(router.query.contractAddress)
-  }, [router.query])
-
-  const contractOnChange = (value: string) => {
-    window.history.replaceState(null, "", `?contractAddress=${value}`)
-    setContract(value)
-  }
 
   const dropdownOnChange = (index: number) => {
     let value = QUERIES[index]
-
-    if (value === "config" || value === "operators") {
-      setMsg({})
-    }
-
     setQueryMsg(value)
   }
 
-  const query = async () => {
+  const submit = async ({ contract }: { contract: string }) => {
     try {
-      setResponse({})
+      const signer = await getKeplrSigner()
+      const client = await getSigningClient(signer)
+      const kompleClient = new KompleClient(client, signer)
+      const hubModule = await kompleClient.hubModule(contract)
+      const queryClient = hubModule.queryClient
 
-      const client = await connect()
-      const res = await client.queryContractSmart(contract, {
-        [`${queryMsg}`]: msg,
-      })
-      setResponse(res)
+      if (!msg) throw Error("msg is undefined")
+
+      switch (queryMsg) {
+        case "config":
+          return setResponse(await queryClient.config())
+        case "module_address":
+          return setResponse(
+            await queryClient.moduleAddress({
+              module: msg.module,
+            })
+          )
+        case "operators":
+          return setResponse(await queryClient.operators())
+      }
     } catch (error: any) {
       console.log(error)
       setResponse(error.message)
     }
   }
-
-  const disabled = false
 
   return (
     <div className="h-full w-full">
@@ -71,14 +58,13 @@ export default function FeeModuleQuery() {
         description="Hub module is the centre piece of the Komple Framework."
         documentation={DOC_LINKS.modules.hub}
       />
-      <ContractForm name="Hub" isModule={true} response={response}>
-        <TextInput
-          title="Contract Address"
-          onChange={contractOnChange}
-          placeholder="juno1..."
-          value={contract}
-        />
-
+      <ContractForm
+        name="Hub"
+        isModule={true}
+        response={response}
+        action="query"
+        submit={submit}
+      >
         <Dropdown
           items={QUERIES}
           title="Select Query Messages"
@@ -86,13 +72,7 @@ export default function FeeModuleQuery() {
           placeholder="Select query message"
         />
 
-        {queryMsg === "module_address" && (
-          <HubQueryModuleAddress onChange={setMsg} />
-        )}
-
-        {queryMsg !== null && (
-          <Button text="Query Fee Module" onClick={query} disabled={disabled} />
-        )}
+        <HubModuleQueryForm query={queryMsg} onChange={setMsg} />
       </ContractForm>
     </div>
   )

@@ -1,2 +1,2 @@
 export * from "./Fee"
-export * from "./hub"
+export * from "./Hub"

@@ -1,17 +1,17 @@
 import { Dropdown } from "components/Dropdown"
 import { DOC_LINKS } from "config/docs"
-import { RemoveFee, SetFee } from "components/forms/execute"
-import { useAccount } from "graz"
-import { useRouter } from "next/router"
-import { useEffect, useState } from "react"
-import { connect } from "utils/wallet"
-import { Button } from "components/Button"
+import { useState } from "react"
+import { getKeplrSigner, getSigningClient } from "utils/wallet"
 import { ContractForm } from "components/contracts/ContractLayout"
-import { ContractHeader } from "components/ContractHeader"
-import { TextInput } from "components/TextInput"
-import { HubExecuteRegisterModule } from "components/forms/execute/hub"
+import { ContractHeader } from "components/contracts/ContractHeader"
+import {
+  HubModuleExecuteForm,
+  HubModuleExecuteType,
+  HubModuleExecuteFormMsg,
+} from "components/forms/execute"
+import { KompleClient } from "komplejs"
 
-const EXECUTES = [
+const EXECUTES: HubModuleExecuteType[] = [
   "register_module",
   "deregister_module",
   "update_hub_info",
@@ -20,57 +20,69 @@ const EXECUTES = [
 ]
 
 export default function FeeModuleExecute() {
-  const router = useRouter()
-  const { data: account } = useAccount()
-
-  const [contract, setContract] = useState(
-    typeof router.query.contractAddress === "string"
-      ? router.query.contractAddress
-      : ""
-  )
-  const [executeMsg, setExecuteMsg] = useState<string | null>(null)
-  const [msg, setMsg] = useState({})
+  const [executeMsg, setExecuteMsg] = useState<HubModuleExecuteType>("")
+  const [msg, setMsg] = useState<HubModuleExecuteFormMsg>()
   const [response, setResponse] = useState<any>({})
-
-  useEffect(() => {
-    if (
-      router.query.contractAddress &&
-      typeof router.query.contractAddress === "string"
-    )
-      setContract(router.query.contractAddress)
-  }, [router.query])
-
-  const contractOnChange = (value: string) => {
-    window.history.replaceState(null, "", `?contractAddress=${value}`)
-    setContract(value)
-  }
 
   const dropdownOnChange = (index: number) => {
     let value = EXECUTES[index]
     setExecuteMsg(value)
   }
 
-  const execute = async () => {
+  const submit = async ({ contract }: { contract: string }) => {
     try {
-      setResponse({})
-      console.log(msg)
-      const client = await connect()
-      const res = await client.execute(
-        account?.bech32Address || "",
-        contract,
-        {
-          [`${executeMsg}`]: msg,
-        },
-        "auto"
-      )
-      setResponse(res)
+      const signer = await getKeplrSigner()
+      const client = await getSigningClient(signer)
+      const kompleClient = new KompleClient(client, signer)
+      const hubModule = await kompleClient.hubModule(contract)
+      const executeClient = hubModule.client
+
+      if (!msg) throw Error("msg is undefined")
+
+      switch (executeMsg) {
+        case "register_module":
+          return setResponse(
+            await executeClient.registerModule({
+              codeId: Number(msg.codeId),
+              module: msg.module,
+              msg: "",
+            })
+          )
+        case "deregister_module":
+          return setResponse(
+            await executeClient.deregisterModule({
+              module: msg.module,
+            })
+          )
+        case "update_hub_info":
+          return setResponse(
+            await executeClient.updateHubInfo({
+              name: msg.name,
+              description: msg.description,
+              image: msg.image,
+              externalLink: msg.link === "" ? undefined : msg.link,
+            })
+          )
+        case "update_operators":
+          return setResponse(
+            await executeClient.updateOperators({
+              addrs: msg.operators,
+            })
+          )
+        // case "migrate_contracts":
+        //   return setResponse(
+        //     await executeClient.mi({
+        //       codeId: Number(msg.codeId),
+        //       contract: msg.contractAddress,
+        //       msg: ""
+        //     })
+        //   )
+      }
     } catch (error: any) {
       console.log(error)
       setResponse(error.message)
     }
   }
-
-  const disabled = false
 
   return (
     <div className="h-full w-full">
@@ -79,13 +91,13 @@ export default function FeeModuleExecute() {
         description="Hub module is the centre piece of the Komple Framework."
         documentation={DOC_LINKS.modules.hub}
       />
-      <ContractForm name="Hub" isModule={true} response={response}>
-        <TextInput
-          title="Contract Address"
-          onChange={contractOnChange}
-          placeholder="junoa1b2c3d4..."
-          value={contract}
-        />
+      <ContractForm
+        name="Hub"
+        isModule={true}
+        response={response}
+        action="execute"
+        submit={submit}
+      >
         <Dropdown
           items={EXECUTES}
           title="Select Execute Messages"
@@ -93,15 +105,7 @@ export default function FeeModuleExecute() {
           placeholder="Select execute message"
         />
 
-        {executeMsg === "register_module" && (
-          <HubExecuteRegisterModule onChange={setMsg} />
-        )}
-
-        <Button
-          text="Execute Fee Module"
-          onClick={execute}
-          disabled={disabled}
-        />
+        <HubModuleExecuteForm executeMsg={executeMsg} onChange={setMsg} />
       </ContractForm>
     </div>
   )

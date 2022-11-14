@@ -1,6 +1,5 @@
 import { useState } from "react"
-import { Button } from "components/Button"
-import { ContractHeader } from "components/ContractHeader"
+import { ContractHeader } from "components/contracts/ContractHeader"
 import { TextInput } from "components/TextInput"
 import { useAccount } from "graz"
 import { connect } from "utils/wallet"
@@ -11,7 +10,6 @@ import { toBinary } from "@cosmjs/cosmwasm-stargate"
 export default function FeeModuleCreate() {
   const { data: account } = useAccount()
 
-  const [codeId, setCodeId] = useState("")
   const [response, setResponse] = useState({})
 
   const [name, setName] = useState("")
@@ -20,7 +18,7 @@ export default function FeeModuleCreate() {
   const [link, setLink] = useState("")
   const [marbuFeeModule, setMarbuFeeModule] = useState("")
 
-  const instantiate = async () => {
+  const submit = async ({ codeId }: { codeId: string }) => {
     try {
       const client = await connect()
       const res = await client.instantiate(
@@ -33,9 +31,10 @@ export default function FeeModuleCreate() {
               name,
               description,
               image,
-              external_link: link,
+              external_link: link === "" ? undefined : link,
             },
-            marbu_fee_module: marbuFeeModule === "" ? null : marbuFeeModule,
+            marbu_fee_module:
+              marbuFeeModule === "" ? undefined : marbuFeeModule,
           }),
         },
         "Komple Hub Module",
@@ -57,14 +56,13 @@ export default function FeeModuleCreate() {
         description="Hub module is the centre piece of the Komple Framework."
         documentation={DOC_LINKS.modules.hub}
       />
-      <ContractForm name="Hub" isModule={true} response={response}>
-        <TextInput
-          title="Code ID"
-          subtitle="Code ID of the contract"
-          placeholder="123"
-          onChange={setCodeId}
-          isRequired
-        />
+      <ContractForm
+        name="Hub"
+        isModule={true}
+        response={response}
+        action="create"
+        submit={submit}
+      >
         <TextInput
           title="Name"
           subtitle="Name of the project"
@@ -98,7 +96,6 @@ export default function FeeModuleCreate() {
           placeholder="juno1..."
           onChange={setMarbuFeeModule}
         />
-        <Button text="Create Hub Module" onClick={instantiate} />
       </ContractForm>
     </div>
   )

@@ -1,1 +1,0 @@
-export { HubQueryModuleAddress } from "./moduleAddress"

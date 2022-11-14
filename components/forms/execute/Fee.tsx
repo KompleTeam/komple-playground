@@ -87,13 +87,13 @@ export const FeeModuleExecuteForm = ({
         </>
       )}
 
-      {/* {executeMsg === "distribute" && (
+      {executeMsg === "distribute" && (
         <TextInputList
           title="Payment Addresses"
           onChange={() => {}}
           placeholder="juno1..."
         />
-      )} */}
+      )}
     </div>
   )
 }

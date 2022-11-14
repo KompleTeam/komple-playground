@@ -65,6 +65,7 @@ export const ContractForm = ({
             onChange={contractOnChange}
             placeholder="juno1..."
             value={contract}
+            isRequired
           />
         )}
 
