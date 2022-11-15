@@ -12,6 +12,7 @@ import {
   FeeModuleQueryType,
 } from "components/forms/query/Fee"
 import { Button } from "components/Button"
+import Head from "next/head"
 
 const QUERIES: FeeModuleQueryType[] = [
   "config",
@@ -118,6 +119,11 @@ export default function FeeModuleQuery() {
 
   return (
     <div className="h-full w-full">
+      <Head>
+        <title>Query Fee Module</title>
+        <meta property="og:title" content="Query Fee Module" key="title" />
+      </Head>
+
       <ContractHeader
         title="Fee Module"
         description="Fee module is used for general fee adjustment and distribution in Komple Framework."

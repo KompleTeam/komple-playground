@@ -6,6 +6,7 @@ import { connect } from "utils/wallet"
 import { ContractForm } from "components/contracts/ContractLayout"
 import { DOC_LINKS } from "config/docs"
 import { toBinary } from "@cosmjs/cosmwasm-stargate"
+import Head from "next/head"
 
 export default function FeeModuleCreate() {
   const { data: account } = useAccount()
@@ -51,6 +52,11 @@ export default function FeeModuleCreate() {
 
   return (
     <div className="h-full w-full">
+      <Head>
+        <title>Create Hub Module</title>
+        <meta property="og:title" content="Create Hub Module" key="title" />
+      </Head>
+
       <ContractHeader
         title="Hub Module"
         description="Hub module is the centre piece of the Komple Framework."

@@ -10,6 +10,7 @@ import {
   HubModuleQueryFormMsg,
 } from "components/forms/query"
 import { KompleClient } from "komplejs"
+import Head from "next/head"
 
 const QUERIES: HubModuleQueryType[] = ["config", "module_address", "operators"]
 
@@ -53,6 +54,11 @@ export default function FeeModuleQuery() {
 
   return (
     <div className="h-full w-full">
+      <Head>
+        <title>Query Hub Module</title>
+        <meta property="og:title" content="Query Hub Module" key="title" />
+      </Head>
+
       <ContractHeader
         title="Hub Module"
         description="Hub module is the centre piece of the Komple Framework."

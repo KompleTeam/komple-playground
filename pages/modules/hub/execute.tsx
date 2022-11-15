@@ -11,6 +11,7 @@ import {
 } from "components/forms/execute"
 import { KompleClient } from "komplejs"
 import { toBinary } from "@cosmjs/cosmwasm-stargate"
+import Head from "next/head"
 
 const EXECUTES: HubModuleExecuteType[] = [
   "register_module",
@@ -90,6 +91,11 @@ export default function FeeModuleExecute() {
 
   return (
     <div className="h-full w-full">
+      <Head>
+        <title>Execute Hub Module</title>
+        <meta property="og:title" content="Execute Hub Module" key="title" />
+      </Head>
+
       <ContractHeader
         title="Hub Module"
         description="Hub module is the centre piece of the Komple Framework."

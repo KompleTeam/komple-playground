@@ -5,6 +5,7 @@ import { useAccount } from "graz"
 import { getKeplrSigner, getSigningClient } from "utils/wallet"
 import { ContractForm } from "components/contracts/ContractLayout"
 import { DOC_LINKS } from "config/docs"
+import Head from "next/head"
 
 export default function FeeModuleCreate() {
   const { data: account } = useAccount()
@@ -32,6 +33,11 @@ export default function FeeModuleCreate() {
 
   return (
     <div className="h-full w-full">
+      <Head>
+        <title>Create Fee Module</title>
+        <meta property="og:title" content="Create Fee Module" key="title" />
+      </Head>
+
       <ContractHeader
         title="Fee Module"
         description="Fee module is used for general fee adjustment and distribution in Komple Framework."

@@ -11,6 +11,7 @@ import {
   FeeModuleExecuteFormMsg,
 } from "components/forms/execute"
 import { toBinary } from "@cosmjs/cosmwasm-stargate"
+import Head from "next/head"
 
 const EXECUTES: FeeModuleExecuteType[] = [
   "set_fee",
@@ -80,6 +81,11 @@ export default function FeeModuleExecute() {
 
   return (
     <div className="h-full w-full">
+      <Head>
+        <title>Execute Fee Module</title>
+        <meta property="og:title" content="Execute Fee Module" key="title" />
+      </Head>
+
       <ContractHeader
         title="Fee Module"
         description="Fee module is used for general fee adjustment and distribution in Komple Framework."
