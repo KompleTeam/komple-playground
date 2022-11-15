@@ -1,7 +1,6 @@
-import { Dropdown } from "components/Dropdown"
+import { JsonTextArea } from "components/JsonTextArea"
 import { TextInput } from "components/TextInput"
 import { TextInputList } from "components/TextInputList"
-import { Fees } from "komplejs/lib/cjs/types/framework/FeeModule.types"
 import { useEffect, useState } from "react"
 
 export type HubModuleExecuteType =
@@ -21,6 +20,7 @@ export interface HubModuleExecuteFormMsg {
   image: string
   link: string
   operators: string[]
+  jsonMsg: string
 }
 
 export interface HubModuleExecuteInterface {
@@ -40,6 +40,7 @@ export const HubModuleExecuteForm = ({
   const [image, setImage] = useState("")
   const [link, setLink] = useState("")
   const [operators, setOperators] = useState<string[]>([])
+  const [jsonMsg, setJsonMsg] = useState("")
 
   useEffect(() => {
     onChange({
@@ -51,6 +52,7 @@ export const HubModuleExecuteForm = ({
       image,
       link,
       operators,
+      jsonMsg,
     })
   }, [
     onChange,
@@ -62,6 +64,7 @@ export const HubModuleExecuteForm = ({
     image,
     link,
     operators,
+    jsonMsg,
   ])
 
   return (
@@ -92,6 +95,18 @@ export const HubModuleExecuteForm = ({
       {(executeMsg === "register_module" ||
         executeMsg === "deregister_module") && (
         <TextInput title="Module Name" onChange={setModule} isRequired />
+      )}
+
+      {(executeMsg === "register_module" ||
+        executeMsg === "migrate_contracts") && (
+        <JsonTextArea
+          title={`${
+            executeMsg === "register_module" ? "Register" : "Migrate"
+          } Message`}
+          subtitle="Message to be sent to the contract"
+          onChange={setJsonMsg}
+          isRequired={executeMsg === "migrate_contracts"}
+        />
       )}
 
       {executeMsg === "update_hub_info" && (

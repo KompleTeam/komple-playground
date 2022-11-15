@@ -10,6 +10,7 @@ import {
   HubModuleExecuteFormMsg,
 } from "components/forms/execute"
 import { KompleClient } from "komplejs"
+import { toBinary } from "@cosmjs/cosmwasm-stargate"
 
 const EXECUTES: HubModuleExecuteType[] = [
   "register_module",
@@ -45,7 +46,10 @@ export default function FeeModuleExecute() {
             await executeClient.registerModule({
               codeId: Number(msg.codeId),
               module: msg.module,
-              msg: "",
+              msg:
+                msg.jsonMsg !== ""
+                  ? toBinary(JSON.parse(msg.jsonMsg))
+                  : undefined,
             })
           )
         case "deregister_module":
@@ -69,14 +73,14 @@ export default function FeeModuleExecute() {
               addrs: msg.operators,
             })
           )
-        // case "migrate_contracts":
-        //   return setResponse(
-        //     await executeClient.mi({
-        //       codeId: Number(msg.codeId),
-        //       contract: msg.contractAddress,
-        //       msg: ""
-        //     })
-        //   )
+        case "migrate_contracts":
+          return setResponse(
+            await executeClient.migrateContracts({
+              codeId: Number(msg.codeId),
+              contractAddress: msg.contractAddress,
+              msg: msg.jsonMsg !== "" ? toBinary(JSON.parse(msg.jsonMsg)) : "",
+            })
+          )
       }
     } catch (error: any) {
       console.log(error)

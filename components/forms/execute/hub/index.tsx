@@ -1,1 +1,0 @@
-export { HubExecuteRegisterModule } from "./registerModule"
