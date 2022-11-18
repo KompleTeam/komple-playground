@@ -2115,9 +2115,9 @@ json5@^1.0.1:
     array-includes "^3.1.5"
     object.assign "^4.1.3"
 
-komplejs@./komplejs-v0.1.1.tgz:
-  version "0.1.1"
-  resolved "./komplejs-v0.1.1.tgz#8fd56a1197b014d772f73f8db8145a86e47e4b67"
+komplejs@./komplejs-v0.1.3.tgz:
+  version "0.1.3"
+  resolved "./komplejs-v0.1.3.tgz#d8bb65c6521ecc48d65fa8ef1f2f8d9001854d59"
   dependencies:
     "@cosmjs/cosmwasm-stargate" "^0.29.3"
     "@cosmjs/proto-signing" "^0.29.3"

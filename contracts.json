@@ -1,6 +1,20 @@
 {
   "modules": {
-    "fee": 1995,
-    "hub": 1991
+    "fee": {
+      "codeId": 2304,
+      "contractAddress": "juno10sw0dp49e4teltxxkp070qtu073lgd2jtxwwfhh8wamvh66r3xqshuh4gp"
+    },
+    "hub": {
+      "codeId": 2303,
+      "contractAddress": "juno1xxjws7v6ggl0zyp3089v46f9w5xg4xn6wrfdzq8fhlz8npw6x43qrh3u2w"
+    },
+    "mint": {
+      "codeId": 2305,
+      "contractAddress": "juno1xunr8vd5k3ppaqspawmm0afk55ar0srj6usyhsfffj5l39e0x7jsy5m3cr"
+    },
+    "token": {
+      "codeId": 2306,
+      "contractAddresses": []
+    }
   }
 }
