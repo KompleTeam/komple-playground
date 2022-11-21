@@ -6,15 +6,21 @@
     },
     "hub": {
       "codeId": 2303,
-      "contractAddress": "juno1xxjws7v6ggl0zyp3089v46f9w5xg4xn6wrfdzq8fhlz8npw6x43qrh3u2w"
+      "contractAddress": "juno1s54g6t5t0gkhm3xjwuav75zks59gjcysmv029unqwrtz3jv2n5zs7vt6q8"
     },
     "mint": {
       "codeId": 2305,
-      "contractAddress": "juno1xunr8vd5k3ppaqspawmm0afk55ar0srj6usyhsfffj5l39e0x7jsy5m3cr"
+      "contractAddress": "juno1t3u3fjkhd447wjt8slu67mjnw3qz8kkadz82aca2kkauj25c99jsgrxv0s"
     },
     "token": {
-      "codeId": 2306,
-      "contractAddresses": []
+      "codeId": 2512,
+      "contractAddresses": [
+        "juno1zkqgejj3t2etl8vnygu45xvwu5fp2gjfdgm5ctye5m7fuq362vtqtvkctw"
+      ]
+    },
+    "metadata": {
+      "codeId": 2511,
+      "contractAddress": []
     }
   }
 }
