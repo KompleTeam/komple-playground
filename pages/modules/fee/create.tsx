@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ContractHeader } from "components/contracts/ContractHeader"
 import { TextInput } from "components/TextInput"
 import { useSigningClients, useOfflineSigners } from "graz"
@@ -6,13 +6,20 @@ import { ContractForm } from "components/contracts/ContractLayout"
 import { DOC_LINKS } from "config/docs"
 import Head from "next/head"
 import { KompleClient } from "komplejs"
+import { useFeeModuleStore } from "store"
 
 export default function FeeModuleCreate() {
   const { data: signingClients } = useSigningClients()
   const { signerAuto } = useOfflineSigners()
 
-  const [admin, setAdmin] = useState("")
+  const store = useFeeModuleStore((state) => state)
+
   const [response, setResponse] = useState({})
+
+  useEffect(() => {
+    store.clear()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const submit = async ({ codeId }: { codeId: string }) => {
     if (signingClients?.cosmWasm === undefined || signerAuto === null) {
@@ -24,7 +31,7 @@ export default function FeeModuleCreate() {
 
     const res = await feeModule.instantiate({
       codeId: parseInt(codeId),
-      admin,
+      admin: store.admin,
     })
     setResponse(res)
   }
@@ -52,8 +59,9 @@ export default function FeeModuleCreate() {
           title="Admin"
           subtitle="Address of the contract admin"
           placeholder="juno..."
-          onChange={setAdmin}
+          onChange={store.setAdmin}
           isRequired
+          value={store.admin}
         />
       </ContractForm>
     </div>

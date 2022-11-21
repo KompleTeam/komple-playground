@@ -1,8 +1,8 @@
 import { Dropdown } from "components/Dropdown"
 import { TextInput } from "components/TextInput"
 import { TextInputList } from "components/TextInputList"
-import { Fees } from "komplejs/lib/cjs/types/framework/FeeModule.types"
-import { useEffect, useState } from "react"
+import { Fees } from "komplejs/lib/cjs/types/ts-files/FeeModule.types"
+import { useFeeModuleStore } from "store"
 
 export type FeeModuleExecuteType =
   | ""
@@ -11,42 +11,18 @@ export type FeeModuleExecuteType =
   | "distribute"
   | "lock_execute"
 
-export interface FeeModuleExecuteFormMsg {
-  feeType: Fees
-  moduleName: string
-  feeName: string
-  feeValue: string
-  paymentAddress: string
-}
-
 export interface FeeModuleExecuteInterface {
   executeMsg: FeeModuleExecuteType
-  onChange: (msg: FeeModuleExecuteFormMsg) => void
 }
 
 export const FeeModuleExecuteForm = ({
   executeMsg,
-  onChange,
 }: FeeModuleExecuteInterface) => {
-  const [feeType, setFeeType] = useState<Fees>("percentage")
-  const [moduleName, setModuleName] = useState("")
-  const [feeName, setFeeName] = useState("")
-  const [feeValue, setFeeValue] = useState("")
-  const [paymentAddress, setPaymentAddress] = useState("")
-
-  useEffect(() => {
-    onChange({
-      feeType,
-      moduleName,
-      feeName,
-      feeValue,
-      paymentAddress,
-    })
-  }, [onChange, feeType, moduleName, feeName, feeValue, paymentAddress])
+  const store = useFeeModuleStore((state) => state)
 
   const feeTypeOnChange = (index: number) => {
     let value = (index === 0 ? "percentage" : "fixed") as Fees
-    setFeeType(value)
+    store.setFeeType(value)
   }
 
   return (
@@ -62,27 +38,59 @@ export const FeeModuleExecuteForm = ({
             placeholder="Select Fee Type"
             isRequired
           />
-          <TextInput title="Module Name" onChange={setModuleName} isRequired />
-          <TextInput title="Fee Name" onChange={setFeeName} isRequired />
+          <TextInput
+            title="Module Name"
+            onChange={store.setModuleName}
+            isRequired
+            value={store.moduleName}
+          />
+          <TextInput
+            title="Fee Name"
+            onChange={store.setFeeName}
+            isRequired
+            value={store.feeName}
+          />
         </>
       )}
 
       {executeMsg === "set_fee" && (
         <>
-          {feeType === "percentage" && (
+          {store.feeType === "percentage" && (
             <TextInput
               title="Percentage Fee"
-              onChange={setFeeValue}
+              onChange={(value) =>
+                store.setPaymentInfo({
+                  ...store.paymentInfo,
+                  value,
+                })
+              }
               isRequired
+              value={store.paymentInfo.value}
             />
           )}
-          {feeType === "fixed" && (
-            <TextInput title="Fixed Fee" onChange={setFeeValue} isRequired />
+          {store.feeType === "fixed" && (
+            <TextInput
+              title="Fixed Fee"
+              onChange={(value) =>
+                store.setPaymentInfo({
+                  ...store.paymentInfo,
+                  value,
+                })
+              }
+              isRequired
+              value={store.paymentInfo.value}
+            />
           )}
           <TextInput
             title="Payment Address"
             placeholder="juno..."
-            onChange={setPaymentAddress}
+            onChange={(address) =>
+              store.setPaymentInfo({
+                ...store.paymentInfo,
+                address,
+              })
+            }
+            value={store.paymentInfo.address}
           />
         </>
       )}

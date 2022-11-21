@@ -1,7 +1,7 @@
 import { Dropdown } from "components/Dropdown"
 import { TextInput } from "components/TextInput"
-import { Fees } from "komplejs/lib/cjs/types/framework/FeeModule.types"
-import { useEffect, useState } from "react"
+import { Fees } from "komplejs/lib/cjs/types/ts-files/FeeModule.types"
+import { useFeeModuleStore } from "store"
 
 export type FeeModuleQueryType =
   | ""
@@ -13,43 +13,16 @@ export type FeeModuleQueryType =
   | "total_percentage_fees"
   | "total_fixed_fees"
   | "keys"
-
-export interface FeeModuleQueryFormMsg {
-  feeType: Fees
-  moduleName: string
-  feeName: string
-  startAfter?: string
-  limit?: number
-}
-
 export interface FeeModuleQueryInterface {
   query: FeeModuleQueryType
-  onChange: (msg: FeeModuleQueryFormMsg) => void
 }
 
-export const FeeModuleQueryForm = ({
-  query,
-  onChange,
-}: FeeModuleQueryInterface) => {
-  const [feeType, setFeeType] = useState<Fees>("percentage")
-  const [moduleName, setModuleName] = useState("")
-  const [feeName, setFeeName] = useState("")
-  const [startAfter, setStartAfter] = useState("")
-  const [limit, setLimit] = useState("")
-
-  useEffect(() => {
-    onChange({
-      feeType,
-      moduleName,
-      feeName,
-      startAfter: startAfter === "" ? undefined : startAfter,
-      limit: limit === "" ? undefined : parseInt(limit),
-    })
-  }, [onChange, feeType, moduleName, feeName, startAfter, limit])
+export const FeeModuleQueryForm = ({ query }: FeeModuleQueryInterface) => {
+  const store = useFeeModuleStore((state) => state)
 
   const feeTypeOnChange = (index: number) => {
     let value = (index === 0 ? "percentage" : "fixed") as Fees
-    setFeeType(value)
+    store.setFeeType(value)
   }
 
   return (
@@ -59,7 +32,7 @@ export const FeeModuleQueryForm = ({
           items={["percentage", "fixed"]}
           title="Fee Type"
           onChange={feeTypeOnChange}
-          initialIdx={0}
+          placeholder="Select Fee Type"
         />
       )}
 
@@ -69,11 +42,20 @@ export const FeeModuleQueryForm = ({
         query === "percentage_fees" ||
         query === "total_percentage_fees" ||
         query === "total_fixed_fees") && (
-        <TextInput title="Module Name" onChange={setModuleName} isRequired />
+        <TextInput
+          title="Module Name"
+          onChange={store.setModuleName}
+          isRequired
+          value={store.moduleName}
+        />
       )}
 
       {(query === "percentage_fee" || query === "fixed_fee") && (
-        <TextInput title="Fee Name" onChange={setFeeName} />
+        <TextInput
+          title="Fee Name"
+          onChange={store.setFeeName}
+          value={store.feeName}
+        />
       )}
 
       {(query === "fixed_fees" ||
@@ -81,8 +63,16 @@ export const FeeModuleQueryForm = ({
         query === "total_percentage_fees" ||
         query === "total_fixed_fees") && (
         <>
-          <TextInput title="Start After" onChange={setStartAfter} />
-          <TextInput title="Limit" onChange={setLimit} />
+          <TextInput
+            title="Start After"
+            onChange={store.setStartAfter}
+            value={store.startAfter}
+          />
+          <TextInput
+            title="Limit"
+            onChange={store.setLimit}
+            value={store.limit}
+          />
         </>
       )}
     </div>

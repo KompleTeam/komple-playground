@@ -1,18 +1,17 @@
 import { Dropdown } from "components/Dropdown"
 import { DOC_LINKS } from "config/docs"
-import { useState } from "react"
-import { getKeplrSigner, getSigningClient } from "utils/wallet"
+import { useEffect, useState } from "react"
 import { ContractForm } from "components/contracts/ContractLayout"
 import { ContractHeader } from "components/contracts/ContractHeader"
 import { KompleClient } from "komplejs"
 import {
   FeeModuleExecuteForm,
   FeeModuleExecuteType,
-  FeeModuleExecuteFormMsg,
 } from "components/forms/execute"
 import { toBinary } from "@cosmjs/cosmwasm-stargate"
 import Head from "next/head"
 import { useOfflineSigners, useSigningClients } from "graz"
+import { useFeeModuleStore } from "store"
 
 const EXECUTES: FeeModuleExecuteType[] = [
   "set_fee",
@@ -25,9 +24,15 @@ export default function FeeModuleExecute() {
   const { data: signingClients } = useSigningClients()
   const { signerAuto } = useOfflineSigners()
 
+  const store = useFeeModuleStore((state) => state)
+
   const [executeMsg, setExecuteMsg] = useState<FeeModuleExecuteType>("")
-  const [msg, setMsg] = useState<FeeModuleExecuteFormMsg>()
   const [response, setResponse] = useState<any>({})
+
+  useEffect(() => {
+    store.clear()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const dropdownOnChange = (index: number) => {
     let value = EXECUTES[index]
@@ -39,42 +44,51 @@ export default function FeeModuleExecute() {
       if (signingClients?.cosmWasm === undefined || signerAuto === null) {
         throw new Error("client or signer is not ready")
       }
-      if (!msg) throw Error("msg is undefined")
 
       const kompleClient = new KompleClient(signingClients.cosmWasm, signerAuto)
       const feeModule = await kompleClient.feeModule(contract)
       const executeClient = feeModule.client
 
+      let msg: any
       switch (executeMsg) {
-        case "set_fee":
-          return setResponse(
-            await executeClient.setFee({
-              feeType: msg.feeType,
-              moduleName: msg.moduleName,
-              feeName: msg.feeName,
-              data: toBinary({
-                value: msg.feeValue,
-                address:
-                  msg.paymentAddress === "" ? undefined : msg.paymentAddress,
-              }),
-            })
-          )
-        case "remove_fee":
-          return setResponse(
-            await executeClient.removeFee({
-              feeType: msg.feeType,
-              moduleName: msg.moduleName,
-              feeName: msg.feeName,
-            })
-          )
-        case "distribute":
-          return setResponse(
-            await executeClient.distribute({
-              feeType: msg.feeType,
-              moduleName: msg.moduleName,
-              customPaymentAddresses: [],
-            })
-          )
+        case "set_fee": {
+          if (!store.feeType) {
+            throw Error("fee type is undefined")
+          }
+
+          const msg = {
+            feeType: store.feeType,
+            moduleName: store.moduleName,
+            feeName: store.feeName,
+            data: toBinary({
+              value: store.paymentInfo.value,
+              address:
+                store.paymentInfo.address === ""
+                  ? undefined
+                  : store.paymentInfo.address,
+            }),
+          }
+
+          return setResponse(await executeClient.setFee(msg))
+        }
+        case "remove_fee": {
+          msg = {
+            feeType: store.feeType,
+            moduleName: store.moduleName,
+            feeName: store.feeName,
+          }
+
+          return setResponse(await executeClient.removeFee(msg))
+        }
+        case "distribute": {
+          msg = {
+            feeType: store.feeType,
+            moduleName: store.moduleName,
+            customPaymentAddresses: store.customPaymentAddresses,
+          }
+
+          return setResponse(await executeClient.distribute(msg))
+        }
         case "lock_execute":
           return setResponse(await executeClient.lockExecute())
       }
@@ -110,7 +124,7 @@ export default function FeeModuleExecute() {
           placeholder="Select execute message"
         />
 
-        <FeeModuleExecuteForm executeMsg={executeMsg} onChange={setMsg} />
+        <FeeModuleExecuteForm executeMsg={executeMsg} />
       </ContractForm>
     </div>
   )

@@ -1,18 +1,16 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ContractForm } from "components/contracts/ContractLayout"
 import { ContractHeader } from "components/contracts/ContractHeader"
 import { Dropdown } from "components/Dropdown"
 import { getKeplrSigner, getSigningClient } from "utils/wallet"
-
 import { DOC_LINKS } from "config/docs"
 import { KompleClient } from "komplejs"
 import {
   FeeModuleQueryForm,
-  FeeModuleQueryFormMsg,
   FeeModuleQueryType,
 } from "components/forms/query/Fee"
-import { Button } from "components/Button"
 import Head from "next/head"
+import { useFeeModuleStore } from "store"
 
 const QUERIES: FeeModuleQueryType[] = [
   "config",
@@ -26,9 +24,15 @@ const QUERIES: FeeModuleQueryType[] = [
 ]
 
 export default function FeeModuleQuery() {
+  const store = useFeeModuleStore((state) => state)
+
   const [query, setQuery] = useState<FeeModuleQueryType>("")
-  const [msg, setMsg] = useState<FeeModuleQueryFormMsg>()
   const [response, setResponse] = useState<any>({})
+
+  useEffect(() => {
+    store.clear()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const dropdownOnChange = (index: number) => {
     let value = QUERIES[index]
@@ -43,73 +47,74 @@ export default function FeeModuleQuery() {
       const feeModule = await kompleClient.feeModule(contract)
       const queryClient = feeModule.queryClient
 
-      if (!msg) throw Error("msg is undefined")
-
       switch (query) {
         case "config":
-          setResponse(await queryClient.config())
-          break
-        case "percentage_fee":
-          setResponse(
-            await queryClient.percentageFee({
-              moduleName: msg.moduleName,
-              feeName: msg.feeName,
-            })
-          )
-          break
-        case "fixed_fee":
-          setResponse(
-            await queryClient.fixedFee({
-              moduleName: msg.moduleName,
-              feeName: msg.feeName,
-            })
-          )
-          break
-        case "percentage_fees":
-          setResponse(
-            await queryClient.percentageFees({
-              moduleName: msg.moduleName,
-              startAfter: msg.startAfter,
-              limit: msg.limit,
-            })
-          )
-          break
-        case "fixed_fees":
-          setResponse(
-            await queryClient.fixedFees({
-              moduleName: msg.moduleName,
-              startAfter: msg.startAfter,
-              limit: msg.limit,
-            })
-          )
-          break
-        case "total_percentage_fees":
-          setResponse(
-            await queryClient.totalPercentageFees({
-              moduleName: msg.moduleName,
-              startAfter: msg.startAfter,
-              limit: msg.limit,
-            })
-          )
-          break
-        case "total_fixed_fees":
-          setResponse(
-            await queryClient.totalFixedFees({
-              moduleName: msg.moduleName,
-              startAfter: msg.startAfter,
-              limit: msg.limit,
-            })
-          )
-          break
-        case "keys":
-          setResponse(
-            await queryClient.keys({
-              feeType: msg.feeType,
-              startAfter: msg.startAfter,
-              limit: msg.limit,
-            })
-          )
-          break
+          return setResponse(await queryClient.config())
+        case "percentage_fee": {
+          const msg = {
+            moduleName: store.moduleName,
+            feeName: store.feeName,
+          }
+
+          return setResponse(await queryClient.percentageFee(msg))
+        }
+        case "fixed_fee": {
+          const msg = {
+            moduleName: store.moduleName,
+            feeName: store.feeName,
+          }
+
+          return setResponse(await queryClient.fixedFee(msg))
+        }
+        case "percentage_fees": {
+          const msg = {
+            moduleName: store.moduleName,
+            startAfter: store.startAfter === "" ? undefined : store.startAfter,
+            limit: store.limit === "" ? undefined : Number(store.limit),
+          }
+
+          return setResponse(await queryClient.percentageFees(msg))
+        }
+        case "fixed_fees": {
+          const msg = {
+            moduleName: store.moduleName,
+            startAfter: store.startAfter === "" ? undefined : store.startAfter,
+            limit: store.limit === "" ? undefined : Number(store.limit),
+          }
+
+          return setResponse(await queryClient.fixedFees(msg))
+        }
+        case "total_percentage_fees": {
+          const msg = {
+            moduleName: store.moduleName,
+            startAfter: store.startAfter === "" ? undefined : store.startAfter,
+            limit: store.limit === "" ? undefined : Number(store.limit),
+          }
+
+          return setResponse(await queryClient.totalPercentageFees(msg))
+        }
+        case "total_fixed_fees": {
+          const msg = {
+            moduleName: store.moduleName,
+            startAfter: store.startAfter === "" ? undefined : store.startAfter,
+            limit: store.limit === "" ? undefined : Number(store.limit),
+          }
+
+          return setResponse(await queryClient.totalFixedFees(msg))
+        }
+        case "keys": {
+          if (!store.feeType) {
+            throw new Error("Fee Type is required")
+          }
+
+          const msg = {
+            feeType: store.feeType,
+            startAfter: store.startAfter === "" ? undefined : store.startAfter,
+            limit: store.limit === "" ? undefined : Number(store.limit),
+          }
+
+          return setResponse(await queryClient.keys(msg))
+        }
       }
     } catch (error: any) {
       console.log(error)
@@ -144,7 +149,7 @@ export default function FeeModuleQuery() {
           placeholder="Select query message"
         />
 
-        <FeeModuleQueryForm query={query} onChange={setMsg} />
+        <FeeModuleQueryForm query={query} />
       </ContractForm>
     </div>
   )
