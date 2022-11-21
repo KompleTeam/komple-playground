@@ -1773,10 +1773,10 @@ grapheme-splitter@^1.0.4:
   resolved "https://registry.yarnpkg.com/grapheme-splitter/-/grapheme-splitter-1.0.4.tgz#9cf3a665c6247479896834af35cf1dbb4400767e"
   integrity sha512-bzh50DW9kTPM00T8y4o8vQg89Di9oLJVLW/KaOGIXJWP/iqCN6WKYkbNOF04vFLJhwcpYUh9ydh/+5vpOqV4YQ==
 
-graz@^0.0.27:
-  version "0.0.27"
-  resolved "https://registry.yarnpkg.com/graz/-/graz-0.0.27.tgz#97a70ac56d87af7efdbf55ebb662e38313a177d9"
-  integrity sha512-3sekQZStB2vui3hqIMlVQuNIA5dp2UaM6V+fYZzX9w4KeGKbLshgDRsDwt/j9+IhP07PEa8P46uIwIUdtmuUDg==
+graz@^0.0.28:
+  version "0.0.28"
+  resolved "https://registry.yarnpkg.com/graz/-/graz-0.0.28.tgz#3df250110c4ce5445cba14bca5950041e268ffa4"
+  integrity sha512-xg4RpYIL9vRz8YnWr8739G/bKF4/Mfj1os7/QZURkVerUR6m6ZQg1Qp3CFGBHkqdmVhgPJGJwboSe4TIIq1Gxg==
   dependencies:
     "@cosmjs/cosmwasm-stargate" "^0"
     "@cosmjs/proto-signing" "^0"

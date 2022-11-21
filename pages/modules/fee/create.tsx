@@ -1,33 +1,31 @@
 import { useState } from "react"
 import { ContractHeader } from "components/contracts/ContractHeader"
 import { TextInput } from "components/TextInput"
-import { useAccount } from "graz"
-import { getKeplrSigner, getSigningClient } from "utils/wallet"
+import { useSigningClients, useOfflineSigners } from "graz"
 import { ContractForm } from "components/contracts/ContractLayout"
 import { DOC_LINKS } from "config/docs"
 import Head from "next/head"
+import { KompleClient } from "komplejs"
 
 export default function FeeModuleCreate() {
-  const { data: account } = useAccount()
+  const { data: signingClients } = useSigningClients()
+  const { signerAuto } = useOfflineSigners()
 
   const [admin, setAdmin] = useState("")
   const [response, setResponse] = useState({})
 
   const submit = async ({ codeId }: { codeId: string }) => {
-    const signer = await getKeplrSigner()
-    const client = await getSigningClient(signer)
+    if (signingClients?.cosmWasm === undefined || signerAuto === null) {
+      throw new Error("No signing client")
+    }
 
-    const res = await client.instantiate(
-      account?.bech32Address || "",
-      parseInt(codeId),
-      {
-        admin,
-      },
-      "Komple Fee Module",
-      "auto",
-      { admin: account?.bech32Address }
-    )
+    const kompleClient = new KompleClient(signingClients.cosmWasm, signerAuto)
+    const feeModule = await kompleClient.feeModule("")
 
+    const res = await feeModule.instantiate({
+      codeId: parseInt(codeId),
+      admin,
+    })
     setResponse(res)
   }
 

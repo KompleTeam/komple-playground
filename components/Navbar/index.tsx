@@ -3,9 +3,10 @@ import Link from "next/link"
 import { Button } from "../Button"
 import { HoverDropdown } from "../Dropdown"
 import { Logo } from "../Logo"
-import { useConnect, useDisconnect, useAccount } from "graz"
+import { useConnect, useDisconnect, useAccount, testnetChains } from "graz"
 import { getShortAddress } from "../../utils/getShortAddress"
 import Image from "next/image"
+import { GasPrice } from "@cosmjs/stargate"
 
 const MODULES = [
   "Fee",
@@ -27,7 +28,17 @@ export const Navbar = () => {
   const { disconnect } = useDisconnect()
 
   const handleConnect = () => {
-    return isConnected ? disconnect() : connect()
+    return isConnected
+      ? disconnect()
+      : connect({
+          chainId: testnetChains.juno.chainId,
+          currencies: testnetChains.juno.currencies,
+          rest: testnetChains.juno.rest,
+          rpc: testnetChains.juno.rpc,
+          signerOpts: {
+            gasPrice: GasPrice.fromString("0.025ujuno"),
+          },
+        })
   }
 
   const copyAddress = () => {
