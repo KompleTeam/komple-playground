@@ -1,7 +1,6 @@
 import { Dropdown } from "components/Dropdown"
 import { DOC_LINKS } from "config/docs"
 import { useState } from "react"
-import { getKeplrSigner, getSigningClient } from "utils/wallet"
 import { ContractForm } from "components/contracts/ContractLayout"
 import { ContractHeader } from "components/contracts/ContractHeader"
 import {
@@ -10,9 +9,8 @@ import {
   MintModuleExecuteFormMsg,
 } from "components/forms/execute"
 import { KompleClient } from "komplejs"
-import { toBinary } from "@cosmjs/cosmwasm-stargate"
 import Head from "next/head"
-import { Seperator } from "components/Seperator"
+import { useOfflineSigners, useSigningClients } from "graz"
 
 const EXECUTES: MintModuleExecuteType[] = [
   "create_collection",
@@ -29,6 +27,9 @@ const EXECUTES: MintModuleExecuteType[] = [
 ]
 
 export default function FeeModuleExecute() {
+  const { data: signingClients } = useSigningClients()
+  const { signerAuto } = useOfflineSigners()
+
   const [executeMsg, setExecuteMsg] = useState<MintModuleExecuteType>("")
   const [msg, setMsg] = useState<MintModuleExecuteFormMsg>()
   const [response, setResponse] = useState<any>({})
@@ -40,13 +41,14 @@ export default function FeeModuleExecute() {
 
   const submit = async ({ contract }: { contract: string }) => {
     try {
-      const signer = await getKeplrSigner()
-      const client = await getSigningClient(signer)
-      const kompleClient = new KompleClient(client, signer)
+      if (signingClients?.cosmWasm === undefined || signerAuto === null) {
+        throw new Error("client or signer is not ready")
+      }
+      if (!msg) throw Error("Msg is undefined")
+
+      const kompleClient = new KompleClient(signingClients.cosmWasm, signerAuto)
       const mintModule = await kompleClient.mintModule(contract)
       const executeClient = mintModule.client
-
-      if (!msg) throw Error("msg is undefined")
 
       switch (executeMsg) {
         case "create_collection":

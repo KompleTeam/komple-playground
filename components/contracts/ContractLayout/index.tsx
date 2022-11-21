@@ -73,7 +73,7 @@ export const ContractForm = ({
 
         <Button
           className="capitalize"
-          text={`${action} ${name} Module`}
+          text={`${action} ${name} ${isModule ? "Module" : "Permission"}`}
           onClick={() => submit({ contract, codeId })}
         />
       </div>

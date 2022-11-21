@@ -12,6 +12,7 @@ import {
 } from "components/forms/execute"
 import { toBinary } from "@cosmjs/cosmwasm-stargate"
 import Head from "next/head"
+import { useOfflineSigners, useSigningClients } from "graz"
 
 const EXECUTES: FeeModuleExecuteType[] = [
   "set_fee",
@@ -21,6 +22,9 @@ const EXECUTES: FeeModuleExecuteType[] = [
 ]
 
 export default function FeeModuleExecute() {
+  const { data: signingClients } = useSigningClients()
+  const { signerAuto } = useOfflineSigners()
+
   const [executeMsg, setExecuteMsg] = useState<FeeModuleExecuteType>("")
   const [msg, setMsg] = useState<FeeModuleExecuteFormMsg>()
   const [response, setResponse] = useState<any>({})
@@ -32,13 +36,14 @@ export default function FeeModuleExecute() {
 
   const submit = async ({ contract }: { contract: string }) => {
     try {
-      const signer = await getKeplrSigner()
-      const client = await getSigningClient(signer)
-      const kompleClient = new KompleClient(client, signer)
+      if (signingClients?.cosmWasm === undefined || signerAuto === null) {
+        throw new Error("client or signer is not ready")
+      }
+      if (!msg) throw Error("msg is undefined")
+
+      const kompleClient = new KompleClient(signingClients.cosmWasm, signerAuto)
       const feeModule = await kompleClient.feeModule(contract)
       const executeClient = feeModule.client
-
-      if (!msg) throw Error("msg is undefined")
 
       switch (executeMsg) {
         case "set_fee":

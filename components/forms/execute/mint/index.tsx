@@ -191,11 +191,14 @@ export const MintModuleExecuteForm = ({
   return (
     <div>
       {executeMsg === "create_collection" && (
-        <TextInput
-          title="Token Module Code ID"
-          onChange={setTokenCodeId}
-          isRequired
-        />
+        <>
+          <Seperator text="Token Module" />
+          <TextInput
+            title="Token Module Code ID"
+            onChange={setTokenCodeId}
+            isRequired
+          />
+        </>
       )}
 
       {executeMsg === "create_collection" && (
@@ -246,7 +249,7 @@ export const MintModuleExecuteForm = ({
           <Seperator text="Fund Info" />
           <TextInput title="Denom" onChange={setDenom} isRequired />
           <TextInput title="CW20 Address" onChange={setCw20Address} />
-          <Seperator />
+          <Seperator text="Collections" />
           <TextInputList
             title="Linked Collection IDs"
             onChange={() => {}}
