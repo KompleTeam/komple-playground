@@ -3,10 +3,9 @@ import Link from "next/link"
 import { Button } from "../Button"
 import { HoverDropdown } from "../Dropdown"
 import { Logo } from "../Logo"
-import { useConnect, useDisconnect, useAccount, testnetChains } from "graz"
 import { getShortAddress } from "../../utils/getShortAddress"
 import Image from "next/image"
-import { GasPrice } from "@cosmjs/stargate"
+import { useWallet } from "@cosmos-kit/react"
 
 const MODULES = [
   "Fee",
@@ -23,29 +22,23 @@ const MODULES = [
 const PERMISSIONS = ["Attribute", "Link", "Ownership"]
 
 export const Navbar = () => {
-  const { connect } = useConnect()
-  const { data: account, isConnected } = useAccount()
-  const { disconnect } = useDisconnect()
+  const walletManager = useWallet()
 
-  const handleConnect = () => {
-    return isConnected
-      ? disconnect()
-      : connect({
-          chainId: testnetChains.juno.chainId,
-          currencies: testnetChains.juno.currencies,
-          rest: testnetChains.juno.rest,
-          rpc: testnetChains.juno.rpc,
-          signerOpts: {
-            gasPrice: GasPrice.fromString(
-              `0.025${testnetChains.juno.stakeCurrency.coinMinimalDenom}`
-              // `0.025ujuno`
-            ),
-          },
-        })
+  const { walletStatus, username, address } = walletManager
+  const { connect, disconnect, setCurrentChain, currentChainName } =
+    walletManager
+
+  const isConnected = walletStatus === "Connected"
+
+  const handleConnect = async () => {
+    if (!isConnected) {
+      setCurrentChain("junotestnet")
+      await connect()
+    } else await disconnect()
   }
 
   const copyAddress = () => {
-    navigator.clipboard.writeText(account?.bech32Address || "")
+    navigator.clipboard.writeText(address || "")
   }
 
   return (
@@ -80,7 +73,7 @@ export const Navbar = () => {
                   className="mr-1"
                 />
               </button>
-              <div className="text-white font-bold">{account?.name}</div>
+              <div className="text-white font-bold">{username}</div>
             </div>
             <div className="flex justify-end items-center">
               <button onClick={copyAddress}>
@@ -93,7 +86,7 @@ export const Navbar = () => {
                 />
               </button>
               <div className="text-komple-black-100">
-                {getShortAddress(account?.bech32Address || "")}
+                {getShortAddress(address || "")}
               </div>
             </div>
           </div>

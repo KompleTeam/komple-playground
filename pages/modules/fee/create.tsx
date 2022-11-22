@@ -7,10 +7,10 @@ import { DOC_LINKS } from "config/docs"
 import Head from "next/head"
 import { KompleClient } from "komplejs"
 import { useFeeModuleStore } from "store"
+import { useWallet } from "@cosmos-kit/react"
 
 export default function FeeModuleCreate() {
-  const { data: signingClients } = useSigningClients()
-  const { signerAuto } = useOfflineSigners()
+  const { getSigningCosmWasmClient, offlineSigner } = useWallet()
 
   const store = useFeeModuleStore((state) => state)
 
@@ -22,11 +22,12 @@ export default function FeeModuleCreate() {
   }, [])
 
   const submit = async ({ codeId }: { codeId: string }) => {
-    if (signingClients?.cosmWasm === undefined || signerAuto === null) {
+    const signingClient = await getSigningCosmWasmClient()
+    if (signingClient === undefined || offlineSigner === undefined) {
       throw new Error("No signing client")
     }
 
-    const kompleClient = new KompleClient(signingClients.cosmWasm, signerAuto)
+    const kompleClient = new KompleClient(signingClient, offlineSigner)
     const feeModule = await kompleClient.feeModule("")
 
     const res = await feeModule.instantiate({
