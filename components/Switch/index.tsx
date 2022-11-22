@@ -1,21 +1,25 @@
 import clsx from "clsx"
 import { useState } from "react"
-import useMintModuleStore from "store/modules/mint"
 
 export const Switch = ({
   title,
   subtitle,
   initialState,
   isRequired,
+  onChange,
 }: {
   title?: string
   subtitle?: string
   initialState: boolean
   isRequired?: boolean
+  onChange: (value: boolean) => void
 }) => {
-  const store = useMintModuleStore((state) => state)
-
   const [state, setState] = useState(initialState)
+
+  const switchOnChange = () => {
+    setState(!state)
+    onChange(!state)
+  }
 
   return (
     <div className="mb-6">
@@ -31,10 +35,7 @@ export const Switch = ({
               state ? "bg-komple-red-400" : "bg-komple-black-200",
               state ? "justify-end" : "justify-start"
             )}
-            onClick={() => {
-              setState(!state)
-              store.setLock(!state)
-            }}
+            onClick={switchOnChange}
           >
             <div
               className={clsx(

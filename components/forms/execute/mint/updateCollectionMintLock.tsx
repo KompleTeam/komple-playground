@@ -16,7 +16,11 @@ export const MintModuleUpdateCollectionMintLock = () => {
         isRequired
         value={store.collectionId === 0 ? "" : store.collectionId.toString()}
       />
-      <Switch title="Lock Minting" initialState={store.lock} />
+      <Switch
+        title="Lock Minting"
+        initialState={store.lock}
+        onChange={store.setLock}
+      />
     </div>
   )
 }

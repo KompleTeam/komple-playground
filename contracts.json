@@ -12,6 +12,10 @@
       "codeId": 2540,
       "contractAddress": "juno154kjvtg3nvpmeymsdgjtmvjrgqrpzjazuv03fwk5h9vk2shel5qsz6vt2n"
     },
+    "marketplace": {
+      "codeId": 2550,
+      "contractAddress": "juno185qx93d726fwdx29609q3dhppxnm8w9xzggex206la9w45pnfhaq83rhtg"
+    },
     "token": {
       "codeId": 2541,
       "contractAddresses": [

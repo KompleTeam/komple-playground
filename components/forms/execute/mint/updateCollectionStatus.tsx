@@ -16,7 +16,11 @@ export const MintModuleUpdateCollectionStatus = () => {
         isRequired
         value={store.collectionId === 0 ? "" : store.collectionId.toString()}
       />
-      <Switch title="Blacklisted" initialState={store.isBlacklist} />
+      <Switch
+        title="Blacklisted"
+        initialState={store.isBlacklist}
+        onChange={store.setIsBlacklist}
+      />
     </div>
   )
 }

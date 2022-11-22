@@ -15,7 +15,7 @@ export const ContractForm = ({
   action,
   submit,
 }: {
-  children: ReactNode
+  children?: ReactNode
   name: string
   isModule: boolean
   response: Record<string, unknown>
