@@ -1,4 +1,4 @@
-export const isPositiveInteger = (value: string) => {
+export const isInteger = (value: string) => {
   if (typeof value !== "string") {
     return false
   }

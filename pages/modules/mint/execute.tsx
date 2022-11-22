@@ -18,7 +18,7 @@ import { MintModuleUpdateLinkedCollections } from "components/forms/execute/mint
 import { MintModuleUpdateCreators } from "components/forms/execute/mint/updateCreators"
 import { MintModuleUpdateCollectionStatus } from "components/forms/execute/mint/updateCollectionStatus"
 import { toBinary } from "@cosmjs/cosmwasm-stargate"
-import { isPositiveInteger } from "utils/isInteger"
+import { isInteger } from "utils/isInteger"
 
 const EXECUTES = [
   "create_collection",
@@ -151,7 +151,7 @@ export default function FeeModuleExecute() {
         }
         case "update_linked_collections": {
           store.linkedCollections.forEach((id) => {
-            if (!isPositiveInteger(id)) {
+            if (!isInteger(id)) {
               throw new Error("Linked collection id must be a positive integer")
             }
           })

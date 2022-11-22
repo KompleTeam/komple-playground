@@ -1,5 +1,5 @@
-import { Fees } from "komplejs/lib/cjs/types/ts-files/FeeModule.types"
-import { CustomPaymentAddress } from "komplejs/lib/cjs/types/ts-files/FeeModule.types"
+import { Fees } from "komplejs/lib/cjs/types/ts-types/FeeModule.types"
+import { CustomPaymentAddress } from "komplejs/lib/cjs/types/ts-types/FeeModule.types"
 import create from "zustand"
 import { combine } from "zustand/middleware"
 

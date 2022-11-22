@@ -6,7 +6,7 @@ import {
   Metadata,
   MetadataInfo,
   TokenInfo,
-} from "komplejs/lib/cjs/types/ts-files/MintModule.types"
+} from "komplejs/lib/cjs/types/ts-types/MintModule.types"
 import create from "zustand"
 import { combine } from "zustand/middleware"
 

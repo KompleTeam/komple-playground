@@ -1,7 +1,7 @@
 import { Switch } from "components/Switch"
 import { TextInput } from "components/TextInput"
 import useMintModuleStore from "store/modules/mint"
-import { isPositiveInteger } from "utils/isInteger"
+import { isInteger } from "utils/isInteger"
 
 export const MintModuleUpdateCollectionMintLock = () => {
   const store = useMintModuleStore((state) => state)
@@ -11,7 +11,7 @@ export const MintModuleUpdateCollectionMintLock = () => {
       <TextInput
         title="Collection ID"
         onChange={(value) =>
-          store.setCollectionId(isPositiveInteger(value) ? Number(value) : 0)
+          store.setCollectionId(isInteger(value) ? Number(value) : 0)
         }
         isRequired
         value={store.collectionId === 0 ? "" : store.collectionId.toString()}

@@ -1,6 +1,6 @@
 import { Dropdown } from "components/Dropdown"
 import { TextInput } from "components/TextInput"
-import { Fees } from "komplejs/lib/cjs/types/ts-files/FeeModule.types"
+import { Fees } from "komplejs/lib/cjs/types/ts-types/FeeModule.types"
 import { useFeeModuleStore } from "store"
 
 export type FeeModuleQueryType =

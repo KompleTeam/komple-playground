@@ -5,9 +5,9 @@ import { TextInputList } from "components/TextInputList"
 import {
   Collections,
   Metadata,
-} from "komplejs/lib/cjs/types/ts-files/MintModule.types"
+} from "komplejs/lib/cjs/types/ts-types/MintModule.types"
 import useMintModuleStore from "store/modules/mint"
-import { isPositiveInteger } from "utils/isInteger"
+import { isInteger } from "utils/isInteger"
 
 export const MintModuleCreateCollection = () => {
   const store = useMintModuleStore((state) => state)
@@ -45,7 +45,7 @@ export const MintModuleCreateCollection = () => {
       <TextInput
         title="Token Module Code ID"
         onChange={(value) =>
-          store.setCodeId(isPositiveInteger(value) ? Number(value) : 0)
+          store.setCodeId(isInteger(value) ? Number(value) : 0)
         }
         isRequired
         value={store.codeId === 0 ? "" : store.codeId.toString()}
@@ -97,7 +97,7 @@ export const MintModuleCreateCollection = () => {
         onChange={(value) =>
           store.setCollectionConfig({
             ...store.collectionConfig,
-            per_address_limit: isPositiveInteger(value) ? Number(value) : 0,
+            per_address_limit: isInteger(value) ? Number(value) : 0,
           })
         }
         value={
@@ -121,7 +121,7 @@ export const MintModuleCreateCollection = () => {
         onChange={(value) =>
           store.setCollectionConfig({
             ...store.collectionConfig,
-            max_token_limit: isPositiveInteger(value) ? Number(value) : 0,
+            max_token_limit: isInteger(value) ? Number(value) : 0,
           })
         }
         value={
@@ -171,7 +171,7 @@ export const MintModuleCreateCollection = () => {
         onChange={(value) =>
           store.setMetadataInfo({
             ...store.metadataInfo,
-            code_id: isPositiveInteger(value) ? Number(value) : 0,
+            code_id: isInteger(value) ? Number(value) : 0,
           })
         }
         isRequired

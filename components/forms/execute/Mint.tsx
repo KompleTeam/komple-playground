@@ -9,11 +9,11 @@ import {
   MetadataInfo,
   CollectionFundInfo,
   MintMsg,
-} from "komplejs/lib/cjs/types/ts-files/MintModule.types"
+} from "komplejs/lib/cjs/types/ts-types/MintModule.types"
 import {
   Collections,
   Metadata,
-} from "komplejs/lib/cjs/types/ts-files/TokenModule.types"
+} from "komplejs/lib/cjs/types/ts-types/TokenModule.types"
 import { useEffect, useState } from "react"
 
 export type MintModuleExecuteType =
