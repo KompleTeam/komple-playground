@@ -8,15 +8,17 @@ export const TextInputList = ({
   placeholder,
   onChange,
   isRequired,
+  value,
 }: {
   title?: string
   subtitle?: string
   placeholder?: string
   onChange: (list: string[]) => void
   isRequired?: boolean
+  value?: string[]
 }) => {
   const [text, setText] = useState("")
-  const [list, setList] = useState<string[]>([])
+  const [list, setList] = useState<string[]>(value || [])
 
   const add = () => {
     if (text === "") return

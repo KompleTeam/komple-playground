@@ -10,6 +10,15 @@ import { MintModuleCreateCollection } from "components/forms/execute/mint/create
 import useMintModuleStore from "store/modules/mint"
 import { MintModuleMint } from "components/forms/execute/mint/mint"
 import { MintModuleUpdateCollectionMintLock } from "components/forms/execute/mint/updateCollectionMintLock"
+import { MintModuleUpdatePublicCollectionCreation } from "components/forms/execute/mint/updatePublicCollectionCreation"
+import { MintModuleAdminMint } from "components/forms/execute/mint/adminMint"
+import { MintModulePermissionMint } from "components/forms/execute/mint/permissionMint"
+import { MintModuleUpdateOperators } from "components/forms/execute/mint/updateOperators"
+import { MintModuleUpdateLinkedCollections } from "components/forms/execute/mint/updateLinkedCollections"
+import { MintModuleUpdateCreators } from "components/forms/execute/mint/updateCreators"
+import { MintModuleUpdateCollectionStatus } from "components/forms/execute/mint/updateCollectionStatus"
+import { toBinary } from "@cosmjs/cosmwasm-stargate"
+import { isPositiveInteger } from "utils/isInteger"
 
 const EXECUTES = [
   "create_collection",
@@ -86,6 +95,15 @@ export default function FeeModuleExecute() {
 
           return setResponse(await executeClient.createCollection(msg))
         }
+        case "update_public_collection_creation": {
+          const msg = {
+            publicCollectionCreation: store.publicCollectionCreation,
+          }
+
+          return setResponse(
+            await executeClient.updatePublicCollectionCreation(msg)
+          )
+        }
         case "update_collection_mint_lock": {
           const msg = {
             collectionId: store.collectionId,
@@ -101,6 +119,69 @@ export default function FeeModuleExecute() {
           }
 
           return setResponse(await executeClient.mint(msg))
+        }
+        case "admin_mint": {
+          const msg = {
+            collectionId: store.collectionId,
+            recipient: store.recipient,
+            metadataId: store.metadataId === 0 ? undefined : store.metadataId,
+          }
+
+          return setResponse(await executeClient.adminMint(msg))
+        }
+        case "permission_mint": {
+          const msg = {
+            permissionMsg: toBinary(store.permissionMsg),
+            mintMsg: {
+              collection_id: store.collectionId,
+              recipient: store.recipient,
+              metadata_id:
+                store.metadataId === 0 ? undefined : store.metadataId,
+            },
+          }
+
+          return setResponse(await executeClient.permissionMint(msg))
+        }
+        case "update_operators": {
+          const msg = {
+            addrs: store.addresses,
+          }
+
+          return setResponse(await executeClient.updateOperators(msg))
+        }
+        case "update_linked_collections": {
+          store.linkedCollections.forEach((id) => {
+            if (!isPositiveInteger(id)) {
+              throw new Error("Linked collection id must be a positive integer")
+            }
+          })
+
+          const msg = {
+            collectionId: store.collectionId,
+            linkedCollections: store.linkedCollections.map((item) =>
+              Number(item)
+            ),
+          }
+
+          return setResponse(await executeClient.updateLinkedCollections(msg))
+        }
+        case "update_collection_status": {
+          const msg = {
+            collectionId: store.collectionId,
+            isBlacklist: store.isBlacklist,
+          }
+
+          return setResponse(await executeClient.updateCollectionStatus(msg))
+        }
+        case "lock_execute": {
+          return setResponse(await executeClient.lockExecute())
+        }
+        case "update_creators": {
+          const msg = {
+            addrs: store.addresses,
+          }
+
+          return setResponse(await executeClient.updateCreators(msg))
         }
       }
     } catch (error: any) {
@@ -136,10 +217,23 @@ export default function FeeModuleExecute() {
         />
 
         {executeMsg === "create_collection" && <MintModuleCreateCollection />}
+        {executeMsg === "update_public_collection_creation" && (
+          <MintModuleUpdatePublicCollectionCreation />
+        )}
         {executeMsg === "update_collection_mint_lock" && (
           <MintModuleUpdateCollectionMintLock />
         )}
         {executeMsg === "mint" && <MintModuleMint />}
+        {executeMsg === "admin_mint" && <MintModuleAdminMint />}
+        {executeMsg === "permission_mint" && <MintModulePermissionMint />}
+        {executeMsg === "update_operators" && <MintModuleUpdateOperators />}
+        {executeMsg === "update_linked_collections" && (
+          <MintModuleUpdateLinkedCollections />
+        )}
+        {executeMsg === "update_collection_status" && (
+          <MintModuleUpdateCollectionStatus />
+        )}
+        {executeMsg === "update_creators" && <MintModuleUpdateCreators />}
       </ContractForm>
     </div>
   )
