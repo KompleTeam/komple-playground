@@ -2,7 +2,7 @@ import { useState } from "react"
 import { ContractForm } from "components/contracts/ContractLayout"
 import { ContractHeader } from "components/contracts/ContractHeader"
 import { Dropdown } from "components/Dropdown"
-import { getKeplrSigner, getSigningClient } from "utils/wallet"
+import { useWallet } from "@cosmos-kit/react"
 import { DOC_LINKS } from "config/docs"
 import {
   MintModuleQueryForm,
@@ -24,6 +24,8 @@ const QUERIES: MintModuleQueryType[] = [
 ]
 
 export default function FeeModuleQuery() {
+  const { getSigningCosmWasmClient, offlineSigner } = useWallet()
+
   const [queryMsg, setQueryMsg] = useState<MintModuleQueryType>("")
   const [msg, setMsg] = useState<MintModuleQueryFormMsg>()
   const [response, setResponse] = useState<any>({})
@@ -35,9 +37,12 @@ export default function FeeModuleQuery() {
 
   const submit = async ({ contract }: { contract: string }) => {
     try {
-      const signer = await getKeplrSigner()
-      const client = await getSigningClient(signer)
-      const kompleClient = new KompleClient(client, signer)
+      const signingClient = await getSigningCosmWasmClient()
+      if (signingClient === undefined || offlineSigner === undefined) {
+        throw new Error("client or signer is not ready")
+      }
+
+      const kompleClient = new KompleClient(signingClient, offlineSigner)
       const mintModule = await kompleClient.mintModule(contract)
       const queryClient = mintModule.queryClient
 

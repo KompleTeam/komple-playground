@@ -1,7 +1,6 @@
 import { Dropdown } from "components/Dropdown"
 import { DOC_LINKS } from "config/docs"
 import { useState } from "react"
-import { getKeplrSigner, getSigningClient } from "utils/wallet"
 import { ContractForm } from "components/contracts/ContractLayout"
 import { ContractHeader } from "components/contracts/ContractHeader"
 import {
@@ -12,6 +11,7 @@ import {
 import { KompleClient } from "komplejs"
 import { toBinary } from "@cosmjs/cosmwasm-stargate"
 import Head from "next/head"
+import { useWallet } from "@cosmos-kit/react"
 
 const EXECUTES: HubModuleExecuteType[] = [
   "register_module",
@@ -22,6 +22,8 @@ const EXECUTES: HubModuleExecuteType[] = [
 ]
 
 export default function FeeModuleExecute() {
+  const { getSigningCosmWasmClient, offlineSigner } = useWallet()
+
   const [executeMsg, setExecuteMsg] = useState<HubModuleExecuteType>("")
   const [msg, setMsg] = useState<HubModuleExecuteFormMsg>()
   const [response, setResponse] = useState<any>({})
@@ -33,9 +35,12 @@ export default function FeeModuleExecute() {
 
   const submit = async ({ contract }: { contract: string }) => {
     try {
-      const signer = await getKeplrSigner()
-      const client = await getSigningClient(signer)
-      const kompleClient = new KompleClient(client, signer)
+      const signingClient = await getSigningCosmWasmClient()
+      if (signingClient === undefined || offlineSigner === undefined) {
+        throw new Error("client or signer is not ready")
+      }
+
+      const kompleClient = new KompleClient(signingClient, offlineSigner)
       const hubModule = await kompleClient.hubModule(contract)
       const executeClient = hubModule.client
 

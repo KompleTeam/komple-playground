@@ -1,32 +1,30 @@
 import { useState } from "react"
 import { ContractHeader } from "components/contracts/ContractHeader"
-import { TextInput } from "components/TextInput"
-import { useAccount } from "graz"
-import { connect } from "utils/wallet"
+import { useWallet } from "@cosmos-kit/react"
 import { ContractForm } from "components/contracts/ContractLayout"
 import { DOC_LINKS } from "config/docs"
 import Head from "next/head"
+import { KompleClient } from "komplejs"
 
 export default function MintModuleCreate() {
-  const { data: account } = useAccount()
+  const { getSigningCosmWasmClient, offlineSigner, address } = useWallet()
 
-  const [admin, setAdmin] = useState("")
   const [response, setResponse] = useState({})
 
   const submit = async ({ codeId }: { codeId: string }) => {
     try {
-      const client = await connect()
-      const res = await client.instantiate(
-        account?.bech32Address || "",
-        parseInt(codeId),
-        {
-          admin,
-        },
-        "Komple Mint Module",
-        "auto",
-        { admin: account?.bech32Address }
-      )
+      const signingClient = await getSigningCosmWasmClient()
+      if (signingClient === undefined || offlineSigner === undefined) {
+        throw new Error("No signing client")
+      }
 
+      const kompleClient = new KompleClient(signingClient, offlineSigner)
+      const mintModule = await kompleClient.mintModule("")
+
+      const res = await mintModule.instantiate({
+        codeId: parseInt(codeId),
+        admin: address,
+      })
       setResponse(res)
     } catch (error: any) {
       console.log(error)
@@ -53,13 +51,7 @@ export default function MintModuleCreate() {
         action="create"
         submit={submit}
       >
-        <TextInput
-          title="Admin"
-          subtitle="Address of the contract admin"
-          placeholder="juno..."
-          onChange={setAdmin}
-          isRequired
-        />
+        <></>
       </ContractForm>
     </div>
   )

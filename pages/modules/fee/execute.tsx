@@ -10,7 +10,7 @@ import {
 } from "components/forms/execute"
 import { toBinary } from "@cosmjs/cosmwasm-stargate"
 import Head from "next/head"
-import { useOfflineSigners, useSigningClients } from "graz"
+import { useWallet } from "@cosmos-kit/react"
 import { useFeeModuleStore } from "store"
 
 const EXECUTES: FeeModuleExecuteType[] = [
@@ -21,8 +21,7 @@ const EXECUTES: FeeModuleExecuteType[] = [
 ]
 
 export default function FeeModuleExecute() {
-  const { data: signingClients } = useSigningClients()
-  const { signerAuto } = useOfflineSigners()
+  const { getSigningCosmWasmClient, offlineSigner } = useWallet()
 
   const store = useFeeModuleStore((state) => state)
 
@@ -41,11 +40,12 @@ export default function FeeModuleExecute() {
 
   const submit = async ({ contract }: { contract: string }) => {
     try {
-      if (signingClients?.cosmWasm === undefined || signerAuto === null) {
+      const signingClient = await getSigningCosmWasmClient()
+      if (signingClient === undefined || offlineSigner === undefined) {
         throw new Error("client or signer is not ready")
       }
 
-      const kompleClient = new KompleClient(signingClients.cosmWasm, signerAuto)
+      const kompleClient = new KompleClient(signingClient, offlineSigner)
       const feeModule = await kompleClient.feeModule(contract)
       const executeClient = feeModule.client
 

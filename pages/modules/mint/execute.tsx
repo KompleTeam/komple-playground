@@ -5,7 +5,7 @@ import { ContractForm } from "components/contracts/ContractLayout"
 import { ContractHeader } from "components/contracts/ContractHeader"
 import { KompleClient } from "komplejs"
 import Head from "next/head"
-import { useOfflineSigners, useSigningClients } from "graz"
+import { useWallet } from "@cosmos-kit/react"
 import { MintModuleCreateCollection } from "components/forms/execute/mint/createCollection"
 import useMintModuleStore from "store/modules/mint"
 import { MintModuleMint } from "components/forms/execute/mint/mint"
@@ -26,8 +26,7 @@ const EXECUTES = [
 ]
 
 export default function FeeModuleExecute() {
-  const { data: signingClients } = useSigningClients()
-  const { signerAuto } = useOfflineSigners()
+  const { getSigningCosmWasmClient, offlineSigner } = useWallet()
 
   const store = useMintModuleStore((state) => state)
 
@@ -41,11 +40,12 @@ export default function FeeModuleExecute() {
 
   const submit = async ({ contract }: { contract: string }) => {
     try {
-      if (signingClients?.cosmWasm === undefined || signerAuto === null) {
+      const signingClient = await getSigningCosmWasmClient()
+      if (signingClient === undefined || offlineSigner === undefined) {
         throw new Error("client or signer is not ready")
       }
 
-      const kompleClient = new KompleClient(signingClients.cosmWasm, signerAuto)
+      const kompleClient = new KompleClient(signingClient, offlineSigner)
       const mintModule = await kompleClient.mintModule(contract)
       const executeClient = mintModule.client
 

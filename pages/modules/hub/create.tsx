@@ -1,15 +1,14 @@
 import { useState } from "react"
 import { ContractHeader } from "components/contracts/ContractHeader"
 import { TextInput } from "components/TextInput"
-import { useAccount } from "graz"
-import { connect } from "utils/wallet"
+import { useWallet } from "@cosmos-kit/react"
 import { ContractForm } from "components/contracts/ContractLayout"
 import { DOC_LINKS } from "config/docs"
-import { toBinary } from "@cosmjs/cosmwasm-stargate"
 import Head from "next/head"
+import { KompleClient } from "komplejs"
 
 export default function FeeModuleCreate() {
-  const { data: account } = useAccount()
+  const { getSigningCosmWasmClient, offlineSigner, address } = useWallet()
 
   const [response, setResponse] = useState({})
 
@@ -21,28 +20,25 @@ export default function FeeModuleCreate() {
 
   const submit = async ({ codeId }: { codeId: string }) => {
     try {
-      const client = await connect()
-      const res = await client.instantiate(
-        account?.bech32Address || "",
-        parseInt(codeId),
-        {
-          admin: account?.bech32Address || "",
-          data: toBinary({
-            hub_info: {
-              name,
-              description,
-              image,
-              external_link: link === "" ? undefined : link,
-            },
-            marbu_fee_module:
-              marbuFeeModule === "" ? undefined : marbuFeeModule,
-          }),
-        },
-        "Komple Hub Module",
-        "auto",
-        { admin: account?.bech32Address }
-      )
+      const signingClient = await getSigningCosmWasmClient()
+      if (signingClient === undefined || offlineSigner === undefined) {
+        throw new Error("No signing client")
+      }
 
+      const kompleClient = new KompleClient(signingClient, offlineSigner)
+      const hubModule = await kompleClient.hubModule("")
+
+      const res = await hubModule.instantiate({
+        codeId: parseInt(codeId),
+        admin: address,
+        hubInfo: {
+          name,
+          description,
+          image,
+          external_link: link === "" ? undefined : link,
+        },
+        marbuFeeModule: marbuFeeModule === "" ? undefined : marbuFeeModule,
+      })
       setResponse(res)
     } catch (error: any) {
       console.log(error)
