@@ -36,7 +36,10 @@ export const Navbar = () => {
           rest: testnetChains.juno.rest,
           rpc: testnetChains.juno.rpc,
           signerOpts: {
-            gasPrice: GasPrice.fromString("0.025ujunox"),
+            gasPrice: GasPrice.fromString(
+              `0.025${testnetChains.juno.stakeCurrency.coinMinimalDenom}`
+              // `0.025ujuno`
+            ),
           },
         })
   }

@@ -8,6 +8,8 @@ import Head from "next/head"
 import { useOfflineSigners, useSigningClients } from "graz"
 import { MintModuleCreateCollection } from "components/forms/execute/mint/createCollection"
 import useMintModuleStore from "store/modules/mint"
+import { MintModuleMint } from "components/forms/execute/mint/mint"
+import { MintModuleUpdateCollectionMintLock } from "components/forms/execute/mint/updateCollectionMintLock"
 
 const EXECUTES = [
   "create_collection",
@@ -84,6 +86,22 @@ export default function FeeModuleExecute() {
 
           return setResponse(await executeClient.createCollection(msg))
         }
+        case "update_collection_mint_lock": {
+          const msg = {
+            collectionId: store.collectionId,
+            lock: store.lock,
+          }
+
+          return setResponse(await executeClient.updateCollectionMintLock(msg))
+        }
+        case "mint": {
+          const msg = {
+            collectionId: store.collectionId,
+            metadataId: store.metadataId === 0 ? undefined : store.metadataId,
+          }
+
+          return setResponse(await executeClient.mint(msg))
+        }
       }
     } catch (error: any) {
       console.log(error)
@@ -118,8 +136,10 @@ export default function FeeModuleExecute() {
         />
 
         {executeMsg === "create_collection" && <MintModuleCreateCollection />}
-
-        {/* <MintModuleExecuteForm executeMsg={executeMsg} onChange={setMsg} /> */}
+        {executeMsg === "update_collection_mint_lock" && (
+          <MintModuleUpdateCollectionMintLock />
+        )}
+        {executeMsg === "mint" && <MintModuleMint />}
       </ContractForm>
     </div>
   )

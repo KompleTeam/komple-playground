@@ -9,13 +9,13 @@
       "contractAddress": "juno1s54g6t5t0gkhm3xjwuav75zks59gjcysmv029unqwrtz3jv2n5zs7vt6q8"
     },
     "mint": {
-      "codeId": 2305,
-      "contractAddress": "juno1t3u3fjkhd447wjt8slu67mjnw3qz8kkadz82aca2kkauj25c99jsgrxv0s"
+      "codeId": 2540,
+      "contractAddress": "juno154kjvtg3nvpmeymsdgjtmvjrgqrpzjazuv03fwk5h9vk2shel5qsz6vt2n"
     },
     "token": {
-      "codeId": 2512,
+      "codeId": 2541,
       "contractAddresses": [
-        "juno1zkqgejj3t2etl8vnygu45xvwu5fp2gjfdgm5ctye5m7fuq362vtqtvkctw"
+        "juno1t6dptx9wm29emq757hpffu3r8a4aqu6kx7agezzvuj5n2qhewcaqvyky9f"
       ]
     },
     "metadata": {
