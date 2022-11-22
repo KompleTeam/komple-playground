@@ -46,7 +46,9 @@ export const ContractForm = ({
 
   return (
     <div className="mt-20 flex">
-      <ContractTabs contract={name} isModule={isModule} />
+      <div className="block">
+        <ContractTabs contract={name} isModule={isModule} />
+      </div>
       <div className="w-20" />
       <div>
         {action === "create" && (

@@ -44,8 +44,8 @@ export const Navbar = () => {
   return (
     <div
       className={clsx(
-        "h-[96px] w-full px-[64px]",
-        "flex justify-between items-center"
+        "h-[96px] w-full px-[64px] fixed bg-komple-black-400",
+        "flex justify-between items-center z-20"
       )}
     >
       <div className="w-[200px]">

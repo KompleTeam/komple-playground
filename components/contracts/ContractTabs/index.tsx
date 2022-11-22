@@ -3,6 +3,7 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 
 const ITEMS = [
+  // { text: "Upload", href: "/upload" },
   { text: "Create", href: "/create" },
   { text: "Query", href: "/query" },
   { text: "Execute", href: "/execute" },
@@ -18,7 +19,7 @@ export const ContractTabs = ({
   const router = useRouter()
 
   return (
-    <div className="flex">
+    <div className="flex sticky top-[100px]">
       <div className="w-[350px]">
         {ITEMS.map((item) => {
           return (
