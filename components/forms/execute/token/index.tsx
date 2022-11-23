@@ -5,7 +5,7 @@ import { TokenModuleUpdateModuleOperators } from "./updateModuleOperators"
 import { TokenModuleUpdateLocks } from "./updateLocks"
 import { TokenModuleUpdateTokenLocks } from "./updateTokenLocks"
 import { TokenModuleUpdateCollectionConfig } from "./updateCollectionConfig"
-import { TokenModuleAdminTransferNFT } from "./admintransferNft"
+import { TokenModuleAdminTransferNFT } from "./adminTransferNft"
 import { TokenModuleInitWhitelistContract } from "./initWhitelistContract"
 
 export {
