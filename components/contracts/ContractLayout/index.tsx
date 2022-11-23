@@ -14,6 +14,7 @@ export const ContractForm = ({
   response,
   action,
   submit,
+  hidden = [],
 }: {
   children?: ReactNode
   name: string
@@ -21,6 +22,7 @@ export const ContractForm = ({
   response: Record<string, unknown>
   action: ActionType
   submit: ({ contract, codeId }: { contract: string; codeId: string }) => void
+  hidden?: string[]
 }) => {
   const router = useRouter()
 
@@ -47,7 +49,7 @@ export const ContractForm = ({
   return (
     <div className="mt-20 flex">
       <div className="block">
-        <ContractTabs contract={name} isModule={isModule} />
+        <ContractTabs contract={name} isModule={isModule} hidden={hidden} />
       </div>
       <div className="w-20" />
       <div>

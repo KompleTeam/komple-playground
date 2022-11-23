@@ -4,24 +4,26 @@ import { useRouter } from "next/router"
 
 const ITEMS = [
   // { text: "Upload", href: "/upload" },
-  { text: "Create", href: "/create" },
-  { text: "Query", href: "/query" },
-  { text: "Execute", href: "/execute" },
+  { text: "create", href: "/create" },
+  { text: "query", href: "/query" },
+  { text: "execute", href: "/execute" },
 ]
 
 export const ContractTabs = ({
   contract,
   isModule,
+  hidden = [],
 }: {
   contract: string
   isModule: boolean
+  hidden?: string[]
 }) => {
   const router = useRouter()
 
   return (
     <div className="flex sticky top-[100px]">
       <div className="w-[350px]">
-        {ITEMS.map((item) => {
+        {ITEMS.filter((item) => !hidden.includes(item.text)).map((item) => {
           return (
             <Link
               key={item.text}
@@ -38,7 +40,7 @@ export const ContractTabs = ({
               >
                 <div
                   className={clsx(
-                    "text-[24px]",
+                    "text-[24px] capitalize",
                     router.route.includes(item.href)
                       ? "text-komple-red-400"
                       : "text-white"
@@ -48,7 +50,7 @@ export const ContractTabs = ({
                 </div>
                 <div
                   className={clsx(
-                    "text-[16px]",
+                    "text-[16px] capitalize",
                     router.route.includes(item.href)
                       ? "text-white"
                       : "text-komple-black-100"

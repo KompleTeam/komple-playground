@@ -21,12 +21,30 @@ const MODULES = [
 
 const PERMISSIONS = ["Attribute", "Link", "Ownership"]
 
+const CONTRACT_URLS = {
+  modules: {
+    fee: "create",
+    hub: "create",
+    marketplace: "query",
+    merge: "create",
+    metadata: "create",
+    mint: "query",
+    permission: "create",
+    token: "query",
+    whitelist: "create",
+  },
+  permissions: {
+    attribute: "create",
+    link: "create",
+    ownership: "create",
+  },
+}
+
 export const Navbar = () => {
   const walletManager = useWallet()
 
   const { walletStatus, username, address } = walletManager
-  const { connect, disconnect, setCurrentChain, currentChainName } =
-    walletManager
+  const { connect, disconnect, setCurrentChain } = walletManager
 
   const isConnected = walletStatus === "Connected"
 
@@ -55,9 +73,19 @@ export const Navbar = () => {
       </div>
 
       <div className="flex">
-        <HoverDropdown text="Modules" data={MODULES} right />
+        <HoverDropdown
+          text="Modules"
+          data={MODULES}
+          right
+          urls={CONTRACT_URLS}
+        />
         <div className="w-[32px]" />
-        <HoverDropdown text="Permissions" data={PERMISSIONS} left />
+        <HoverDropdown
+          text="Permissions"
+          data={PERMISSIONS}
+          left
+          urls={CONTRACT_URLS}
+        />
       </div>
 
       <div className="w-[200px] flex justify-end">

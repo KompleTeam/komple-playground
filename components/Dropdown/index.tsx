@@ -9,12 +9,18 @@ export const HoverDropdown = ({
   data,
   left,
   right,
+  urls,
 }: {
   text: string
   data: string[]
   left?: boolean
   right?: boolean
+  urls: Record<string, Record<string, string>>
 }) => {
+  console.log(urls)
+  console.log(text)
+  console.log(data)
+
   return (
     <div
       className={clsx(
@@ -37,7 +43,9 @@ export const HoverDropdown = ({
           {data.map((item) => {
             return (
               <Link
-                href={`/${text.toLowerCase()}/${item.toLowerCase()}/create`}
+                href={`/${text.toLowerCase()}/${item.toLowerCase()}/${
+                  urls[text.toLowerCase()][item.toLowerCase()]
+                }`}
                 className={clsx(
                   "px-3 py-[4px] rounded-[4px]",
                   "text-white hover:bg-komple-black-200"
