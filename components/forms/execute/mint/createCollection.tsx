@@ -1,5 +1,6 @@
 import { Dropdown } from "components/Dropdown"
 import { Seperator } from "components/Seperator"
+import { Switch } from "components/Switch"
 import { TextInput } from "components/TextInput"
 import { TextInputList } from "components/TextInputList"
 import {
@@ -189,21 +190,29 @@ export const MintModuleCreateCollection = () => {
         isRequired
       />
 
-      <Seperator text="Fund Info" />
-      <div>is native</div>
+      <Seperator text="Minting Currency Info" />
+      <Switch
+        title="Native Tokens"
+        onChange={(is_native) =>
+          store.setFundInfo({ ...store.fundInfo, is_native })
+        }
+        initialState={store.fundInfo.is_native}
+      />
       <TextInput
         title="Denom"
         onChange={(denom) => store.setFundInfo({ ...store.fundInfo, denom })}
         isRequired
         value={store.fundInfo.denom}
       />
-      <TextInput
-        title="CW20 Address"
-        onChange={(cw20_address) =>
-          store.setFundInfo({ ...store.fundInfo, cw20_address })
-        }
-        value={store.fundInfo.cw20_address?.toString()}
-      />
+      {!store.fundInfo.is_native && (
+        <TextInput
+          title="CW20 Address"
+          onChange={(cw20_address) =>
+            store.setFundInfo({ ...store.fundInfo, cw20_address })
+          }
+          value={store.fundInfo.cw20_address?.toString()}
+        />
+      )}
 
       <Seperator text="Collections" />
       <TextInputList
