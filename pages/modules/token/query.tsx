@@ -14,6 +14,8 @@ import useTokenModuleStore from "store/modules/token"
 
 const QUERIES = [
   "config",
+  "owner_of",
+  "token_operators",
   "locks",
   "token_locks",
   "minted_tokens_per_address",

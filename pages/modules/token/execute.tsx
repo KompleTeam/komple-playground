@@ -21,6 +21,10 @@ import {
 } from "components/forms/execute/token"
 
 const EXECUTES = [
+  "approve",
+  "revoke",
+  "approve_all",
+  "revoke_all",
   "burn",
   "transfer_nft",
   "admin_transfer_nft",
