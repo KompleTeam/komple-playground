@@ -26,17 +26,17 @@ const CONTRACT_URLS = {
     fee: "create",
     hub: "create",
     marketplace: "query",
-    merge: "create",
-    metadata: "create",
+    merge: "query",
+    metadata: "query",
     mint: "query",
     permission: "create",
     token: "query",
-    whitelist: "create",
+    whitelist: "query",
   },
   permissions: {
-    attribute: "create",
-    link: "create",
-    ownership: "create",
+    attribute: "query",
+    link: "query",
+    ownership: "query",
   },
 }
 

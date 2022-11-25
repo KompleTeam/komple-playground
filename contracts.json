@@ -26,7 +26,11 @@
     },
     "metadata": {
       "codeId": 2511,
-      "contractAddress": []
+      "contractAddress": [
+        "juno19gwfwswz8fwjay9padwem0mm642gdd82vq8jffjn74kzepcp6slqqt9tkt",
+        "",
+        "juno187eq99zlljvs2whe48chdvysxjjt4ryjws4cxjt534gz4auw2n5qg5kmyq"
+      ]
     }
   }
 }
