@@ -157,6 +157,7 @@ export default function MintModuleExecute() {
         response={response}
         action="execute"
         submit={submit}
+        hidden={["create"]}
       >
         <Dropdown
           items={EXECUTES}

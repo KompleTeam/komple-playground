@@ -90,6 +90,7 @@ export default function FeeModuleQuery() {
         response={response}
         action="query"
         submit={submit}
+        hidden={["create"]}
       >
         <Dropdown
           items={QUERIES}

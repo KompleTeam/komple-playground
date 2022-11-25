@@ -208,6 +208,7 @@ export default function FeeModuleExecute() {
         response={response}
         action="execute"
         submit={submit}
+        hidden={["create"]}
       >
         <Dropdown
           items={EXECUTES}
