@@ -19,7 +19,9 @@
     "token": {
       "codeId": 2541,
       "contractAddresses": [
-        "juno1t6dptx9wm29emq757hpffu3r8a4aqu6kx7agezzvuj5n2qhewcaqvyky9f"
+        "juno1t6dptx9wm29emq757hpffu3r8a4aqu6kx7agezzvuj5n2qhewcaqvyky9f",
+        "",
+        "juno18w89yhcksnx4ascl9rqfwnxd56pdpgvdg82lll6jfux2m4xsk43sdsxl0r"
       ]
     },
     "metadata": {

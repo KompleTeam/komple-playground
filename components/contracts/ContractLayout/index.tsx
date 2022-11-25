@@ -73,7 +73,7 @@ export const ContractForm = ({
           />
         )}
 
-        {children}
+        <div className="max-w-[380px]">{children}</div>
 
         <Button
           className="capitalize"

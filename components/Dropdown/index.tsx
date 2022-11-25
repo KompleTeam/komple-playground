@@ -17,10 +17,6 @@ export const HoverDropdown = ({
   right?: boolean
   urls: Record<string, Record<string, string>>
 }) => {
-  console.log(urls)
-  console.log(text)
-  console.log(data)
-
   return (
     <div
       className={clsx(

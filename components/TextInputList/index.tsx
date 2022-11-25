@@ -67,7 +67,7 @@ export const TextInputList = ({
             className="flex items-center text-white mb-2"
           >
             <div className="font-bold">{idx + 1}.</div>
-            <div className="w-full py-2 px-4 bg-komple-black-300 rounded-md mx-3">
+            <div className="w-full py-2 px-4 bg-komple-black-300 rounded-md mx-3 max-w-[325px] overflow-scroll">
               {item}
             </div>
             <button onClick={() => remove(idx)}>
