@@ -31,7 +31,7 @@ export const TextInput = ({
       <input
         type="text"
         placeholder={placeholder}
-        className="h-[48px] w-[380px] px-4 bg-komple-black-300 rounded-md text-white"
+        className="h-[48px] w-[380px] px-4 bg-komple-black-300 rounded-md text-white outline-komple-red-400 outline-1"
         onChange={inputOnChange}
         value={value}
       />

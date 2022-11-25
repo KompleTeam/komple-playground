@@ -49,14 +49,14 @@ export const TextInputList = ({
         <input
           type="text"
           placeholder={placeholder}
-          className="h-[48px] w-[280px] px-4 bg-komple-black-300 rounded-md text-white"
+          className="h-[48px] w-[280px] px-4 bg-komple-black-300 rounded-md text-white outline-komple-red-400 outline-1"
           onChange={(e) => setText(e.target.value)}
           value={text}
         />
         <Button
           text="Add"
           onClick={add}
-          className="w-[90px] mb-3"
+          className="w-[90px] mb-3 bg-komple-green text-black"
           disabled={text === ""}
         />
       </div>
