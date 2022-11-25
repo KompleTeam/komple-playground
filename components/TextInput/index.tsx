@@ -1,3 +1,5 @@
+import clsx from "clsx"
+
 export const TextInput = ({
   title,
   subtitle,
@@ -5,6 +7,7 @@ export const TextInput = ({
   onChange,
   isRequired,
   value,
+  className = "",
 }: {
   title?: string
   subtitle?: string
@@ -12,6 +15,7 @@ export const TextInput = ({
   onChange: (value: string) => void
   isRequired?: boolean
   value?: string
+  className?: string
 }) => {
   const inputOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value)
@@ -31,7 +35,10 @@ export const TextInput = ({
       <input
         type="text"
         placeholder={placeholder}
-        className="h-[48px] w-[380px] px-4 bg-komple-black-300 rounded-md text-white outline-komple-red-400 outline-1"
+        className={clsx(
+          "h-[48px] w-[380px] px-4 bg-komple-black-300 rounded-md text-white outline-komple-red-400 outline-1",
+          className
+        )}
         onChange={inputOnChange}
         value={value}
       />

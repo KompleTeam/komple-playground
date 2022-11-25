@@ -3,28 +3,30 @@ import { TextInput } from "components/TextInput"
 import Image from "next/image"
 import { useState } from "react"
 
-export const TextInputList = ({
-  title,
+export const TextMultiInputList = ({
+  titles,
   subtitle,
   placeholder,
   onChange,
   isRequired,
   value,
 }: {
-  title?: string
+  titles?: [string, string]
   subtitle?: string
-  placeholder?: string
-  onChange: (list: string[]) => void
+  placeholder?: [string, string]
+  onChange: (list: Record<string, string>[]) => void
   isRequired?: boolean
-  value?: string[]
+  value?: Record<string, string>[]
 }) => {
-  const [text, setText] = useState("")
-  const [list, setList] = useState<string[]>(value || [])
+  const [leftText, setLeftText] = useState("")
+  const [rightText, setRightText] = useState("")
+  const [list, setList] = useState<Record<string, string>[]>(value || [])
 
   const add = () => {
-    if (text === "") return
-    setText("")
-    let newList = [...list, text]
+    if (leftText === "" || rightText === "") return
+    setLeftText("")
+    setRightText("")
+    let newList = [...list, { left: leftText, right: rightText }]
     setList(newList)
     onChange(newList)
   }
@@ -37,27 +39,41 @@ export const TextInputList = ({
 
   return (
     <div className="mb-6">
-      {title && (
-        <div className="flex text-[18px] text-white mb-1">
-          {title}
-          {isRequired && <div className="text-komple-red-400 ml-2">*</div>}
-        </div>
-      )}
+      <div className="flex items-center">
+        {titles !== undefined && titles[0] && (
+          <div className="flex text-[18px] text-white mb-1 w-[145px]">
+            {titles[0]}
+            {isRequired && <div className="text-komple-red-400 ml-2">*</div>}
+          </div>
+        )}
+        {titles !== undefined && titles[1] && (
+          <div className="flex text-[18px] text-white mb-1 w-[140px]">
+            {titles[1]}
+            {isRequired && <div className="text-komple-red-400 ml-2">*</div>}
+          </div>
+        )}
+      </div>
       {subtitle && (
         <div className="text-[16px] text-komple-black-100 mb-2">{subtitle}</div>
       )}
       <div className="flex justify-between">
         <TextInput
-          placeholder={placeholder}
-          onChange={(value) => setText(value)}
-          value={text}
-          className="w-[280px]"
+          placeholder={placeholder !== undefined ? placeholder[0] : undefined}
+          onChange={(value) => setLeftText(value)}
+          value={leftText}
+          className="w-[140px]"
+        />
+        <TextInput
+          placeholder={placeholder !== undefined ? placeholder[1] : undefined}
+          onChange={(value) => setRightText(value)}
+          value={rightText}
+          className="w-[140px]"
         />
         <Button
           text="Add"
           onClick={add}
           className="w-[90px] mb-3 bg-komple-green text-black"
-          disabled={text === ""}
+          disabled={leftText === "" || rightText === ""}
         />
       </div>
       {list.map((item, idx) => {
@@ -68,7 +84,7 @@ export const TextInputList = ({
           >
             <div className="font-bold">{idx + 1}.</div>
             <div className="w-full py-2 px-4 bg-komple-black-300 rounded-md mx-3 max-w-[325px] overflow-scroll">
-              {item}
+              {item.left} - {item.right}
             </div>
             <button onClick={() => remove(idx)}>
               <Image

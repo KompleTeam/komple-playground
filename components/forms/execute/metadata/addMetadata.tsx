@@ -1,9 +1,18 @@
 import { Seperator } from "components/Seperator"
 import { TextInput } from "components/TextInput"
+import { TextMultiInputList } from "components/TextMultiInputList"
 import useMetadataModuleStore from "store/modules/metadata"
 
 export const MetadataModuleAddMetadata = () => {
   const store = useMetadataModuleStore((state) => state)
+
+  const attributeOnChange = (value: Record<string, string>[]) => {
+    store.setAttributes(
+      value.map((item) => {
+        return { trait_type: item.left, value: item.right }
+      })
+    )
+  }
 
   return (
     <div>
@@ -41,7 +50,11 @@ export const MetadataModuleAddMetadata = () => {
         }
         value={store.metaInfo.youtube_url?.toString()}
       />
-      TODO LIST COMPONENT HERE
+      <Seperator text="Attributes" />
+      <TextMultiInputList
+        onChange={attributeOnChange}
+        titles={["Trait Type", "Trait Value"]}
+      />
     </div>
   )
 }
