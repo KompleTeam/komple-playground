@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import { ContractHeader } from "components/contracts/ContractHeader"
 import { TextInput } from "components/TextInput"
-import { useSigningClients, useOfflineSigners } from "graz"
 import { ContractForm } from "components/contracts/ContractLayout"
 import { DOC_LINKS } from "config/docs"
 import Head from "next/head"

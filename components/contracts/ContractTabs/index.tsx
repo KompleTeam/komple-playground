@@ -3,7 +3,6 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 
 const ITEMS = [
-  // { text: "Upload", href: "/upload" },
   { text: "create", href: "/create" },
   { text: "query", href: "/query" },
   { text: "execute", href: "/execute" },

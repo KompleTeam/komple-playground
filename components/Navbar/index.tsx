@@ -86,6 +86,10 @@ export const Navbar = () => {
           left
           urls={CONTRACT_URLS}
         />
+        <div className="w-[32px]" />
+        <Link href="/upload" className="text-white">
+          UPLOAD CONTRACT
+        </Link>
       </div>
 
       <div className="w-[200px] flex justify-end">
