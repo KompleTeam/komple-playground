@@ -25,7 +25,9 @@ export const HoverDropdown = ({
         right && "float-right"
       )}
     >
-      <button className="text-white uppercase">{text}</button>
+      <Link href={`/${text.toLocaleLowerCase()}`}>
+        <button className="text-white uppercase">{text}</button>
+      </Link>
       <div className="group-hover:grid">
         <div
           className={clsx(

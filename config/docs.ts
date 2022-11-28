@@ -1,5 +1,6 @@
 export const DOC_LINKS = {
   modules: {
+    root: "https://docs.komple.io/komple-framework/modules",
     fee: "https://docs.komple.io/komple-framework/modules/Fee-Module",
     hub: "https://docs.komple.io/komple-framework/modules/Hub-Module",
     marketplace:

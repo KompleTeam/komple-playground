@@ -9,7 +9,7 @@ export default function Home() {
         description="This playground is here to help you to try out Komple Framework and configure your project the way you want it to be."
         documentation="https://docs.komple.io"
       />
-      <div className="flex justify-center mt-[75px]">
+      <div className="flex justify-center mt-[60px]">
         <SectionBox
           title="Modules"
           description="For interacting with Komple Framework Modules."
