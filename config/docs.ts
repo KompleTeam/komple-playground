@@ -16,6 +16,7 @@ export const DOC_LINKS = {
     custom: "https://docs.komple.io/komple-framework/modules/Custom-Module",
   },
   permissions: {
+    root: "https://docs.komple.io/komple-framework/permissions",
     attribute: "https://docs.komple.io/komple-framework/permissions/Attribute",
     link: "https://docs.komple.io/komple-framework/permissions/Link",
     ownership: "https://docs.komple.io/komple-framework/permissions/Ownership",

@@ -108,7 +108,7 @@ export const Upload = () => {
 
       <ContractHeader
         title="Upload Contract"
-        description="Upload official or custom wasm binary for Komple Framework."
+        description="Upload a wasm binary to use with Komple Framework."
       />
 
       <div className="mt-[64px] flex justify-center h-[160px]">
