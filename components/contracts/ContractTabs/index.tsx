@@ -1,6 +1,7 @@
 import clsx from "clsx"
 import Link from "next/link"
 import { useRouter } from "next/router"
+import { useEffect, useState } from "react"
 
 const ITEMS = [
   { text: "create", href: "/create" },
@@ -19,6 +20,17 @@ export const ContractTabs = ({
 }) => {
   const router = useRouter()
 
+  const [contractAddress, setContractAddress] = useState("")
+
+  useEffect(() => {
+    if (
+      router.query.contractAddress &&
+      typeof router.query.contractAddress === "string"
+    ) {
+      setContractAddress(router.query.contractAddress)
+    }
+  }, [router.query])
+
   return (
     <div className="flex sticky top-[100px]">
       <div className="w-[350px]">
@@ -28,7 +40,11 @@ export const ContractTabs = ({
               key={item.text}
               href={`/${
                 isModule ? "modules" : "permissions"
-              }/${contract.toLowerCase()}${item.href}`}
+              }/${contract.toLowerCase()}${item.href}${
+                contractAddress !== ""
+                  ? "?contractAddress=" + contractAddress
+                  : ""
+              }`}
             >
               <div
                 key={item.text}
