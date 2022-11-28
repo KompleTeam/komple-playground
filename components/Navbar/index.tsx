@@ -29,7 +29,7 @@ const CONTRACT_URLS = {
     merge: "query",
     metadata: "query",
     mint: "query",
-    permission: "create",
+    permission: "query",
     token: "query",
     whitelist: "query",
   },
