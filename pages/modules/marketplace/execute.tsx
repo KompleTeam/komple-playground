@@ -16,6 +16,7 @@ import {
   MarketplaceModuleUpdateOperators,
 } from "components/forms/execute/marketplace"
 import useMarketplaceModuleStore from "store/modules/marketplace"
+import { coin } from "@cosmjs/proto-signing"
 
 const EXECUTES = [
   "update_buy_lock",
@@ -102,7 +103,11 @@ export default function MintModuleExecute() {
             tokenId: store.tokenId,
           }
 
-          return setResponse(await executeClient.buy(msg))
+          return setResponse(
+            await executeClient.buy(msg, "auto", undefined, [
+              coin(1000000, "ujunox"),
+            ])
+          )
         }
         case "permission_buy": {
           if (store.listingType === undefined) {

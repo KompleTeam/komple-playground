@@ -19,6 +19,7 @@ import {
   TokenModuleAdminTransferNFT,
   TokenModuleInitWhitelistContract,
 } from "components/forms/execute/token"
+import { TokenModuleApprove } from "components/forms/query/token"
 
 const EXECUTES = [
   "approve",
@@ -37,7 +38,7 @@ const EXECUTES = [
 ]
 
 export default function TokenModuleExecute() {
-  const { getSigningCosmWasmClient, offlineSigner } = useWallet()
+  const { getSigningCosmWasmClient, offlineSigner, address } = useWallet()
 
   const store = useTokenModuleStore((state) => state)
 
@@ -61,6 +62,23 @@ export default function TokenModuleExecute() {
       const executeClient = tokenModule.client
 
       switch (executeMsg) {
+        case "approve": {
+          const msg = {
+            approve: {
+              spender: store.recipient,
+              token_id: store.tokenId,
+            },
+          }
+
+          return setResponse(
+            await executeClient.client.execute(
+              address || "",
+              contract,
+              msg,
+              "auto"
+            )
+          )
+        }
         case "transfer_nft": {
           const msg = {
             recipient: store.recipient,
@@ -95,10 +113,23 @@ export default function TokenModuleExecute() {
         }
         case "update_module_operators": {
           const msg = {
-            addrs: store.addresses,
+            extension: {
+              msg: {
+                update_module_operators: {
+                  addrs: store.addresses,
+                },
+              },
+            },
           }
 
-          return setResponse(await executeClient.updateModuleOperators(msg))
+          return setResponse(
+            await executeClient.client.execute(
+              address || "",
+              contract,
+              msg,
+              "auto"
+            )
+          )
         }
         case "admin_transfer_nft": {
           const msg = {
@@ -172,6 +203,7 @@ export default function TokenModuleExecute() {
           placeholder="Select execute message"
         />
 
+        {executeMsg === "approve" && <TokenModuleApprove />}
         {executeMsg === "burn" && <TokenModuleBurn />}
         {executeMsg === "transfer_nft" && <TokenModuleTransferNFT />}
         {executeMsg === "admin_transfer_nft" && <TokenModuleAdminTransferNFT />}
