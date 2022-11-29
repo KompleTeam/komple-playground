@@ -28,7 +28,7 @@ export const HoverDropdown = ({
       <Link href={`/${text.toLocaleLowerCase()}`}>
         <button className="text-white uppercase">{text}</button>
       </Link>
-      {/*       <div className="group-hover:grid">
+      <div className="group-hover:grid">
         <div
           className={clsx(
             "p-[8px] rounded-[4px]",
@@ -55,7 +55,7 @@ export const HoverDropdown = ({
             )
           })}
         </div>
-      </div> */}
+      </div>
     </div>
   )
 }
