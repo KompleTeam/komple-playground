@@ -1,3 +1,4 @@
+import { InputDateTime } from "components/InputDateTime"
 import { TextInput } from "components/TextInput"
 import useWhitelistModuleStore from "store/modules/whitelist"
 import { isInteger } from "utils/isInteger"
@@ -35,25 +36,35 @@ export const WhitelistModuleUpdateWhitelistConfig = () => {
             : store.config.member_limit?.toString()
         }
       />
-      <TextInput
+      <InputDateTime
         title="Start Time"
-        onChange={(start_time) =>
+        minDate={new Date()}
+        onChange={(date: Date) =>
           store.setConfig({
             ...store.config,
-            start_time,
+            start_time: date ? (date.getTime() * 1000000).toString() : "",
           })
         }
-        value={store.config.start_time?.toString()}
+        value={
+          store.config.start_time
+            ? new Date(Number(store.config.start_time) / 1000000)
+            : ""
+        }
       />
-      <TextInput
+      <InputDateTime
         title="End Time"
-        onChange={(end_time) =>
+        minDate={new Date()}
+        onChange={(date: Date) =>
           store.setConfig({
             ...store.config,
-            end_time,
+            end_time: date ? (date.getTime() * 1000000).toString() : "",
           })
         }
-        value={store.config.end_time?.toString()}
+        value={
+          store.config.end_time
+            ? new Date(Number(store.config.end_time) / 1000000)
+            : ""
+        }
       />
     </div>
   )

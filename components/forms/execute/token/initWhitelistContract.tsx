@@ -1,3 +1,4 @@
+import { InputDateTime } from "components/InputDateTime"
 import { TextInput } from "components/TextInput"
 import { TextInputList } from "components/TextInputList"
 import useTokenModuleStore from "store/modules/token"
@@ -21,33 +22,48 @@ export const TokenModuleInitWhitelistContract = () => {
         onChange={(value) => store.setAddresses(value)}
         value={store.addresses}
       />
-      <TextInput
+      <InputDateTime
         title="Whitelist Start Time"
-        onChange={(value) =>
+        isRequired
+        minDate={new Date()}
+        onChange={(date: Date) =>
           store.setWhitelistInstantiateMsg({
             ...store.whitelistInstantiateMsg,
             config: {
               ...store.whitelistInstantiateMsg.config,
-              start_time: value,
+              start_time: date ? (date.getTime() * 1000000).toString() : "",
             },
           })
         }
-        isRequired
-        value={store.whitelistInstantiateMsg.config.start_time}
+        value={
+          store.whitelistInstantiateMsg.config.start_time
+            ? new Date(
+                Number(store.whitelistInstantiateMsg.config.start_time) /
+                  1000000
+              )
+            : ""
+        }
       />
-      <TextInput
+      <InputDateTime
         title="Whitelist End Time"
-        onChange={(value) =>
+        isRequired
+        minDate={new Date()}
+        onChange={(date: Date) =>
           store.setWhitelistInstantiateMsg({
             ...store.whitelistInstantiateMsg,
             config: {
               ...store.whitelistInstantiateMsg.config,
-              end_time: value,
+              end_time: date ? (date.getTime() * 1000000).toString() : "",
             },
           })
         }
-        isRequired
-        value={store.whitelistInstantiateMsg.config.end_time}
+        value={
+          store.whitelistInstantiateMsg.config.end_time
+            ? new Date(
+                Number(store.whitelistInstantiateMsg.config.end_time) / 1000000
+              )
+            : ""
+        }
       />
       <TextInput
         title="Tokens Per Address Limit"

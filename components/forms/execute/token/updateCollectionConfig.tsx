@@ -1,3 +1,4 @@
+import { InputDateTime } from "components/InputDateTime"
 import { TextInput } from "components/TextInput"
 import useTokenModuleStore from "store/modules/token"
 import { isInteger } from "utils/isInteger"
@@ -7,16 +8,22 @@ export const TokenModuleUpdateCollectionConfig = () => {
 
   return (
     <div>
-      <TextInput
+      <InputDateTime
         title="Start Time"
-        onChange={(value) =>
+        minDate={new Date()}
+        onChange={(date: Date) =>
           store.setCollectionConfig({
             ...store.collectionConfig,
-            start_time: value,
+            start_time: date
+              ? (date.getTime() * 1000000).toString()
+              : undefined,
           })
         }
-        isRequired
-        value={store.collectionConfig.start_time?.toString()}
+        value={
+          store.collectionConfig.start_time
+            ? new Date(Number(store.collectionConfig.start_time) / 1000000)
+            : ""
+        }
       />
       <TextInput
         title="Tokens Per Address Limit"

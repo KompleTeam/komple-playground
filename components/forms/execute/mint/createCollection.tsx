@@ -1,4 +1,5 @@
 import { Dropdown } from "components/Dropdown"
+import { InputDateTime } from "components/InputDateTime"
 import { Seperator } from "components/Seperator"
 import { Switch } from "components/Switch"
 import { TextInput } from "components/TextInput"
@@ -107,15 +108,22 @@ export const MintModuleCreateCollection = () => {
             : store.collectionConfig.per_address_limit?.toString()
         }
       />
-      <TextInput
+      <InputDateTime
         title="Start Time"
-        onChange={(start_time) =>
+        minDate={new Date()}
+        onChange={(date: Date) =>
           store.setCollectionConfig({
             ...store.collectionConfig,
-            start_time,
+            start_time: date
+              ? (date.getTime() * 1000000).toString()
+              : undefined,
           })
         }
-        value={store.collectionConfig.start_time?.toString()}
+        value={
+          store.collectionConfig.start_time
+            ? new Date(Number(store.collectionConfig.start_time) / 1000000)
+            : ""
+        }
       />
       <TextInput
         title="Max Token Limit"
