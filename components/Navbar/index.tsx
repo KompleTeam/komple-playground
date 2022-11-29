@@ -123,7 +123,11 @@ export const Navbar = () => {
             </div>
           </div>
         ) : (
-          <Button text="Connect wallet" onClick={handleConnect} />
+          <Button
+            text="Connect wallet"
+            onClick={handleConnect}
+            className="h-[40px] mx-3"
+          />
         )}
       </div>
     </div>
