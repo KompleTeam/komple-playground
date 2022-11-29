@@ -1,3 +1,2 @@
-import useFeeModuleStore from "./modules/fee"
-
-export { useFeeModuleStore }
+export * from "./modules"
+export * from "./permissions"

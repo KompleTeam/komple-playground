@@ -6,17 +6,14 @@ import { ContractForm } from "components/contracts/ContractLayout"
 import { DOC_LINKS } from "config/docs"
 import Head from "next/head"
 import { KompleClient } from "komplejs"
+import useHubModuleStore from "store/modules/hub"
 
-export default function FeeModuleCreate() {
+export default function HubModuleCreate() {
   const { getSigningCosmWasmClient, offlineSigner, address } = useWallet()
 
-  const [response, setResponse] = useState({})
+  const store = useHubModuleStore((state) => state)
 
-  const [name, setName] = useState("")
-  const [description, setDescription] = useState("")
-  const [image, setImage] = useState("")
-  const [link, setLink] = useState("")
-  const [marbuFeeModule, setMarbuFeeModule] = useState("")
+  const [response, setResponse] = useState({})
 
   const submit = async ({ codeId }: { codeId: string }) => {
     try {
@@ -30,14 +27,9 @@ export default function FeeModuleCreate() {
 
       const res = await hubModule.instantiate({
         codeId: parseInt(codeId),
-        admin: address,
-        hubInfo: {
-          name,
-          description,
-          image,
-          external_link: link === "" ? undefined : link,
-        },
-        marbuFeeModule: marbuFeeModule === "" ? undefined : marbuFeeModule,
+        admin: store.admin || address,
+        hubInfo: store.hubInfo,
+        marbuFeeModule: store.marbuFeeModule,
       })
       setResponse(res)
     } catch (error: any) {
@@ -66,37 +58,50 @@ export default function FeeModuleCreate() {
         submit={submit}
       >
         <TextInput
-          title="Name"
+          title="Hub Name"
           subtitle="Name of the project"
           placeholder="My awesome project"
-          onChange={setName}
+          onChange={(name) => store.setHubInfo({ ...store.hubInfo, name })}
           isRequired
+          value={store.hubInfo.name}
         />
         <TextInput
-          title="Description"
+          title="Hub Description"
           subtitle="Description of the project"
-          onChange={setDescription}
           placeholder="My awesome project is awesome"
+          onChange={(description) =>
+            store.setHubInfo({ ...store.hubInfo, description })
+          }
           isRequired
+          value={store.hubInfo.description}
         />
         <TextInput
-          title="Image"
+          title="Hub Image"
           subtitle="Image of the project"
-          onChange={setImage}
           placeholder="https://my-awesome-project.com/image.png"
+          onChange={(image) => store.setHubInfo({ ...store.hubInfo, image })}
           isRequired
+          value={store.hubInfo.image}
         />
         <TextInput
           title="External Link"
           subtitle="Link to the project"
           placeholder="https://my-awesome-project.com"
-          onChange={setLink}
+          onChange={(external_link) =>
+            store.setHubInfo({
+              ...store.hubInfo,
+              external_link: external_link === "" ? undefined : external_link,
+            })
+          }
+          value={store.hubInfo.external_link?.toString()}
         />
         <TextInput
           title="Marbu Fee Module"
           subtitle="Marbu Fee Module address"
           placeholder="juno1..."
-          onChange={setMarbuFeeModule}
+          onChange={(value) =>
+            store.setMarbuFeeModule(value === "" ? undefined : value)
+          }
         />
       </ContractForm>
     </div>

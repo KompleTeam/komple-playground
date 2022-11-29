@@ -4,21 +4,19 @@ import { ContractHeader } from "components/contracts/ContractHeader"
 import { Dropdown } from "components/Dropdown"
 import { useWallet } from "@cosmos-kit/react"
 import { DOC_LINKS } from "config/docs"
-import {
-  HubModuleQueryForm,
-  HubModuleQueryType,
-  HubModuleQueryFormMsg,
-} from "components/forms/query"
 import { KompleClient } from "komplejs"
 import Head from "next/head"
+import useHubModuleStore from "store/modules/hub"
+import { HubModuleModuleAddress } from "components/forms/query/hub"
 
-const QUERIES: HubModuleQueryType[] = ["config", "module_address", "operators"]
+const QUERIES = ["config", "module_address", "operators"]
 
-export default function FeeModuleQuery() {
+export default function HubModuleQuery() {
   const { getSigningCosmWasmClient, offlineSigner } = useWallet()
 
-  const [queryMsg, setQueryMsg] = useState<HubModuleQueryType>("")
-  const [msg, setMsg] = useState<HubModuleQueryFormMsg>()
+  const store = useHubModuleStore((state) => state)
+
+  const [queryMsg, setQueryMsg] = useState<string>("")
   const [response, setResponse] = useState<any>({})
 
   const dropdownOnChange = (index: number) => {
@@ -37,17 +35,16 @@ export default function FeeModuleQuery() {
       const hubModule = await kompleClient.hubModule(contract)
       const queryClient = hubModule.queryClient
 
-      if (!msg) throw Error("msg is undefined")
-
       switch (queryMsg) {
         case "config":
           return setResponse(await queryClient.config())
-        case "module_address":
-          return setResponse(
-            await queryClient.moduleAddress({
-              module: msg.module,
-            })
-          )
+        case "module_address": {
+          const msg = {
+            module: store.module,
+          }
+
+          return setResponse(await queryClient.moduleAddress(msg))
+        }
         case "operators":
           return setResponse(await queryClient.operators())
       }
@@ -83,7 +80,7 @@ export default function FeeModuleQuery() {
           placeholder="Select query message"
         />
 
-        <HubModuleQueryForm query={queryMsg} onChange={setMsg} />
+        {queryMsg === "module_address" && <HubModuleModuleAddress />}
       </ContractForm>
     </div>
   )

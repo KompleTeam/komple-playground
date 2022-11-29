@@ -3,17 +3,20 @@ import { DOC_LINKS } from "config/docs"
 import { useState } from "react"
 import { ContractForm } from "components/contracts/ContractLayout"
 import { ContractHeader } from "components/contracts/ContractHeader"
-import {
-  HubModuleExecuteForm,
-  HubModuleExecuteType,
-  HubModuleExecuteFormMsg,
-} from "components/forms/execute"
 import { KompleClient } from "komplejs"
 import { toBinary } from "@cosmjs/cosmwasm-stargate"
 import Head from "next/head"
 import { useWallet } from "@cosmos-kit/react"
+import useHubModuleStore from "store/modules/hub"
+import {
+  HubModuleDeregisterModule,
+  HubModuleMigrateContracts,
+  HubModuleRegisterModule,
+  HubModuleUpdateHubInfo,
+  HubModuleUpdateOperators,
+} from "components/forms/execute/hub"
 
-const EXECUTES: HubModuleExecuteType[] = [
+const EXECUTES = [
   "register_module",
   "deregister_module",
   "update_hub_info",
@@ -21,11 +24,12 @@ const EXECUTES: HubModuleExecuteType[] = [
   "migrate_contracts",
 ]
 
-export default function FeeModuleExecute() {
+export default function HubModuleExecute() {
   const { getSigningCosmWasmClient, offlineSigner } = useWallet()
 
-  const [executeMsg, setExecuteMsg] = useState<HubModuleExecuteType>("")
-  const [msg, setMsg] = useState<HubModuleExecuteFormMsg>()
+  const store = useHubModuleStore((state) => state)
+
+  const [executeMsg, setExecuteMsg] = useState<string>("")
   const [response, setResponse] = useState<any>({})
 
   const dropdownOnChange = (index: number) => {
@@ -44,49 +48,56 @@ export default function FeeModuleExecute() {
       const hubModule = await kompleClient.hubModule(contract)
       const executeClient = hubModule.client
 
-      if (!msg) throw Error("msg is undefined")
-
       switch (executeMsg) {
-        case "register_module":
-          return setResponse(
-            await executeClient.registerModule({
-              codeId: Number(msg.codeId),
-              module: msg.module,
-              msg:
-                msg.jsonMsg !== ""
-                  ? toBinary(JSON.parse(msg.jsonMsg))
-                  : undefined,
-            })
-          )
-        case "deregister_module":
-          return setResponse(
-            await executeClient.deregisterModule({
-              module: msg.module,
-            })
-          )
-        case "update_hub_info":
-          return setResponse(
-            await executeClient.updateHubInfo({
-              name: msg.name,
-              description: msg.description,
-              image: msg.image,
-              externalLink: msg.link === "" ? undefined : msg.link,
-            })
-          )
-        case "update_operators":
-          return setResponse(
-            await executeClient.updateOperators({
-              addrs: msg.operators,
-            })
-          )
-        case "migrate_contracts":
-          return setResponse(
-            await executeClient.migrateContracts({
-              codeId: Number(msg.codeId),
-              contractAddress: msg.contractAddress,
-              msg: msg.jsonMsg !== "" ? toBinary(JSON.parse(msg.jsonMsg)) : "",
-            })
-          )
+        case "register_module": {
+          const msg = {
+            codeId: Number(store.codeId),
+            module: store.module,
+            msg: store.msg !== undefined ? toBinary(store.msg) : undefined,
+          }
+
+          return setResponse(await executeClient.registerModule(msg))
+        }
+        case "deregister_module": {
+          const msg = {
+            module: store.module,
+          }
+
+          return setResponse(await executeClient.deregisterModule(msg))
+        }
+        case "update_hub_info": {
+          const msg = {
+            name: store.hubInfo.name,
+            description: store.hubInfo.description,
+            image: store.hubInfo.image,
+            external_link:
+              store.hubInfo.external_link === ""
+                ? undefined
+                : store.hubInfo.external_link,
+          }
+
+          return setResponse(await executeClient.updateHubInfo(msg))
+        }
+        case "update_operators": {
+          const msg = {
+            addrs: store.addresses,
+          }
+
+          return setResponse(await executeClient.updateOperators(msg))
+        }
+        case "migrate_contracts": {
+          if (store.msg === undefined) {
+            throw new Error("msg is undefined")
+          }
+
+          const msg = {
+            codeId: Number(store.codeId),
+            contractAddress: store.contractAddress,
+            msg: toBinary(store.msg),
+          }
+
+          return setResponse(await executeClient.migrateContracts(msg))
+        }
       }
     } catch (error: any) {
       console.log(error)
@@ -120,7 +131,11 @@ export default function FeeModuleExecute() {
           placeholder="Select execute message"
         />
 
-        <HubModuleExecuteForm executeMsg={executeMsg} onChange={setMsg} />
+        {executeMsg === "register_module" && <HubModuleRegisterModule />}
+        {executeMsg === "deregister_module" && <HubModuleDeregisterModule />}
+        {executeMsg === "update_hub_info" && <HubModuleUpdateHubInfo />}
+        {executeMsg === "migrate_contracts" && <HubModuleMigrateContracts />}
+        {executeMsg === "update_operators" && <HubModuleUpdateOperators />}
       </ContractForm>
     </div>
   )
