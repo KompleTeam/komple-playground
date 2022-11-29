@@ -1,10 +1,16 @@
 import { ContractHeader } from "components/contracts/ContractHeader"
 import { SectionBox } from "components/SectionBox"
 import { DOC_LINKS } from "config/docs"
+import Head from "next/head"
 
 const Modules = () => {
   return (
     <div>
+      <Head>
+        <title>Modules</title>
+        <meta property="og:title" content="Modules" key="title" />
+      </Head>
+
       <ContractHeader
         title="Modules"
         description="Modules are the building blocks of Komple Framework."

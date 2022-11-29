@@ -1,1 +1,2 @@
-export * from "./Fee"
+export * from "./modules"
+export * from "./permissions"

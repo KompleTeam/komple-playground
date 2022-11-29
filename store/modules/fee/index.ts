@@ -16,7 +16,7 @@ export interface FeeModuleStore {
   paymentInfo: PaymentInfo
   customPaymentAddresses: CustomPaymentAddress[]
   startAfter?: string
-  limit?: string
+  limit?: number
 }
 
 export interface FeeModuleActions {
@@ -30,7 +30,7 @@ export interface FeeModuleActions {
     customPaymentAddresses: CustomPaymentAddress[]
   ) => void
   setStartAfter: (startAfter: string) => void
-  setLimit: (limit: string) => void
+  setLimit: (limit: number) => void
 }
 
 const initialState: FeeModuleStore = {
@@ -62,7 +62,7 @@ const useFeeModuleStore = create(
     ) => set((state) => ({ ...state, customPaymentAddresses })),
     setStartAfter: (startAfter: string) =>
       set((state) => ({ ...state, startAfter })),
-    setLimit: (limit: string) => set((state) => ({ ...state, limit })),
+    setLimit: (limit: number) => set((state) => ({ ...state, limit })),
   }))
 )
 

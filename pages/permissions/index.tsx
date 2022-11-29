@@ -1,10 +1,16 @@
 import { ContractHeader } from "components/contracts/ContractHeader"
 import { SectionBox } from "components/SectionBox"
 import { DOC_LINKS } from "config/docs"
+import Head from "next/head"
 
 const Permissions = () => {
   return (
     <div>
+      <Head>
+        <title>Permissions</title>
+        <meta property="og:title" content="Permissions" key="title" />
+      </Head>
+
       <ContractHeader
         title="Permissions"
         description="Permissions are dynamic set of rules on contracts."

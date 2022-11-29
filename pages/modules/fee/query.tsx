@@ -5,14 +5,19 @@ import { Dropdown } from "components/Dropdown"
 import { useWallet } from "@cosmos-kit/react"
 import { DOC_LINKS } from "config/docs"
 import { KompleClient } from "komplejs"
-import {
-  FeeModuleQueryForm,
-  FeeModuleQueryType,
-} from "components/forms/query/Fee"
 import Head from "next/head"
 import useFeeModuleStore from "store/modules/fee"
+import {
+  FeeModuleFixedFee,
+  FeeModuleFixedFees,
+  FeeModuleKeys,
+  FeeModulePercentageFee,
+  FeeModulePercentageFees,
+  FeeModuleTotalFixedFees,
+  FeeModuleTotalPercentageFees,
+} from "components/forms/query/fee"
 
-const QUERIES: FeeModuleQueryType[] = [
+const QUERIES = [
   "config",
   "percentage_fee",
   "fixed_fee",
@@ -28,7 +33,7 @@ export default function FeeModuleQuery() {
 
   const store = useFeeModuleStore((state) => state)
 
-  const [query, setQuery] = useState<FeeModuleQueryType>("")
+  const [queryMsg, setQueryMsg] = useState<string>("")
   const [response, setResponse] = useState<any>({})
 
   useEffect(() => {
@@ -38,7 +43,7 @@ export default function FeeModuleQuery() {
 
   const dropdownOnChange = (index: number) => {
     let value = QUERIES[index]
-    setQuery(value)
+    setQueryMsg(value)
   }
 
   const submit = async ({ contract }: { contract: string }) => {
@@ -52,7 +57,7 @@ export default function FeeModuleQuery() {
       const feeModule = await kompleClient.feeModule(contract)
       const queryClient = feeModule.queryClient
 
-      switch (query) {
+      switch (queryMsg) {
         case "config":
           return setResponse(await queryClient.config())
         case "percentage_fee": {
@@ -74,8 +79,8 @@ export default function FeeModuleQuery() {
         case "percentage_fees": {
           const msg = {
             moduleName: store.moduleName,
-            startAfter: store.startAfter === "" ? undefined : store.startAfter,
-            limit: store.limit === "" ? undefined : Number(store.limit),
+            startAfter: store.startAfter,
+            limit: store.limit,
           }
 
           return setResponse(await queryClient.percentageFees(msg))
@@ -83,8 +88,8 @@ export default function FeeModuleQuery() {
         case "fixed_fees": {
           const msg = {
             moduleName: store.moduleName,
-            startAfter: store.startAfter === "" ? undefined : store.startAfter,
-            limit: store.limit === "" ? undefined : Number(store.limit),
+            startAfter: store.startAfter,
+            limit: store.limit,
           }
 
           return setResponse(await queryClient.fixedFees(msg))
@@ -92,8 +97,8 @@ export default function FeeModuleQuery() {
         case "total_percentage_fees": {
           const msg = {
             moduleName: store.moduleName,
-            startAfter: store.startAfter === "" ? undefined : store.startAfter,
-            limit: store.limit === "" ? undefined : Number(store.limit),
+            startAfter: store.startAfter,
+            limit: store.limit,
           }
 
           return setResponse(await queryClient.totalPercentageFees(msg))
@@ -101,8 +106,8 @@ export default function FeeModuleQuery() {
         case "total_fixed_fees": {
           const msg = {
             moduleName: store.moduleName,
-            startAfter: store.startAfter === "" ? undefined : store.startAfter,
-            limit: store.limit === "" ? undefined : Number(store.limit),
+            startAfter: store.startAfter,
+            limit: store.limit,
           }
 
           return setResponse(await queryClient.totalFixedFees(msg))
@@ -114,8 +119,8 @@ export default function FeeModuleQuery() {
 
           const msg = {
             feeType: store.feeType,
-            startAfter: store.startAfter === "" ? undefined : store.startAfter,
-            limit: store.limit === "" ? undefined : Number(store.limit),
+            startAfter: store.startAfter,
+            limit: store.limit,
           }
 
           return setResponse(await queryClient.keys(msg))
@@ -154,7 +159,15 @@ export default function FeeModuleQuery() {
           placeholder="Select query message"
         />
 
-        <FeeModuleQueryForm query={query} />
+        {queryMsg === "percentage_fee" && <FeeModulePercentageFee />}
+        {queryMsg === "fixed_fee" && <FeeModuleFixedFee />}
+        {queryMsg === "percentage_fees" && <FeeModulePercentageFees />}
+        {queryMsg === "fixed_fees" && <FeeModuleFixedFees />}
+        {queryMsg === "total_percentage_fees" && (
+          <FeeModuleTotalPercentageFees />
+        )}
+        {queryMsg === "total_fixed_fees" && <FeeModuleTotalFixedFees />}
+        {queryMsg === "keys" && <FeeModuleKeys />}
       </ContractForm>
     </div>
   )

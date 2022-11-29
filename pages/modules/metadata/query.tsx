@@ -6,10 +6,6 @@ import { useWallet } from "@cosmos-kit/react"
 import { DOC_LINKS } from "config/docs"
 import { KompleClient } from "komplejs"
 import Head from "next/head"
-import {
-  TokenModuleMintedTokensPerAddress,
-  TokenModuleTokenLocks,
-} from "components/forms/query/token"
 import useMetadataModuleStore from "store/modules/metadata"
 import {
   MetadataModuleMetadata,
