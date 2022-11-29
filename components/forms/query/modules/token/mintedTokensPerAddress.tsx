@@ -1,22 +1,16 @@
 import { TextInput } from "components/TextInput"
-import useTokenModuleStore from "store/modules/token"
+import { useTokenModuleStore } from "store"
 
-export const TokenModuleApprove = () => {
+export const TokenModuleMintedTokensPerAddress = () => {
   const store = useTokenModuleStore((state) => state)
 
   return (
     <div>
       <TextInput
-        title="Operator"
+        title="Address"
         onChange={store.setRecipient}
         isRequired
         value={store.recipient}
-      />
-      <TextInput
-        title="Token ID"
-        onChange={store.setTokenId}
-        isRequired
-        value={store.tokenId}
       />
     </div>
   )

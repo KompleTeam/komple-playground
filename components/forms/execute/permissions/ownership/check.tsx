@@ -1,5 +1,5 @@
 import { JsonTextArea } from "components/JsonTextArea"
-import useOwnershipPermissionStore from "store/permissions/ownership"
+import { useOwnershipPermissionStore } from "store"
 
 export const OwnershipPermissionCheck = () => {
   const store = useOwnershipPermissionStore((state) => state)

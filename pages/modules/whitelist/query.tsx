@@ -6,11 +6,11 @@ import { useWallet } from "@cosmos-kit/react"
 import { DOC_LINKS } from "config/docs"
 import { KompleClient } from "komplejs"
 import Head from "next/head"
-import useWhitelistModuleStore from "store/modules/whitelist"
+import { useWhitelistModuleStore } from "store"
 import {
   WhitelistModuleIsMember,
   WhitelistModuleMembers,
-} from "components/forms/query/whitelist"
+} from "components/forms/query"
 
 const QUERIES = ["config", "members", "is_active", "is_member"]
 

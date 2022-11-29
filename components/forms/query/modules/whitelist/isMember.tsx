@@ -1,5 +1,5 @@
 import { TextInput } from "components/TextInput"
-import useWhitelistModuleStore from "store/modules/whitelist"
+import { useWhitelistModuleStore } from "store"
 
 export const WhitelistModuleIsMember = () => {
   const store = useWhitelistModuleStore((state) => state)

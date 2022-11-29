@@ -5,14 +5,17 @@ import { Dropdown } from "components/Dropdown"
 import { useWallet } from "@cosmos-kit/react"
 import { DOC_LINKS } from "config/docs"
 import {
-  MintModuleQueryForm,
-  MintModuleQueryType,
-  MintModuleQueryFormMsg,
+  MintModuleCollectionAddress,
+  MintModuleCollectionInfo,
+  MintModuleCollections,
+  MintModuleLinkedCollections,
+  MintModuleMintLock,
 } from "components/forms/query"
 import { KompleClient } from "komplejs"
 import Head from "next/head"
+import { useMintModuleStore } from "store"
 
-const QUERIES: MintModuleQueryType[] = [
+const QUERIES = [
   "config",
   "collection_address",
   "collection_info",
@@ -23,11 +26,12 @@ const QUERIES: MintModuleQueryType[] = [
   "mint_lock",
 ]
 
-export default function FeeModuleQuery() {
+export default function MintModuleQuery() {
   const { getSigningCosmWasmClient, offlineSigner } = useWallet()
 
-  const [queryMsg, setQueryMsg] = useState<MintModuleQueryType>("")
-  const [msg, setMsg] = useState<MintModuleQueryFormMsg>()
+  const store = useMintModuleStore((state) => state)
+
+  const [queryMsg, setQueryMsg] = useState<string>("")
   const [response, setResponse] = useState<any>({})
 
   const dropdownOnChange = (index: number) => {
@@ -46,47 +50,50 @@ export default function FeeModuleQuery() {
       const mintModule = await kompleClient.mintModule(contract)
       const queryClient = mintModule.queryClient
 
-      if (!msg) throw Error("msg is undefined")
-
       switch (queryMsg) {
         case "config":
           return setResponse(await queryClient.config())
-        case "collection_address":
-          return setResponse(
-            await queryClient.collectionAddress({
-              collectionId: Number(msg.collectionId),
-            })
-          )
-        case "collection_info":
-          return setResponse(
-            await queryClient.collectionInfo({
-              collectionId: Number(msg.collectionId),
-            })
-          )
+        case "collection_address": {
+          const msg = {
+            collectionId: store.collectionId,
+          }
+
+          return setResponse(await queryClient.collectionAddress(msg))
+        }
+        case "collection_info": {
+          const msg = {
+            collectionId: store.collectionId,
+          }
+
+          return setResponse(await queryClient.collectionInfo(msg))
+        }
         case "operators":
           return setResponse(await queryClient.operators())
-        case "linked_collections":
-          return setResponse(
-            await queryClient.linkedCollections({
-              collectionId: Number(msg.collectionId),
-            })
-          )
-        case "collections":
-          return setResponse(
-            await queryClient.collections({
-              blacklist: msg.isBlacklist,
-              startAfter: msg.startAfter,
-              limit: msg.limit,
-            })
-          )
+        case "linked_collections": {
+          const msg = {
+            collectionId: store.collectionId,
+          }
+
+          return setResponse(await queryClient.linkedCollections(msg))
+        }
+        case "collections": {
+          const msg = {
+            blacklist: store.isBlacklist,
+            startAfter: store.startAfter,
+            limit: store.limit,
+          }
+
+          return setResponse(await queryClient.collections(msg))
+        }
         case "creators":
           return setResponse(await queryClient.creators())
-        case "mint_lock":
-          return setResponse(
-            await queryClient.mintLock({
-              collectionId: Number(msg.collectionId),
-            })
-          )
+        case "mint_lock": {
+          const msg = {
+            collectionId: store.collectionId,
+          }
+
+          return setResponse(await queryClient.mintLock(msg))
+        }
       }
     } catch (error: any) {
       console.log(error)
@@ -125,7 +132,11 @@ export default function FeeModuleQuery() {
           placeholder="Select query message"
         />
 
-        <MintModuleQueryForm query={queryMsg} onChange={setMsg} />
+        {queryMsg === "collection_address" && <MintModuleCollectionAddress />}
+        {queryMsg === "collection_info" && <MintModuleCollectionInfo />}
+        {queryMsg === "linked_collections" && <MintModuleLinkedCollections />}
+        {queryMsg === "collections" && <MintModuleCollections />}
+        {queryMsg === "mint_lock" && <MintModuleMintLock />}
       </ContractForm>
     </div>
   )

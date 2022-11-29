@@ -1,5 +1,5 @@
 import { Switch } from "components/Switch"
-import useTokenModuleStore from "store/modules/token"
+import { useTokenModuleStore } from "store"
 
 export const TokenModuleUpdateLocks = () => {
   const store = useTokenModuleStore((state) => state)

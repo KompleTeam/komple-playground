@@ -7,7 +7,7 @@ import { KompleClient } from "komplejs"
 import { toBinary } from "@cosmjs/cosmwasm-stargate"
 import Head from "next/head"
 import { useWallet } from "@cosmos-kit/react"
-import useFeeModuleStore from "store/modules/fee"
+import { useFeeModuleStore } from "store"
 import {
   FeeModuleDistribute,
   FeeModuleRemoveFee,

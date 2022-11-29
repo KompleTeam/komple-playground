@@ -2,7 +2,7 @@ import { TextInput } from "components/TextInput"
 import { useMarketplaceModuleStore } from "store"
 import { isInteger } from "utils/isInteger"
 
-export const MarketplaceModuleListFixedToken = () => {
+export const MarketplaceModuleFixedListings = () => {
   const store = useMarketplaceModuleStore((state) => state)
 
   return (
@@ -16,20 +16,20 @@ export const MarketplaceModuleListFixedToken = () => {
         value={store.collectionId === 0 ? "" : store.collectionId.toString()}
       />
       <TextInput
-        title="Token ID"
+        title="Start After"
         onChange={(value) =>
-          store.setTokenId(isInteger(value) ? Number(value) : 0)
+          store.setStartAfter(isInteger(value) ? Number(value) : 0)
         }
         isRequired
-        value={store.tokenId === 0 ? "" : store.tokenId.toString()}
+        value={store.startAfter === 0 ? "" : store.startAfter?.toString()}
       />
       <TextInput
-        title="Price"
+        title="Limit"
         onChange={(value) =>
-          store.setPrice(isInteger(value) ? Number(value) : 0)
+          store.setLimit(isInteger(value) ? Number(value) : 0)
         }
         isRequired
-        value={store.price === 0 ? "" : store.price.toString()}
+        value={store.limit === 0 ? "" : store.limit?.toString()}
       />
     </div>
   )

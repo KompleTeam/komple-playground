@@ -1,5 +1,5 @@
 import { JsonTextArea } from "components/JsonTextArea"
-import useLinkPermissionStore from "store/permissions/link"
+import { useLinkPermissionStore } from "store"
 
 export const LinkPermissionCheck = () => {
   const store = useLinkPermissionStore((state) => state)

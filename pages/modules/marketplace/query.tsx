@@ -7,11 +7,11 @@ import { DOC_LINKS } from "config/docs"
 
 import { KompleClient } from "komplejs"
 import Head from "next/head"
-import useMarketplaceModuleStore from "store/modules/marketplace"
+import { useMarketplaceModuleStore } from "store"
 import {
   MarketplaceModuleFixedListing,
   MarketplaceModuleFixedListings,
-} from "components/forms/query/marketplace"
+} from "components/forms/query"
 
 const QUERIES = ["config", "fixed_listing", "fixed_listings", "operators"]
 

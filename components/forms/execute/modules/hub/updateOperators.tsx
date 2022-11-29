@@ -1,5 +1,5 @@
 import { TextInputList } from "components/TextInputList"
-import useHubModuleStore from "store/modules/hub"
+import { useHubModuleStore } from "store"
 
 export const HubModuleUpdateOperators = () => {
   const store = useHubModuleStore((state) => state)

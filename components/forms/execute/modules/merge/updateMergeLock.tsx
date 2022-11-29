@@ -1,5 +1,5 @@
 import { Switch } from "components/Switch"
-import useMergeModuleStore from "store/modules/merge"
+import { useMergeModuleStore } from "store"
 
 export const MergeModuleUpdateMergeLock = () => {
   const store = useMergeModuleStore((state) => state)

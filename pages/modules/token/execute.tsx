@@ -6,7 +6,7 @@ import { ContractHeader } from "components/contracts/ContractHeader"
 import { KompleClient } from "komplejs"
 import Head from "next/head"
 import { useWallet } from "@cosmos-kit/react"
-import useTokenModuleStore from "store/modules/token"
+import { useTokenModuleStore } from "store"
 import { toBinary } from "@cosmjs/cosmwasm-stargate"
 import {
   TokenModuleUpdateModuleOperators,
@@ -18,8 +18,8 @@ import {
   TokenModuleSendNFT,
   TokenModuleAdminTransferNFT,
   TokenModuleInitWhitelistContract,
-} from "components/forms/execute/modules"
-import { TokenModuleApprove } from "components/forms/query/token"
+  TokenModuleApprove,
+} from "components/forms/execute"
 
 const EXECUTES = [
   "approve",

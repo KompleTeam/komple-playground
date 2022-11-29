@@ -1,6 +1,6 @@
 import { JsonTextArea } from "components/JsonTextArea"
 import { TextInput } from "components/TextInput"
-import useHubModuleStore from "store/modules/hub"
+import { useHubModuleStore } from "store"
 import { isInteger } from "utils/isInteger"
 
 export const HubModuleMigrateContracts = () => {

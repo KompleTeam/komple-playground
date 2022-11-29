@@ -1,5 +1,5 @@
 import { TextInputList } from "components/TextInputList"
-import useTokenModuleStore from "store/modules/token"
+import { useTokenModuleStore } from "store"
 
 export const TokenModuleUpdateModuleOperators = () => {
   const store = useTokenModuleStore((state) => state)

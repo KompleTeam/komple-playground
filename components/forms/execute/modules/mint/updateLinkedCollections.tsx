@@ -1,6 +1,6 @@
 import { TextInput } from "components/TextInput"
 import { TextInputList } from "components/TextInputList"
-import useMintModuleStore from "store/modules/mint"
+import { useMintModuleStore } from "store"
 import { isInteger } from "utils/isInteger"
 
 export const MintModuleUpdateLinkedCollections = () => {

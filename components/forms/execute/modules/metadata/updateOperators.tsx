@@ -1,5 +1,5 @@
 import { TextInputList } from "components/TextInputList"
-import useMetadataModuleStore from "store/modules/metadata"
+import { useMetadataModuleStore } from "store"
 
 export const MetadataModuleUpdateOperators = () => {
   const store = useMetadataModuleStore((state) => state)

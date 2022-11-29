@@ -17,8 +17,8 @@ import {
   MintModuleUpdateLinkedCollections,
   MintModuleUpdateCreators,
   MintModuleUpdateCollectionStatus,
-} from "components/forms/execute/modules"
-import useMintModuleStore from "store/modules/mint"
+} from "components/forms/execute"
+import { useMintModuleStore } from "store"
 import { toBinary } from "@cosmjs/cosmwasm-stargate"
 import { isInteger } from "utils/isInteger"
 

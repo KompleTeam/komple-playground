@@ -7,8 +7,8 @@ import { KompleClient } from "komplejs"
 import Head from "next/head"
 import { useWallet } from "@cosmos-kit/react"
 import { toBinary } from "@cosmjs/cosmwasm-stargate"
-import useAttributePermissionStore from "store/permissions/attribute"
-import { AttributePermissionCheck } from "components/forms/execute/permissions/attribute"
+import { useAttributePermissionStore } from "store"
+import { AttributePermissionCheck } from "components/forms/execute"
 
 const EXECUTES = ["check"]
 

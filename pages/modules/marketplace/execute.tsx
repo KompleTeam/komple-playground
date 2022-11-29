@@ -14,8 +14,8 @@ import {
   MarketplaceModuleBuy,
   MarketplaceModulePermissionBuy,
   MarketplaceModuleUpdateOperators,
-} from "components/forms/execute/modules"
-import useMarketplaceModuleStore from "store/modules/marketplace"
+} from "components/forms/execute"
+import { useMarketplaceModuleStore } from "store"
 import { coin } from "@cosmjs/proto-signing"
 
 const EXECUTES = [

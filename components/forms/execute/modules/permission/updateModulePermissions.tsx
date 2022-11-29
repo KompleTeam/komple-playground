@@ -1,6 +1,6 @@
 import { TextInput } from "components/TextInput"
 import { TextInputList } from "components/TextInputList"
-import usePermissionModuleStore from "store/modules/permission"
+import { usePermissionModuleStore } from "store"
 
 export const PermissionModuleUpdateModulePermissions = () => {
   const store = usePermissionModuleStore((state) => state)

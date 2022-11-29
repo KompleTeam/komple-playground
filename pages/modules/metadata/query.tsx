@@ -6,13 +6,13 @@ import { useWallet } from "@cosmos-kit/react"
 import { DOC_LINKS } from "config/docs"
 import { KompleClient } from "komplejs"
 import Head from "next/head"
-import useMetadataModuleStore from "store/modules/metadata"
+import { useMetadataModuleStore } from "store"
 import {
   MetadataModuleMetadata,
   MetadataModuleMetadatas,
   MetadataModuleRawMetadata,
   MetadataModuleRawMetadatas,
-} from "components/forms/query/modules/metadata"
+} from "components/forms/query"
 
 const QUERIES = [
   "config",

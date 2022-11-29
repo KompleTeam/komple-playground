@@ -1,6 +1,6 @@
 import { Switch } from "components/Switch"
 import { TextInput } from "components/TextInput"
-import useMetadataModuleStore from "store/modules/metadata"
+import { useMetadataModuleStore } from "store"
 import { isInteger } from "utils/isInteger"
 
 export const MetadataModuleAddAttribute = () => {

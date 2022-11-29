@@ -28,6 +28,8 @@ export interface MintModuleStore {
   addresses: string[]
   isBlacklist: boolean
   permissionMsg: Record<string, unknown>
+  startAfter?: number
+  limit?: number
 }
 
 export interface MintModuleActions {
@@ -49,6 +51,8 @@ export interface MintModuleActions {
   setCollectionIds: (collectionsIds: number[]) => void
   setIsBlacklist: (isBlacklist: boolean) => void
   setPermissionMsg: (permissionMsg: Record<string, unknown>) => void
+  setStartAfter: (startAfter?: number) => void
+  setLimit: (limit?: number) => void
 }
 
 const initialState: MintModuleStore = {
@@ -92,6 +96,8 @@ const initialState: MintModuleStore = {
   collectionsIds: [],
   isBlacklist: false,
   permissionMsg: {},
+  startAfter: undefined,
+  limit: undefined,
 }
 
 const useMintModuleStore = create(
@@ -128,6 +134,9 @@ const useMintModuleStore = create(
       set((state) => ({ ...state, isBlacklist })),
     setPermissionMsg: (permissionMsg: Record<string, unknown>) =>
       set((state) => ({ ...state, permissionMsg })),
+    setStartAfter: (startAfter?: number) =>
+      set((state) => ({ ...state, startAfter })),
+    setLimit: (limit?: number) => set((state) => ({ ...state, limit })),
   }))
 )
 

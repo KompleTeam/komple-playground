@@ -1,6 +1,6 @@
 import { InputDateTime } from "components/InputDateTime"
 import { TextInput } from "components/TextInput"
-import useTokenModuleStore from "store/modules/token"
+import { useTokenModuleStore } from "store"
 import { isInteger } from "utils/isInteger"
 
 export const TokenModuleUpdateCollectionConfig = () => {

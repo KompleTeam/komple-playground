@@ -1,5 +1,5 @@
 import { JsonTextArea } from "components/JsonTextArea"
-import useAttributePermissionStore from "store/permissions/attribute"
+import { useAttributePermissionStore } from "store"
 
 export const AttributePermissionCheck = () => {
   const store = useAttributePermissionStore((state) => state)

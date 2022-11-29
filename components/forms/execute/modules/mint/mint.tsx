@@ -1,5 +1,5 @@
 import { TextInput } from "components/TextInput"
-import useMintModuleStore from "store/modules/mint"
+import { useMintModuleStore } from "store"
 import { isInteger } from "utils/isInteger"
 
 export const MintModuleMint = () => {

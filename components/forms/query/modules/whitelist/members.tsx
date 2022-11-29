@@ -1,5 +1,5 @@
 import { TextInput } from "components/TextInput"
-import useWhitelistModuleStore from "store/modules/whitelist"
+import { useWhitelistModuleStore } from "store"
 import { isInteger } from "utils/isInteger"
 
 export const WhitelistModuleMembers = () => {

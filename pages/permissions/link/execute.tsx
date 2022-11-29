@@ -7,8 +7,8 @@ import { KompleClient } from "komplejs"
 import Head from "next/head"
 import { useWallet } from "@cosmos-kit/react"
 import { toBinary } from "@cosmjs/cosmwasm-stargate"
-import useLinkPermissionStore from "store/permissions/link"
-import { LinkPermissionCheck } from "components/forms/execute/permissions/link"
+import { useLinkPermissionStore } from "store"
+import { LinkPermissionCheck } from "components/forms/execute"
 
 const EXECUTES = ["check"]
 

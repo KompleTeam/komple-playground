@@ -1,5 +1,5 @@
 import { Switch } from "components/Switch"
-import useMintModuleStore from "store/modules/mint"
+import { useMintModuleStore } from "store"
 
 export const MintModuleUpdatePublicCollectionCreation = () => {
   const store = useMintModuleStore((state) => state)

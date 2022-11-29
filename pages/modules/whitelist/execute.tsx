@@ -6,12 +6,12 @@ import { ContractHeader } from "components/contracts/ContractHeader"
 import { KompleClient } from "komplejs"
 import Head from "next/head"
 import { useWallet } from "@cosmos-kit/react"
-import useWhitelistModuleStore from "store/modules/whitelist"
+import { useWhitelistModuleStore } from "store"
 import {
   WhitelistModuleAddMembers,
   WhitelistModuleRemoveMembers,
   WhitelistModuleUpdateWhitelistConfig,
-} from "components/forms/execute/modules"
+} from "components/forms/execute"
 
 const EXECUTES = ["update_whitelist_config", "add_members", "remove_members"]
 

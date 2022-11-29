@@ -7,8 +7,8 @@ import { KompleClient } from "komplejs"
 import Head from "next/head"
 import { useWallet } from "@cosmos-kit/react"
 import { toBinary } from "@cosmjs/cosmwasm-stargate"
-import { OwnershipPermissionCheck } from "components/forms/execute/permissions/ownership"
-import useOwnershipPermissionStore from "store/permissions/ownership"
+import { OwnershipPermissionCheck } from "components/forms/execute"
+import { useOwnershipPermissionStore } from "store"
 
 const EXECUTES = ["check"]
 

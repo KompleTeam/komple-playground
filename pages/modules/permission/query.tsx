@@ -6,11 +6,11 @@ import { useWallet } from "@cosmos-kit/react"
 import { DOC_LINKS } from "config/docs"
 import { KompleClient } from "komplejs"
 import Head from "next/head"
-import usePermissionModuleStore from "store/modules/permission"
+import { usePermissionModuleStore } from "store"
 import {
   PermissionModuleModulePermissions,
   PermissionModulePermissionAddress,
-} from "components/forms/query/permission"
+} from "components/forms/query"
 
 const QUERIES = ["permission_address", "module_permissions", "operators"]
 

@@ -1,5 +1,5 @@
 import { Switch } from "components/Switch"
-import useMarketplaceModuleStore from "store/modules/marketplace"
+import { useMarketplaceModuleStore } from "store"
 
 export const MarketplaceModuleUpdateBuyLock = () => {
   const store = useMarketplaceModuleStore((state) => state)

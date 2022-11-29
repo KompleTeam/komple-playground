@@ -1,5 +1,5 @@
 import { TextInputList } from "components/TextInputList"
-import useMergeModuleStore from "store/modules/merge"
+import { useMergeModuleStore } from "store"
 
 export const MergeModuleUpdateOperators = () => {
   const store = useMergeModuleStore((state) => state)

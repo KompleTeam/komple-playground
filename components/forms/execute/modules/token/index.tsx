@@ -1,3 +1,4 @@
+import { TokenModuleApprove } from "./approve"
 import { TokenModuleTransferNFT } from "./transferNft"
 import { TokenModuleSendNFT } from "./sendNft"
 import { TokenModuleBurn } from "./burn"
@@ -9,6 +10,7 @@ import { TokenModuleAdminTransferNFT } from "./adminTransferNft"
 import { TokenModuleInitWhitelistContract } from "./initWhitelistContract"
 
 export {
+  TokenModuleApprove,
   TokenModuleTransferNFT,
   TokenModuleSendNFT,
   TokenModuleBurn,

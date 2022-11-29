@@ -8,7 +8,7 @@ import {
   Collections,
   Metadata,
 } from "komplejs/lib/cjs/types/ts-types/MintModule.types"
-import useMintModuleStore from "store/modules/mint"
+import { useMintModuleStore } from "store"
 import { isInteger } from "utils/isInteger"
 
 export const MintModuleCreateCollection = () => {

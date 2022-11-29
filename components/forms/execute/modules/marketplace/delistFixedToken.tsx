@@ -1,5 +1,5 @@
 import { TextInput } from "components/TextInput"
-import useMarketplaceModuleStore from "store/modules/marketplace"
+import { useMarketplaceModuleStore } from "store"
 import { isInteger } from "utils/isInteger"
 
 export const MarketplaceModuleDelistFixedToken = () => {

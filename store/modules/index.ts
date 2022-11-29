@@ -1,4 +1,5 @@
 import useFeeModuleStore from "./fee"
+import useHubModuleStore from "./hub"
 import useMarketplaceModuleStore from "./marketplace"
 import useMergeModuleStore from "./merge"
 import useMetadataModuleStore from "./metadata"
@@ -9,6 +10,7 @@ import useWhitelistModuleStore from "./whitelist"
 
 export {
   useFeeModuleStore,
+  useHubModuleStore,
   useMarketplaceModuleStore,
   useMergeModuleStore,
   useMetadataModuleStore,

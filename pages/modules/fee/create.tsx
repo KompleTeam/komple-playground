@@ -5,7 +5,7 @@ import { ContractForm } from "components/contracts/ContractLayout"
 import { DOC_LINKS } from "config/docs"
 import Head from "next/head"
 import { KompleClient } from "komplejs"
-import useFeeModuleStore from "store/modules/fee"
+import { useFeeModuleStore } from "store"
 import { useWallet } from "@cosmos-kit/react"
 
 export default function FeeModuleCreate() {

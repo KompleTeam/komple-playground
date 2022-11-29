@@ -6,7 +6,7 @@ import { useWallet } from "@cosmos-kit/react"
 import { DOC_LINKS } from "config/docs"
 import { KompleClient } from "komplejs"
 import Head from "next/head"
-import useFeeModuleStore from "store/modules/fee"
+import { useFeeModuleStore } from "store"
 import {
   FeeModuleFixedFee,
   FeeModuleFixedFees,
@@ -15,7 +15,7 @@ import {
   FeeModulePercentageFees,
   FeeModuleTotalFixedFees,
   FeeModuleTotalPercentageFees,
-} from "components/forms/query/fee"
+} from "components/forms/query"
 
 const QUERIES = [
   "config",

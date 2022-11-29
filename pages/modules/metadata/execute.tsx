@@ -6,7 +6,7 @@ import { ContractHeader } from "components/contracts/ContractHeader"
 import { KompleClient } from "komplejs"
 import Head from "next/head"
 import { useWallet } from "@cosmos-kit/react"
-import useMetadataModuleStore from "store/modules/metadata"
+import { useMetadataModuleStore } from "store"
 import {
   MetadataModuleAddAttribute,
   MetadataModuleAddMetadata,
@@ -16,7 +16,7 @@ import {
   MetadataModuleUpdateAttribute,
   MetadataModuleUpdateMetaInfo,
   MetadataModuleUpdateOperators,
-} from "components/forms/execute/modules"
+} from "components/forms/execute"
 
 const EXECUTES = [
   "add_metadata",

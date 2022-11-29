@@ -1,6 +1,6 @@
 import { JsonTextArea } from "components/JsonTextArea"
 import { TextInput } from "components/TextInput"
-import usePermissionModuleStore from "store/modules/permission"
+import { usePermissionModuleStore } from "store"
 
 export const PermissionModuleCheck = () => {
   const store = usePermissionModuleStore((state) => state)

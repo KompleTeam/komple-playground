@@ -2,7 +2,7 @@ import { JsonTextArea } from "components/JsonTextArea"
 import { Seperator } from "components/Seperator"
 import { TextInput } from "components/TextInput"
 import { TextMultiInputList } from "components/TextMultiInputList"
-import useMergeModuleStore from "store/modules/merge"
+import { useMergeModuleStore } from "store"
 import { isInteger } from "utils/isInteger"
 
 export const MergeModulePermissionMerge = () => {

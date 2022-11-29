@@ -1,5 +1,5 @@
 import { TextInput } from "components/TextInput"
-import usePermissionModuleStore from "store/modules/permission"
+import { usePermissionModuleStore } from "store"
 
 export const PermissionModulePermissionAddress = () => {
   const store = usePermissionModuleStore((state) => state)

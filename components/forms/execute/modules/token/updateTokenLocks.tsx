@@ -1,6 +1,6 @@
 import { Switch } from "components/Switch"
 import { TextInput } from "components/TextInput"
-import useTokenModuleStore from "store/modules/token"
+import { useTokenModuleStore } from "store"
 
 export const TokenModuleUpdateTokenLocks = () => {
   const store = useTokenModuleStore((state) => state)

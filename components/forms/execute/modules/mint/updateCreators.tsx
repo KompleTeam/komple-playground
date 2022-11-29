@@ -1,5 +1,5 @@
 import { TextInputList } from "components/TextInputList"
-import useMintModuleStore from "store/modules/mint"
+import { useMintModuleStore } from "store"
 
 export const MintModuleUpdateCreators = () => {
   const store = useMintModuleStore((state) => state)

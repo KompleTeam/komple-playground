@@ -7,13 +7,13 @@ import { KompleClient } from "komplejs"
 import { toBinary } from "@cosmjs/cosmwasm-stargate"
 import Head from "next/head"
 import { useWallet } from "@cosmos-kit/react"
-import usePermissionModuleStore from "store/modules/permission"
+import { usePermissionModuleStore } from "store"
 import {
   PermissionModuleCheck,
   PermissionModuleRegisterPermission,
   PermissionModuleUpdateModulePermissions,
   PermissionModuleUpdateOperators,
-} from "components/forms/execute/modules"
+} from "components/forms/execute"
 
 const EXECUTES = [
   "register_permission",

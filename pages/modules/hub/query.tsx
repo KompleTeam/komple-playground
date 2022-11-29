@@ -6,8 +6,8 @@ import { useWallet } from "@cosmos-kit/react"
 import { DOC_LINKS } from "config/docs"
 import { KompleClient } from "komplejs"
 import Head from "next/head"
-import useHubModuleStore from "store/modules/hub"
-import { HubModuleModuleAddress } from "components/forms/query/hub"
+import { useHubModuleStore } from "store"
+import { HubModuleModuleAddress } from "components/forms/query"
 
 const QUERIES = ["config", "module_address", "operators"]
 

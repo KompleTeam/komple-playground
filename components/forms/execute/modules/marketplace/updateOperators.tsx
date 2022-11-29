@@ -1,5 +1,5 @@
 import { TextInputList } from "components/TextInputList"
-import useMarketplaceModuleStore from "store/modules/marketplace"
+import { useMarketplaceModuleStore } from "store"
 
 export const MarketplaceModuleUpdateOperators = () => {
   const store = useMarketplaceModuleStore((state) => state)

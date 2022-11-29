@@ -9,8 +9,8 @@ import Head from "next/head"
 import {
   TokenModuleMintedTokensPerAddress,
   TokenModuleTokenLocks,
-} from "components/forms/query/token"
-import useTokenModuleStore from "store/modules/token"
+} from "components/forms/query"
+import { useTokenModuleStore } from "store"
 
 const QUERIES = [
   "config",

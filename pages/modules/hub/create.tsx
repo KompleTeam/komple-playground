@@ -6,7 +6,7 @@ import { ContractForm } from "components/contracts/ContractLayout"
 import { DOC_LINKS } from "config/docs"
 import Head from "next/head"
 import { KompleClient } from "komplejs"
-import useHubModuleStore from "store/modules/hub"
+import { useHubModuleStore } from "store"
 
 export default function HubModuleCreate() {
   const { getSigningCosmWasmClient, offlineSigner, address } = useWallet()

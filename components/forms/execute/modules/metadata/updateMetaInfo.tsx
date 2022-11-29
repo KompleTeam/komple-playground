@@ -1,6 +1,6 @@
 import { Seperator } from "components/Seperator"
 import { TextInput } from "components/TextInput"
-import useMetadataModuleStore from "store/modules/metadata"
+import { useMetadataModuleStore } from "store"
 
 export const MetadataModuleUpdateMetaInfo = () => {
   const store = useMetadataModuleStore((state) => state)

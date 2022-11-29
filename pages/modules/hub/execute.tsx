@@ -7,14 +7,14 @@ import { KompleClient } from "komplejs"
 import { toBinary } from "@cosmjs/cosmwasm-stargate"
 import Head from "next/head"
 import { useWallet } from "@cosmos-kit/react"
-import useHubModuleStore from "store/modules/hub"
+import { useHubModuleStore } from "store"
 import {
   HubModuleDeregisterModule,
   HubModuleMigrateContracts,
   HubModuleRegisterModule,
   HubModuleUpdateHubInfo,
   HubModuleUpdateOperators,
-} from "components/forms/execute/modules"
+} from "components/forms/execute"
 
 const EXECUTES = [
   "register_module",

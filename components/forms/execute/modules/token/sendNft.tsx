@@ -1,6 +1,6 @@
 import { JsonTextArea } from "components/JsonTextArea"
 import { TextInput } from "components/TextInput"
-import useTokenModuleStore from "store/modules/token"
+import { useTokenModuleStore } from "store"
 
 export const TokenModuleSendNFT = () => {
   const store = useTokenModuleStore((state) => state)

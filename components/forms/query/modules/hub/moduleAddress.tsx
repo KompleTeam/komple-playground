@@ -1,5 +1,5 @@
 import { TextInput } from "components/TextInput"
-import useHubModuleStore from "store/modules/hub"
+import { useHubModuleStore } from "store"
 
 export const HubModuleModuleAddress = () => {
   const store = useHubModuleStore((state) => state)

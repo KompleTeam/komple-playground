@@ -1,7 +1,7 @@
 import { InputDateTime } from "components/InputDateTime"
 import { TextInput } from "components/TextInput"
 import { TextInputList } from "components/TextInputList"
-import useTokenModuleStore from "store/modules/token"
+import { useTokenModuleStore } from "store"
 import { isInteger } from "utils/isInteger"
 
 export const TokenModuleInitWhitelistContract = () => {

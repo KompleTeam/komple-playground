@@ -1,7 +1,7 @@
 import { Dropdown } from "components/Dropdown"
 import { TextInput } from "components/TextInput"
 import { Listing } from "komplejs/lib/cjs/types/ts-types/MarketplaceModule.types"
-import useMarketplaceModuleStore from "store/modules/marketplace"
+import { useMarketplaceModuleStore } from "store"
 import { isInteger } from "utils/isInteger"
 
 export const MarketplaceModulePermissionBuy = () => {

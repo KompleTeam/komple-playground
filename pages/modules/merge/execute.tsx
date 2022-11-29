@@ -7,13 +7,13 @@ import { KompleClient } from "komplejs"
 import Head from "next/head"
 import { useWallet } from "@cosmos-kit/react"
 import { toBinary } from "@cosmjs/cosmwasm-stargate"
-import useMergeModuleStore from "store/modules/merge"
+import { useMergeModuleStore } from "store"
 import {
   MergeModuleMerge,
   MergeModulePermissionMerge,
   MergeModuleUpdateMergeLock,
   MergeModuleUpdateOperators,
-} from "components/forms/execute/modules"
+} from "components/forms/execute"
 
 const EXECUTES = [
   "update_merge_lock",
