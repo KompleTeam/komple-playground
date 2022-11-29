@@ -10,7 +10,7 @@ import {
   FeeModuleQueryType,
 } from "components/forms/query/Fee"
 import Head from "next/head"
-import { useFeeModuleStore } from "store"
+import useFeeModuleStore from "store/modules/fee"
 
 const QUERIES: FeeModuleQueryType[] = [
   "config",

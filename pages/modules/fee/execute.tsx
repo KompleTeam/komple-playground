@@ -11,7 +11,7 @@ import {
 import { toBinary } from "@cosmjs/cosmwasm-stargate"
 import Head from "next/head"
 import { useWallet } from "@cosmos-kit/react"
-import { useFeeModuleStore } from "store"
+import useFeeModuleStore from "store/modules/fee"
 
 const EXECUTES: FeeModuleExecuteType[] = [
   "set_fee",
