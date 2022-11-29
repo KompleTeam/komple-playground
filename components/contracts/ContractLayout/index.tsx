@@ -4,6 +4,7 @@ import { JsonViewer } from "../../JsonViewer"
 import { TextInput } from "components/TextInput"
 import { useRouter } from "next/router"
 import { Button } from "components/Button"
+import { isInteger } from "utils/isInteger"
 
 type ActionType = "create" | "execute" | "query"
 
@@ -21,12 +22,12 @@ export const ContractForm = ({
   isModule: boolean
   response: Record<string, unknown>
   action: ActionType
-  submit: ({ contract, codeId }: { contract: string; codeId: string }) => void
+  submit: ({ contract, codeId }: { contract: string; codeId: number }) => void
   hidden?: string[]
 }) => {
   const router = useRouter()
 
-  const [codeId, setCodeId] = useState("")
+  const [codeId, setCodeId] = useState(0)
   const [contract, setContract] = useState(
     typeof router.query.contractAddress === "string"
       ? router.query.contractAddress
@@ -61,9 +62,12 @@ export const ContractForm = ({
         {action === "create" && (
           <TextInput
             title="Code ID"
-            onChange={setCodeId}
-            value={codeId}
-            placeholder="Code ID of the uploaded contract"
+            subtitle="The code ID of the contract to create"
+            onChange={(value) =>
+              setCodeId(isInteger(value) ? parseInt(value) : 0)
+            }
+            value={codeId === 0 ? "" : codeId.toString()}
+            placeholder="10"
             isRequired
           />
         )}
@@ -71,8 +75,9 @@ export const ContractForm = ({
         {(action === "query" || action === "execute") && (
           <TextInput
             title="Contract Address"
+            subtitle={`Address of the contract to ${action}`}
             onChange={contractOnChange}
-            placeholder="juno1..."
+            placeholder="juno...."
             value={contract}
             isRequired
           />

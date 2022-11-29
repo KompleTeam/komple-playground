@@ -18,7 +18,7 @@ import {
 } from "components/forms/query"
 
 const QUERIES = [
-  "config",
+  "contract_config",
   "percentage_fee",
   "fixed_fee",
   "percentage_fees",
@@ -58,7 +58,7 @@ export default function FeeModuleQuery() {
       const queryClient = feeModule.queryClient
 
       switch (queryMsg) {
-        case "config":
+        case "contract_config":
           return setResponse(await queryClient.config())
         case "percentage_fee": {
           const msg = {

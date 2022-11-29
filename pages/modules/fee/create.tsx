@@ -20,7 +20,7 @@ export default function FeeModuleCreate() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const submit = async ({ codeId }: { codeId: string }) => {
+  const submit = async ({ codeId }: { codeId: number }) => {
     const signingClient = await getSigningCosmWasmClient()
     if (signingClient === undefined || offlineSigner === undefined) {
       throw new Error("No signing client")
@@ -30,7 +30,7 @@ export default function FeeModuleCreate() {
     const feeModule = await kompleClient.feeModule("")
 
     const res = await feeModule.instantiate({
-      codeId: parseInt(codeId),
+      codeId,
       admin: store.admin,
     })
     setResponse(res)
@@ -60,7 +60,7 @@ export default function FeeModuleCreate() {
         submit={submit}
       >
         <TextInput
-          title="Admin"
+          title="Admin Address"
           subtitle="Address of the contract admin"
           placeholder="juno..."
           onChange={store.setAdmin}

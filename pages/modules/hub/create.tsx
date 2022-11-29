@@ -15,7 +15,7 @@ export default function HubModuleCreate() {
 
   const [response, setResponse] = useState({})
 
-  const submit = async ({ codeId }: { codeId: string }) => {
+  const submit = async ({ codeId }: { codeId: number }) => {
     try {
       const signingClient = await getSigningCosmWasmClient()
       if (signingClient === undefined || offlineSigner === undefined) {
@@ -26,7 +26,7 @@ export default function HubModuleCreate() {
       const hubModule = await kompleClient.hubModule("")
 
       const res = await hubModule.instantiate({
-        codeId: parseInt(codeId),
+        codeId,
         admin: store.admin || address,
         hubInfo: store.hubInfo,
         marbuFeeModule: store.marbuFeeModule,

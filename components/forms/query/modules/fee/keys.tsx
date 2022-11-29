@@ -17,6 +17,7 @@ export const FeeModuleKeys = () => {
       <Dropdown
         items={["percentage", "fixed"]}
         title="Fee Type"
+        subtitle="Type of fee"
         onChange={feeTypeOnChange}
         placeholder="Select Fee Type"
         isRequired
@@ -24,15 +25,15 @@ export const FeeModuleKeys = () => {
       <TextInput
         title="Start After"
         onChange={(value) => store.setStartAfter(value !== "" ? value : "")}
-        isRequired
         value={store.startAfter?.toString()}
       />
       <TextInput
         title="Limit"
+        subtitle="Maximum number of fees to return"
+        placeholder="20"
         onChange={(value) =>
           store.setLimit(isInteger(value) ? Number(value) : 0)
         }
-        isRequired
         value={store.limit === 0 ? "" : store.limit?.toString()}
       />
     </div>

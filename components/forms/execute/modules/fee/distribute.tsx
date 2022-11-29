@@ -25,12 +25,15 @@ export const FeeModuleDistribute = () => {
       <Dropdown
         items={["percentage", "fixed"]}
         title="Fee Type"
+        subtitle="Type of fee"
         onChange={feeTypeOnChange}
         placeholder="Select Fee Type"
         isRequired
       />
       <TextInput
         title="Module Name"
+        subtitle="Name of module the fee is set for"
+        placeholder="marketplace"
         onChange={store.setModuleName}
         isRequired
         value={store.moduleName}
@@ -38,6 +41,7 @@ export const FeeModuleDistribute = () => {
       <TextMultiInputList
         onChange={attributeOnChange}
         titles={["Fee Name", "Custom Address"]}
+        placeholder={["transaction", "juno...."]}
       />
     </div>
   )
