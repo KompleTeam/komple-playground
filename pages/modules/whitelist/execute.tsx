@@ -11,7 +11,7 @@ import {
   WhitelistModuleAddMembers,
   WhitelistModuleRemoveMembers,
   WhitelistModuleUpdateWhitelistConfig,
-} from "components/forms/execute/whitelist"
+} from "components/forms/execute/modules"
 
 const EXECUTES = ["update_whitelist_config", "add_members", "remove_members"]
 

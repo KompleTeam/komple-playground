@@ -14,7 +14,7 @@ import {
   HubModuleRegisterModule,
   HubModuleUpdateHubInfo,
   HubModuleUpdateOperators,
-} from "components/forms/execute/hub"
+} from "components/forms/execute/modules"
 
 const EXECUTES = [
   "register_module",

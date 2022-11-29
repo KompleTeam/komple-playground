@@ -13,7 +13,7 @@ import {
   MergeModulePermissionMerge,
   MergeModuleUpdateMergeLock,
   MergeModuleUpdateOperators,
-} from "components/forms/execute/merge"
+} from "components/forms/execute/modules"
 
 const EXECUTES = [
   "update_merge_lock",

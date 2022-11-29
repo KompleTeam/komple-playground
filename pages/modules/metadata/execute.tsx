@@ -16,7 +16,7 @@ import {
   MetadataModuleUpdateAttribute,
   MetadataModuleUpdateMetaInfo,
   MetadataModuleUpdateOperators,
-} from "components/forms/execute/metadata"
+} from "components/forms/execute/modules"
 
 const EXECUTES = [
   "add_metadata",

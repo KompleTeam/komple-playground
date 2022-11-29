@@ -18,7 +18,7 @@ import {
   TokenModuleSendNFT,
   TokenModuleAdminTransferNFT,
   TokenModuleInitWhitelistContract,
-} from "components/forms/execute/token"
+} from "components/forms/execute/modules"
 import { TokenModuleApprove } from "components/forms/query/token"
 
 const EXECUTES = [

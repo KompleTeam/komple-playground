@@ -14,7 +14,7 @@ import {
   MarketplaceModuleBuy,
   MarketplaceModulePermissionBuy,
   MarketplaceModuleUpdateOperators,
-} from "components/forms/execute/marketplace"
+} from "components/forms/execute/modules"
 import useMarketplaceModuleStore from "store/modules/marketplace"
 import { coin } from "@cosmjs/proto-signing"
 
@@ -29,7 +29,7 @@ const EXECUTES = [
   "lock_execute",
 ]
 
-export default function MintModuleExecute() {
+export default function MarketplaceModuleExecute() {
   const { getSigningCosmWasmClient, offlineSigner } = useWallet()
 
   const store = useMarketplaceModuleStore((state) => state)

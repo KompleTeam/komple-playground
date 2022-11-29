@@ -6,17 +6,19 @@ import { ContractHeader } from "components/contracts/ContractHeader"
 import { KompleClient } from "komplejs"
 import Head from "next/head"
 import { useWallet } from "@cosmos-kit/react"
-import { MintModuleCreateCollection } from "components/forms/execute/mint/createCollection"
+import {
+  MintModuleCreateCollection,
+  MintModuleMint,
+  MintModuleUpdateCollectionMintLock,
+  MintModuleUpdatePublicCollectionCreation,
+  MintModuleAdminMint,
+  MintModulePermissionMint,
+  MintModuleUpdateOperators,
+  MintModuleUpdateLinkedCollections,
+  MintModuleUpdateCreators,
+  MintModuleUpdateCollectionStatus,
+} from "components/forms/execute/modules"
 import useMintModuleStore from "store/modules/mint"
-import { MintModuleMint } from "components/forms/execute/mint/mint"
-import { MintModuleUpdateCollectionMintLock } from "components/forms/execute/mint/updateCollectionMintLock"
-import { MintModuleUpdatePublicCollectionCreation } from "components/forms/execute/mint/updatePublicCollectionCreation"
-import { MintModuleAdminMint } from "components/forms/execute/mint/adminMint"
-import { MintModulePermissionMint } from "components/forms/execute/mint/permissionMint"
-import { MintModuleUpdateOperators } from "components/forms/execute/mint/updateOperators"
-import { MintModuleUpdateLinkedCollections } from "components/forms/execute/mint/updateLinkedCollections"
-import { MintModuleUpdateCreators } from "components/forms/execute/mint/updateCreators"
-import { MintModuleUpdateCollectionStatus } from "components/forms/execute/mint/updateCollectionStatus"
 import { toBinary } from "@cosmjs/cosmwasm-stargate"
 import { isInteger } from "utils/isInteger"
 
@@ -34,7 +36,7 @@ const EXECUTES = [
   "update_creators",
 ]
 
-export default function FeeModuleExecute() {
+export default function MintModuleExecute() {
   const { getSigningCosmWasmClient, offlineSigner } = useWallet()
 
   const store = useMintModuleStore((state) => state)

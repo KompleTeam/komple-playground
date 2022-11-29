@@ -13,7 +13,7 @@ import {
   PermissionModuleRegisterPermission,
   PermissionModuleUpdateModulePermissions,
   PermissionModuleUpdateOperators,
-} from "components/forms/execute/permission"
+} from "components/forms/execute/modules"
 
 const EXECUTES = [
   "register_permission",
