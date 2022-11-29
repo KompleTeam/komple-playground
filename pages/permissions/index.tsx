@@ -14,17 +14,17 @@ const Permissions = () => {
       <div className="flex justify-center mt-[60px]">
         <SectionBox
           title="Attribute"
-          description="Fee management module."
+          description="Permission for comparing attribute values."
           link="/permissions/attribute/query"
         />
         <SectionBox
           title="Link"
-          description="Address registry module."
+          description="Permission for checking links between collections."
           link="/permissions/link/query"
         />
         <SectionBox
           title="Ownership"
-          description="Peer-to-peer marketplace module."
+          description="Permission for checking ownership of a token."
           link="/permissions/ownership/query"
         />
       </div>

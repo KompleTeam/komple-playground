@@ -14,51 +14,51 @@ const Modules = () => {
       <div className="flex justify-center mt-[60px]">
         <SectionBox
           title="Fee"
-          description="Fee management module."
+          description="Module for fee management and distribution."
           link="/modules/fee/create"
         />
         <SectionBox
           title="Hub"
-          description="Address registry module."
+          description="Module for module regisration and management."
           link="/modules/hub/create"
         />
         <SectionBox
           title="Marketplace"
-          description="Peer-to-peer marketplace module."
+          description="Module for peer-to-peer trading of tokens."
           link="/modules/marketplace/query"
         />
       </div>
       <div className="flex justify-center mt-[20px]">
         <SectionBox
           title="Merge"
-          description="Token merge module."
+          description="Module for merging multiple tokens into one."
           link="/modules/merge/query"
         />
         <SectionBox
           title="Metadata"
-          description="Metadata management module."
+          description="Module for token metadata management."
           link="/modules/metadata/query"
         />
         <SectionBox
           title="Mint"
-          description="Collection management module."
+          description="Module for collection management and minting."
           link="/modules/mint/query"
         />
       </div>
       <div className="flex justify-center mt-[20px]">
         <SectionBox
           title="Permission"
-          description="Permission registry module."
+          description="Module for permission registration and management."
           link="/modules/permission/query"
         />
         <SectionBox
           title="Token"
-          description="Token management module."
+          description="Module for token management and collection configuration."
           link="/modules/token/query"
         />
         <SectionBox
           title="Whitelist"
-          description="Collection whitelist management module."
+          description="Module for collection whitelist management."
           link="/modules/whitelist/query"
         />
       </div>
