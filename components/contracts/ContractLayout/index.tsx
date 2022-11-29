@@ -49,7 +49,12 @@ export const ContractForm = ({
   return (
     <div className="mt-20 flex">
       <div className="block">
-        <ContractTabs contract={name} isModule={isModule} hidden={hidden} />
+        <ContractTabs
+          address={contract}
+          contract={name}
+          isModule={isModule}
+          hidden={hidden}
+        />
       </div>
       <div className="w-20" />
       <div>

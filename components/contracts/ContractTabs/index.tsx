@@ -10,26 +10,17 @@ const ITEMS = [
 ]
 
 export const ContractTabs = ({
+  address,
   contract,
   isModule,
   hidden = [],
 }: {
+  address: string
   contract: string
   isModule: boolean
   hidden?: string[]
 }) => {
   const router = useRouter()
-
-  const [contractAddress, setContractAddress] = useState("")
-
-  useEffect(() => {
-    if (
-      router.query.contractAddress &&
-      typeof router.query.contractAddress === "string"
-    ) {
-      setContractAddress(router.query.contractAddress)
-    }
-  }, [router.query])
 
   return (
     <div className="flex sticky top-[100px]">
@@ -41,9 +32,7 @@ export const ContractTabs = ({
               href={`/${
                 isModule ? "modules" : "permissions"
               }/${contract.toLowerCase()}${item.href}${
-                contractAddress !== ""
-                  ? "?contractAddress=" + contractAddress
-                  : ""
+                address !== "" ? "?contractAddress=" + address : ""
               }`}
             >
               <div
