@@ -15,17 +15,17 @@ const Permissions = () => {
         <SectionBox
           title="Attribute"
           description="Fee management module."
-          link="/permissions/attribute/create"
+          link="/permissions/attribute/query"
         />
         <SectionBox
           title="Link"
           description="Address registry module."
-          link="/permissions/link/create"
+          link="/permissions/link/query"
         />
         <SectionBox
           title="Ownership"
           description="Peer-to-peer marketplace module."
-          link="/permissions/ownership/create"
+          link="/permissions/ownership/query"
         />
       </div>
     </div>
