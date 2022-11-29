@@ -46,10 +46,10 @@ export default function AttributePermissionQuery() {
   return (
     <div className="h-full w-full">
       <Head>
-        <title>Query Attribute Permission</title>
+        <title>Attribute Permission | Komple Framework Playground</title>
         <meta
           property="og:title"
-          content="Query Attribute Permission"
+          content="Attribute Permission | Komple Framework Playground"
           key="title"
         />
       </Head>

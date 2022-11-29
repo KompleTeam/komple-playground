@@ -56,10 +56,10 @@ export default function AttributePermissionExecute() {
   return (
     <div className="h-full w-full">
       <Head>
-        <title>Execute Attribute Permission</title>
+        <title>Attribute Permission | Komple Framework Playground</title>
         <meta
           property="og:title"
-          content="Execute Attribute Permission"
+          content="Attribute Permission | Komple Framework Playground"
           key="title"
         />
       </Head>

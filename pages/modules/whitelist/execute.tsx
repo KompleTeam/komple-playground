@@ -71,10 +71,10 @@ export default function WhitelistModuleExecute() {
   return (
     <div className="h-full w-full">
       <Head>
-        <title>Execute Whitelist Module</title>
+        <title>Whitelist Module | Komple Framework Playground</title>
         <meta
           property="og:title"
-          content="Execute Whitelist Module"
+          content="Whitelist Module | Komple Framework Playground"
           key="title"
         />
       </Head>

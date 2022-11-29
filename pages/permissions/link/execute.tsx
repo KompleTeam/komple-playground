@@ -56,10 +56,10 @@ export default function LinkPermissionExecute() {
   return (
     <div className="h-full w-full">
       <Head>
-        <title>Execute Link Permission</title>
+        <title>Link Permission | Komple Framework Playground</title>
         <meta
           property="og:title"
-          content="Execute Link Permission"
+          content="Link Permission | Komple Framework Playground"
           key="title"
         />
       </Head>

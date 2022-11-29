@@ -65,10 +65,10 @@ export default function FeeModuleQuery() {
   return (
     <div className="h-full w-full">
       <Head>
-        <title>Query Permission Module</title>
+        <title>Permission Module | Komple Framework Playground</title>
         <meta
           property="og:title"
-          content="Query Permission Module"
+          content="Permission Module | Komple Framework Playground"
           key="title"
         />
       </Head>

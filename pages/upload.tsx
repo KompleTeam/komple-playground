@@ -101,8 +101,12 @@ export const Upload = () => {
   return (
     <div className="h-full w-full">
       <Head>
-        <title>Upload Contract</title>
-        <meta property="og:title" content="Upload Contract" key="title" />
+        <title>Upload Contract | Komple Framework Playground</title>
+        <meta
+          property="og:title"
+          content="Upload Contract | Komple Framework Playground"
+          key="title"
+        />
       </Head>
 
       <ContractHeader

@@ -39,8 +39,12 @@ export default function FeeModuleCreate() {
   return (
     <div className="h-full w-full">
       <Head>
-        <title>Create Fee Module</title>
-        <meta property="og:title" content="Create Fee Module" key="title" />
+        <title>Fee Module | Komple Framework Playground</title>
+        <meta
+          property="og:title"
+          content="Fee Module | Komple Framework Playground"
+          key="title"
+        />
       </Head>
 
       <ContractHeader

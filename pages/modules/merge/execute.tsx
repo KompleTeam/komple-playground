@@ -101,8 +101,12 @@ export default function MergeModuleExecute() {
   return (
     <div className="h-full w-full">
       <Head>
-        <title>Execute Merge Module</title>
-        <meta property="og:title" content="Execute Merge Module" key="title" />
+        <title>Merge Module | Komple Framework Playground</title>
+        <meta
+          property="og:title"
+          content="Merge Module | Komple Framework Playground"
+          key="title"
+        />
       </Head>
 
       <ContractHeader

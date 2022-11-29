@@ -46,10 +46,10 @@ export default function OwnershipPermissionQuery() {
   return (
     <div className="h-full w-full">
       <Head>
-        <title>Query Ownership Permission</title>
+        <title>Ownership Permission | Komple Framework Playground</title>
         <meta
           property="og:title"
-          content="Query Ownership Permission"
+          content="Ownership Permission | Komple Framework Playground"
           key="title"
         />
       </Head>

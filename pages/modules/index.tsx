@@ -7,8 +7,12 @@ const Modules = () => {
   return (
     <div>
       <Head>
-        <title>Modules</title>
-        <meta property="og:title" content="Modules" key="title" />
+        <title>Modules | Komple Framework Playground</title>
+        <meta
+          property="og:title"
+          content="Modules | Komple Framework Playground"
+          key="title"
+        />
       </Head>
 
       <ContractHeader

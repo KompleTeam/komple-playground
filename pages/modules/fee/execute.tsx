@@ -99,8 +99,12 @@ export default function FeeModuleExecute() {
   return (
     <div className="h-full w-full">
       <Head>
-        <title>Execute Fee Module</title>
-        <meta property="og:title" content="Execute Fee Module" key="title" />
+        <title>Fee Module | Komple Framework Playground</title>
+        <meta
+          property="og:title"
+          content="Fee Module | Komple Framework Playground"
+          key="title"
+        />
       </Head>
 
       <ContractHeader

@@ -97,10 +97,10 @@ export default function PermissionModuleExecute() {
   return (
     <div className="h-full w-full">
       <Head>
-        <title>Execute Permission Module</title>
+        <title>Permission Module | Komple Framework Playground</title>
         <meta
           property="og:title"
-          content="Execute Permission Module"
+          content="Permission Module | Komple Framework Playground"
           key="title"
         />
       </Head>

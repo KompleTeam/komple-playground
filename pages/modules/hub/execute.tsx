@@ -108,8 +108,12 @@ export default function HubModuleExecute() {
   return (
     <div className="h-full w-full">
       <Head>
-        <title>Execute Hub Module</title>
-        <meta property="og:title" content="Execute Hub Module" key="title" />
+        <title>Hub Module | Komple Framework Playground</title>
+        <meta
+          property="og:title"
+          content="Hub Module | Komple Framework Playground"
+          key="title"
+        />
       </Head>
 
       <ContractHeader

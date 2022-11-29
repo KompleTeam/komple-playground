@@ -92,10 +92,10 @@ export default function FeeModuleQuery() {
   return (
     <div className="h-full w-full">
       <Head>
-        <title>Execute Metadata Module</title>
+        <title>Metadata Module | Komple Framework Playground</title>
         <meta
           property="og:title"
-          content="Execute Metadata Module"
+          content="Metadata Module | Komple Framework Playground"
           key="title"
         />
       </Head>

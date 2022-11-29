@@ -56,17 +56,17 @@ export default function OwnershipPermissionExecute() {
   return (
     <div className="h-full w-full">
       <Head>
-        <title>Execute Ownership Permission</title>
+        <title>Ownership Permission | Komple Framework Playground</title>
         <meta
           property="og:title"
-          content="Execute Ownership Permission"
+          content="Ownership Permission | Komple Framework Playground"
           key="title"
         />
       </Head>
 
       <ContractHeader
         title="Ownership Permission"
-        description="Link Permission is used to check the ownership of an user for a token."
+        description="Ownership Permission is used to check the ownership of an user for a token."
         documentation={DOC_LINKS.permissions.ownership}
       />
       <ContractForm

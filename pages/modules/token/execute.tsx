@@ -179,8 +179,12 @@ export default function TokenModuleExecute() {
   return (
     <div className="h-full w-full">
       <Head>
-        <title>Execute Token Module</title>
-        <meta property="og:title" content="Execute Token Module" key="title" />
+        <title>Token Module | Komple Framework Playground</title>
+        <meta
+          property="og:title"
+          content="Token Module | Komple Framework Playground"
+          key="title"
+        />
       </Head>
 
       <ContractHeader

@@ -135,8 +135,12 @@ export default function FeeModuleQuery() {
   return (
     <div className="h-full w-full">
       <Head>
-        <title>Query Fee Module</title>
-        <meta property="og:title" content="Query Fee Module" key="title" />
+        <title>Fee Module | Komple Framework Playground</title>
+        <meta
+          property="og:title"
+          content="Fee Module | Komple Framework Playground"
+          key="title"
+        />
       </Head>
 
       <ContractHeader

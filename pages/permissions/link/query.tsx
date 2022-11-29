@@ -44,8 +44,12 @@ export default function LinkPermissionQuery() {
   return (
     <div className="h-full w-full">
       <Head>
-        <title>Query Link Permission</title>
-        <meta property="og:title" content="Query Link Permission" key="title" />
+        <title>Link Permission | Komple Framework Playground</title>
+        <meta
+          property="og:title"
+          content="Link Permission | Komple Framework Playground"
+          key="title"
+        />
       </Head>
 
       <ContractHeader

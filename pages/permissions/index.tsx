@@ -7,8 +7,12 @@ const Permissions = () => {
   return (
     <div>
       <Head>
-        <title>Permissions</title>
-        <meta property="og:title" content="Permissions" key="title" />
+        <title>Permissions | Komple Framework Playground</title>
+        <meta
+          property="og:title"
+          content="Permissions | Komple Framework Playground"
+          key="title"
+        />
       </Head>
 
       <ContractHeader
