@@ -13,7 +13,11 @@ import {
   WhitelistModuleUpdateWhitelistConfig,
 } from "components/forms/execute"
 
-const EXECUTES = ["update_whitelist_config", "add_members", "remove_members"]
+const EXECUTES = [
+  "update_whitelist_configuration",
+  "add_members_to_whitelist",
+  "remove_members_from_whitelist",
+]
 
 export default function WhitelistModuleExecute() {
   const { getSigningCosmWasmClient, offlineSigner } = useWallet()
@@ -40,21 +44,21 @@ export default function WhitelistModuleExecute() {
       const client = whitelistModule.client
 
       switch (executeMsg) {
-        case "update_whitelist_config": {
+        case "update_whitelist_configuration": {
           const msg = {
             whitelistConfig: store.config,
           }
 
           return setResponse(await client.updateWhitelistConfig(msg))
         }
-        case "add_members": {
+        case "add_members_to_whitelist": {
           const msg = {
             members: store.members,
           }
 
           return setResponse(await client.addMembers(msg))
         }
-        case "remove_members": {
+        case "remove_members_from_whitelist": {
           const msg = {
             members: store.members,
           }
@@ -99,11 +103,15 @@ export default function WhitelistModuleExecute() {
           placeholder="Select execute message"
         />
 
-        {executeMsg === "update_whitelist_config" && (
+        {executeMsg === "update_whitelist_configuration" && (
           <WhitelistModuleUpdateWhitelistConfig />
         )}
-        {executeMsg === "add_members" && <WhitelistModuleAddMembers />}
-        {executeMsg === "remove_members" && <WhitelistModuleRemoveMembers />}
+        {executeMsg === "add_members_to_whitelist" && (
+          <WhitelistModuleAddMembers />
+        )}
+        {executeMsg === "remove_members_from_whitelist" && (
+          <WhitelistModuleRemoveMembers />
+        )}
       </ContractForm>
     </div>
   )

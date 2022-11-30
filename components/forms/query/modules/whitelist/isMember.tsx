@@ -7,7 +7,9 @@ export const WhitelistModuleIsMember = () => {
   return (
     <div>
       <TextInput
-        title="Member"
+        title="Member Address"
+        subtitle="Address of the user to check membership"
+        placeholder="juno...."
         onChange={store.setMember}
         isRequired
         value={store.member}

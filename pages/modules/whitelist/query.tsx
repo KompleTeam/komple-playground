@@ -12,7 +12,12 @@ import {
   WhitelistModuleMembers,
 } from "components/forms/query"
 
-const QUERIES = ["config", "members", "is_active", "is_member"]
+const QUERIES = [
+  "get_contract_config",
+  "list_whitelist_members",
+  "check_whitelist_status",
+  "check_whitelist_membership",
+]
 
 export default function FeeModuleQuery() {
   const { getSigningCosmWasmClient, offlineSigner } = useWallet()
@@ -39,9 +44,9 @@ export default function FeeModuleQuery() {
       const client = whitelistModule.queryClient
 
       switch (queryMsg) {
-        case "config":
+        case "get_contract_config":
           return setResponse(await client.config())
-        case "members": {
+        case "list_whitelist_members": {
           const msg = {
             startAfter: store.startAfter,
             limit: store.limit,
@@ -49,9 +54,9 @@ export default function FeeModuleQuery() {
 
           return setResponse(await client.members(msg))
         }
-        case "is_active":
+        case "check_whitelist_status":
           return setResponse(await client.isActive())
-        case "is_member": {
+        case "check_whitelist_membership": {
           const msg = {
             member: store.member,
           }
@@ -96,8 +101,10 @@ export default function FeeModuleQuery() {
           placeholder="Select query message"
         />
 
-        {queryMsg === "members" && <WhitelistModuleMembers />}
-        {queryMsg === "is_member" && <WhitelistModuleIsMember />}
+        {queryMsg === "list_whitelist_members" && <WhitelistModuleMembers />}
+        {queryMsg === "check_whitelist_membership" && (
+          <WhitelistModuleIsMember />
+        )}
       </ContractForm>
     </div>
   )

@@ -9,7 +9,9 @@ export const WhitelistModuleUpdateWhitelistConfig = () => {
   return (
     <div>
       <TextInput
-        title="Per Address Limit"
+        title="Tokens Per Address Limit"
+        subtitle="The maximum number of tokens that can be minted per address"
+        placeholder="10"
         onChange={(value) =>
           store.setConfig({
             ...store.config,
@@ -23,7 +25,9 @@ export const WhitelistModuleUpdateWhitelistConfig = () => {
         }
       />
       <TextInput
-        title="Member Limit"
+        title="Whitelist Member Limit"
+        subtitle="The maximum number of members that can be added to the whitelist"
+        placeholder="150"
         onChange={(value) =>
           store.setConfig({
             ...store.config,
@@ -37,7 +41,8 @@ export const WhitelistModuleUpdateWhitelistConfig = () => {
         }
       />
       <InputDateTime
-        title="Start Time"
+        title="Whitelist Start Time"
+        subtitle="The time when minting starts - DD/MM/YYYY"
         minDate={new Date()}
         onChange={(date: Date) =>
           store.setConfig({
@@ -52,7 +57,8 @@ export const WhitelistModuleUpdateWhitelistConfig = () => {
         }
       />
       <InputDateTime
-        title="End Time"
+        title="Whitelist End Time"
+        subtitle="The time when minting ends - DD/MM/YYYY"
         minDate={new Date()}
         onChange={(date: Date) =>
           store.setConfig({

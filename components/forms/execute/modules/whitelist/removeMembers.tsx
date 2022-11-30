@@ -7,7 +7,9 @@ export const WhitelistModuleRemoveMembers = () => {
   return (
     <div>
       <TextInputList
-        title="Remove Members"
+        title="Member List"
+        subtitle="List of addresses"
+        placeholder="juno...."
         onChange={store.setMembers}
         value={store.members}
         isRequired

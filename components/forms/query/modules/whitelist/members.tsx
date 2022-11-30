@@ -8,13 +8,17 @@ export const WhitelistModuleMembers = () => {
   return (
     <div>
       <TextInput
-        title="Start After"
+        title="Pagination - Start After"
+        subtitle="Member address to start after - exclusive"
+        placeholder="juno...."
         onChange={store.setStartAfter}
         isRequired
         value={store.startAfter}
       />
       <TextInput
-        title="Limit"
+        title="Pagination - Limit"
+        subtitle="Maximum number of addresses to return"
+        placeholder="20"
         onChange={(value) =>
           store.setLimit(isInteger(value) ? Number(value) : 0)
         }
