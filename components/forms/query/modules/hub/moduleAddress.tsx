@@ -8,6 +8,8 @@ export const HubModuleModuleAddress = () => {
     <div>
       <TextInput
         title="Module Name"
+        subtitle="Name of module to resolve address for"
+        placeholder="marketplace"
         onChange={store.setModule}
         isRequired
         value={store.module}

@@ -8,6 +8,8 @@ export const HubModuleDeregisterModule = () => {
     <div>
       <TextInput
         title="Module Name"
+        subtitle="Name of module to deregister"
+        placeholder="marketplace"
         onChange={store.setModule}
         isRequired
         value={store.module}

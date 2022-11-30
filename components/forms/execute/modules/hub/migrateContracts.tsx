@@ -18,6 +18,8 @@ export const HubModuleMigrateContracts = () => {
     <div>
       <TextInput
         title="Code ID"
+        subtitle="Code ID of contract to migrate"
+        placeholder="10"
         onChange={(value) =>
           store.setCodeId(isInteger(value) ? Number(value) : 0)
         }
@@ -26,11 +28,17 @@ export const HubModuleMigrateContracts = () => {
       />
       <TextInput
         title="Contract Address"
+        subtitle="Address of contract to migrate"
+        placeholder="juno...."
         onChange={store.setContractAddress}
         isRequired
         value={store.contractAddress}
       />
-      <JsonTextArea title="Migration Message" onChange={parseMsg} />
+      <JsonTextArea
+        title="Migration Message"
+        subtitle="Migration message to send to contract"
+        onChange={parseMsg}
+      />
     </div>
   )
 }

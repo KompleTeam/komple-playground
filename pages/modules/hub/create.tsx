@@ -29,7 +29,7 @@ export default function HubModuleCreate() {
         codeId,
         admin: store.admin || address,
         hubInfo: store.hubInfo,
-        marbuFeeModule: store.marbuFeeModule,
+        // marbuFeeModule: store.marbuFeeModule,
       })
       setResponse(res)
     } catch (error: any) {
@@ -99,14 +99,14 @@ export default function HubModuleCreate() {
           }
           value={store.hubInfo.external_link?.toString()}
         />
-        <TextInput
+        {/* <TextInput
           title="Marbu Fee Module"
           subtitle="Marbu Fee Module address"
-          placeholder="juno1..."
+          placeholder="juno...."
           onChange={(value) =>
             store.setMarbuFeeModule(value === "" ? undefined : value)
           }
-        />
+        /> */}
       </ContractForm>
     </div>
   )

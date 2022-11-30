@@ -18,6 +18,8 @@ export const HubModuleRegisterModule = () => {
     <div>
       <TextInput
         title="Code ID"
+        subtitle="Code ID of module to register"
+        placeholder="10"
         onChange={(value) =>
           store.setCodeId(isInteger(value) ? Number(value) : 0)
         }
@@ -26,11 +28,22 @@ export const HubModuleRegisterModule = () => {
       />
       <TextInput
         title="Module Name"
+        subtitle="Name of module to register"
+        placeholder="marketplace"
         onChange={store.setModule}
         isRequired
         value={store.module}
       />
-      <JsonTextArea title="Register Message" onChange={parseMsg} />
+      <JsonTextArea
+        title="Register Message"
+        onChange={parseMsg}
+        placeholder={`{
+          "fund_info": {
+            "is_native": true,
+            "denom": "ujunox"
+          }
+}`}
+      />
     </div>
   )
 }

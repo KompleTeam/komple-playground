@@ -9,7 +9,7 @@ import Head from "next/head"
 import { useHubModuleStore } from "store"
 import { HubModuleModuleAddress } from "components/forms/query"
 
-const QUERIES = ["config", "module_address", "operators"]
+const QUERIES = ["contract_config", "module_address", "contract_operators"]
 
 export default function HubModuleQuery() {
   const { getSigningCosmWasmClient, offlineSigner } = useWallet()
@@ -36,7 +36,7 @@ export default function HubModuleQuery() {
       const queryClient = hubModule.queryClient
 
       switch (queryMsg) {
-        case "config":
+        case "contract_config":
           return setResponse(await queryClient.config())
         case "module_address": {
           const msg = {
@@ -45,7 +45,7 @@ export default function HubModuleQuery() {
 
           return setResponse(await queryClient.moduleAddress(msg))
         }
-        case "operators":
+        case "contract_operators":
           return setResponse(await queryClient.operators())
       }
     } catch (error: any) {
