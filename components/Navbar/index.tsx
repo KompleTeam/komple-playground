@@ -62,73 +62,75 @@ export const Navbar = () => {
   return (
     <div
       className={clsx(
-        "h-[96px] w-full px-[64px] fixed bg-komple-black-400",
-        "flex justify-between items-center z-20"
+        "h-[96px] w-full fixed bg-komple-black-600 border-b-[1px] border-komple-black-500",
+        "flex items-center justify-center z-20"
       )}
     >
-      <div className="w-[200px]">
-        <Link href="/">
-          <Logo />
-        </Link>
-      </div>
+      <div className="flex items-center justify-between max-w-[1440px] w-[1440px]">
+        <div className="w-[200px]">
+          <Link href="/">
+            <Logo />
+          </Link>
+        </div>
 
-      <div className="flex">
-        <HoverDropdown
-          text="Modules"
-          data={MODULES}
-          right
-          urls={CONTRACT_URLS}
-        />
-        <div className="w-[32px]" />
-        <HoverDropdown
-          text="Permissions"
-          data={PERMISSIONS}
-          left
-          urls={CONTRACT_URLS}
-        />
-        <div className="w-[32px]" />
-        <Link href="/upload" className="text-white">
-          UPLOAD CONTRACT
-        </Link>
-      </div>
+        <div className="flex">
+          <HoverDropdown
+            text="Modules"
+            data={MODULES}
+            right
+            urls={CONTRACT_URLS}
+          />
+          <div className="w-[32px]" />
+          <HoverDropdown
+            text="Permissions"
+            data={PERMISSIONS}
+            left
+            urls={CONTRACT_URLS}
+          />
+          <div className="w-[32px]" />
+          <Link href="/upload" className="text-white">
+            UPLOAD CONTRACT
+          </Link>
+        </div>
 
-      <div className="w-[200px] flex justify-end">
-        {isConnected ? (
-          <div>
-            <div className="flex justify-end items-center">
-              <button onClick={handleConnect}>
-                <Image
-                  src="/icons/disconnect.svg"
-                  alt="Disconnect Logo"
-                  height={14}
-                  width={13}
-                  className="mr-1"
-                />
-              </button>
-              <div className="text-white font-bold">{username}</div>
-            </div>
-            <div className="flex justify-end items-center">
-              <button onClick={copyAddress}>
-                <Image
-                  src="/icons/copy.svg"
-                  alt="Copy Logo"
-                  height={14}
-                  width={12}
-                  className="mr-1 poi"
-                />
-              </button>
-              <div className="text-komple-black-100">
-                {getShortAddress(address || "")}
+        <div className="w-[200px] flex justify-end">
+          {isConnected ? (
+            <div>
+              <div className="flex justify-end items-center">
+                <button onClick={handleConnect}>
+                  <Image
+                    src="/icons/disconnect.svg"
+                    alt="Disconnect Logo"
+                    height={14}
+                    width={13}
+                    className="mr-1"
+                  />
+                </button>
+                <div className="text-white font-bold">{username}</div>
+              </div>
+              <div className="flex justify-end items-center">
+                <button onClick={copyAddress}>
+                  <Image
+                    src="/icons/copy.svg"
+                    alt="Copy Logo"
+                    height={14}
+                    width={12}
+                    className="mr-1 poi"
+                  />
+                </button>
+                <div className="text-komple-black-100">
+                  {getShortAddress(address || "")}
+                </div>
               </div>
             </div>
-          </div>
-        ) : (
-          <Button
-            text="Connect wallet"
-            onClick={handleConnect}
-            className="h-[40px] mx-3"
-          />
-        )}
+          ) : (
+            <Button
+              text="Connect wallet"
+              onClick={handleConnect}
+              className="h-[40px] mx-3"
+            />
+          )}
+        </div>
       </div>
     </div>
   )

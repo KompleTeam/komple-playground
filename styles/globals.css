@@ -18,7 +18,7 @@ body {
   
   background-image: url("/blur.svg");
   background-repeat: no-repeat;
-  background-position: 120% bottom;
+  background-position: right -10em bottom 10em;
   background-size: 600px;
   background-attachment: fixed;
 }
