@@ -3,9 +3,9 @@ import Image from "next/image"
 
 export const Footer = () => {
   return (
-    <div className="w-full h-[240px] pt-[50px] bg-komple-black-600 border-t-[1px] border-komple-black-500">
+    <div className="w-full h-[240px] pt-[40px] bg-komple-black-600 border-t-[1px] border-komple-black-500">
       <div className="flex justify-center">
-        <div className="flex justify-evenly mb-10 max-w-[1440px] w-[1440px]">
+        <div className="flex justify-evenly mb-12 max-w-[1440px] w-[1440px]">
           <FooterInfo
             link="https://cosmwasm.com/"
             text="Powered by"
