@@ -11,6 +11,8 @@ export const TokenModuleInitWhitelistContract = () => {
     <div>
       <TextInput
         title="Code ID"
+        subtitle="The code ID of the Whitelist Module"
+        placeholder="200"
         onChange={(value) =>
           store.setCodeId(isInteger(value) ? Number(value) : 0)
         }
@@ -19,11 +21,14 @@ export const TokenModuleInitWhitelistContract = () => {
       />
       <TextInputList
         title="Whitelist Members"
+        subtitle="List of addresses to whitelist"
+        placeholder="juno...."
         onChange={(value) => store.setAddresses(value)}
         value={store.addresses}
       />
       <InputDateTime
         title="Whitelist Start Time"
+        subtitle="The time when minting starts - DD/MM/YYYY"
         isRequired
         minDate={new Date()}
         onChange={(date: Date) =>
@@ -46,6 +51,7 @@ export const TokenModuleInitWhitelistContract = () => {
       />
       <InputDateTime
         title="Whitelist End Time"
+        subtitle="The time when minting ends - DD/MM/YYYY"
         isRequired
         minDate={new Date()}
         onChange={(date: Date) =>
@@ -67,6 +73,8 @@ export const TokenModuleInitWhitelistContract = () => {
       />
       <TextInput
         title="Tokens Per Address Limit"
+        subtitle="The maximum number of tokens that can be minted per address"
+        placeholder="10"
         onChange={(value) =>
           store.setWhitelistInstantiateMsg({
             ...store.whitelistInstantiateMsg,
@@ -85,6 +93,8 @@ export const TokenModuleInitWhitelistContract = () => {
       />
       <TextInput
         title="Whitelist Member Limit"
+        subtitle="The maximum number of members that can be added to the whitelist"
+        placeholder="150"
         onChange={(value) =>
           store.setWhitelistInstantiateMsg({
             ...store.whitelistInstantiateMsg,

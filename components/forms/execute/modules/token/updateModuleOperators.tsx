@@ -7,7 +7,9 @@ export const TokenModuleUpdateModuleOperators = () => {
   return (
     <div>
       <TextInputList
-        title="Module Operator Addresses"
+        title="Operator Addresses"
+        subtitle="List of operator addresses"
+        placeholder="juno...."
         onChange={(value) => store.setAddresses(value)}
         value={store.addresses}
       />

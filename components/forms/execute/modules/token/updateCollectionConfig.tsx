@@ -9,7 +9,8 @@ export const TokenModuleUpdateCollectionConfig = () => {
   return (
     <div>
       <InputDateTime
-        title="Start Time"
+        title="Minting Start Time"
+        subtitle="The time when minting starts - DD/MM/YYYY"
         minDate={new Date()}
         onChange={(date: Date) =>
           store.setCollectionConfig({
@@ -27,6 +28,8 @@ export const TokenModuleUpdateCollectionConfig = () => {
       />
       <TextInput
         title="Tokens Per Address Limit"
+        subtitle="The maximum number of tokens that can be minted per address"
+        placeholder="10"
         onChange={(value) =>
           store.setCollectionConfig({
             ...store.collectionConfig,
@@ -41,7 +44,9 @@ export const TokenModuleUpdateCollectionConfig = () => {
         }
       />
       <TextInput
-        title="Maximum Token Limit"
+        title="Max Token Limit"
+        subtitle="The maximum number of tokens that can be minted in total"
+        placeholder="5000"
         onChange={(value) =>
           store.setCollectionConfig({
             ...store.collectionConfig,
@@ -57,6 +62,8 @@ export const TokenModuleUpdateCollectionConfig = () => {
       />
       <TextInput
         title="IPFS Link"
+        subtitle="The IPFS link of the collection"
+        placeholder="ipfs://...."
         onChange={(value) =>
           store.setCollectionConfig({
             ...store.collectionConfig,

@@ -36,7 +36,7 @@ export const TextInputList = ({
   }
 
   return (
-    <div className="mb-6">
+    <div className="">
       {title && (
         <div className="flex text-[18px] text-white mb-1">
           {title}

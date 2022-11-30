@@ -13,14 +13,13 @@ import {
 import { useTokenModuleStore } from "store"
 
 const QUERIES = [
-  "config",
-  "owner_of",
-  "token_operators",
-  "locks",
-  "token_locks",
-  "minted_tokens_per_address",
-  "sub_modules",
-  "module_operators",
+  "get_contract_config",
+  "get_owner_of_NFT",
+  "list_contract_locks",
+  "list_NFT_locks",
+  "get_total_minted_tokens_per_address",
+  "list_sub_modules",
+  "list_contract_operators",
 ]
 
 export default function FeeModuleQuery() {
@@ -48,7 +47,7 @@ export default function FeeModuleQuery() {
       const client = tokenModule.queryClient.client
 
       switch (queryMsg) {
-        case "config":
+        case "get_contract_config":
           return setResponse(
             await client.queryContractSmart(contract, {
               extension: {
@@ -58,7 +57,7 @@ export default function FeeModuleQuery() {
               },
             })
           )
-        case "locks":
+        case "list_contract_locks":
           return setResponse(
             await client.queryContractSmart(contract, {
               extension: {
@@ -68,7 +67,7 @@ export default function FeeModuleQuery() {
               },
             })
           )
-        case "token_locks": {
+        case "list_NFT_locks": {
           const msg = {
             token_id: store.tokenId,
           }
@@ -83,7 +82,7 @@ export default function FeeModuleQuery() {
             })
           )
         }
-        case "minted_tokens_per_address": {
+        case "get_total_minted_tokens_per_address": {
           const msg = {
             address: store.recipient,
           }
@@ -98,7 +97,7 @@ export default function FeeModuleQuery() {
             })
           )
         }
-        case "sub_modules":
+        case "list_sub_modules":
           return setResponse(
             await client.queryContractSmart(contract, {
               extension: {
@@ -108,7 +107,7 @@ export default function FeeModuleQuery() {
               },
             })
           )
-        case "module_operators":
+        case "list_contract_operators":
           return setResponse(
             await client.queryContractSmart(contract, {
               extension: {
@@ -156,8 +155,8 @@ export default function FeeModuleQuery() {
           placeholder="Select query message"
         />
 
-        {queryMsg === "token_locks" && <TokenModuleTokenLocks />}
-        {queryMsg === "minted_tokens_per_address" && (
+        {queryMsg === "list_NFT_locks" && <TokenModuleTokenLocks />}
+        {queryMsg === "get_total_minted_tokens_per_address" && (
           <TokenModuleMintedTokensPerAddress />
         )}
       </ContractForm>

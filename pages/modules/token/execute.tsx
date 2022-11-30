@@ -22,19 +22,19 @@ import {
 } from "components/forms/execute"
 
 const EXECUTES = [
-  "approve",
-  "revoke",
-  "approve_all",
-  "revoke_all",
-  "burn",
-  "transfer_nft",
-  "admin_transfer_nft",
-  "send_nft",
-  "update_module_operators",
-  "update_locks",
-  "update_token_locks",
+  "give_operator_access_to_NFT",
+  "remove_operator_access_from_NFT",
+  "give_operator_access_to_all_NFTs",
+  "remove_operator_access_from_all_NFTs",
+  "burn_NFT",
+  "transfer_NFT",
+  "transfer_NFT_as_admin",
+  "send_NFT",
+  "update_contract_operators",
+  "update_contract_locks",
+  "update_NFT_locks",
   "update_collection_config",
-  "create_whitelist_module",
+  "add_whitelist_module",
 ]
 
 export default function TokenModuleExecute() {
@@ -62,7 +62,7 @@ export default function TokenModuleExecute() {
       const executeClient = tokenModule.client
 
       switch (executeMsg) {
-        case "approve": {
+        case "give_operator_access_to_NFT": {
           const msg = {
             approve: {
               spender: store.recipient,
@@ -79,7 +79,7 @@ export default function TokenModuleExecute() {
             )
           )
         }
-        case "transfer_nft": {
+        case "transfer_NFT": {
           const msg = {
             recipient: store.recipient,
             tokenId: store.tokenId,
@@ -87,7 +87,7 @@ export default function TokenModuleExecute() {
 
           return setResponse(await executeClient.transferNft(msg))
         }
-        case "send_nft": {
+        case "send_NFT": {
           const msg = {
             contract: store.contract,
             tokenId: store.tokenId,
@@ -96,22 +96,14 @@ export default function TokenModuleExecute() {
 
           return setResponse(await executeClient.sendNft(msg))
         }
-        case "mint": {
-          const msg = {
-            owner: store.recipient,
-            metadataId: store.metadataId,
-          }
-
-          return setResponse(await executeClient.mint(msg))
-        }
-        case "burn": {
+        case "burn_NFT": {
           const msg = {
             tokenId: store.tokenId,
           }
 
           return setResponse(await executeClient.burn(msg))
         }
-        case "update_module_operators": {
+        case "update_contract_operators": {
           const msg = {
             extension: {
               msg: {
@@ -131,7 +123,7 @@ export default function TokenModuleExecute() {
             )
           )
         }
-        case "admin_transfer_nft": {
+        case "transfer_NFT_as_admin": {
           const msg = {
             recipient: store.recipient,
             tokenId: store.tokenId,
@@ -139,14 +131,14 @@ export default function TokenModuleExecute() {
 
           return setResponse(await executeClient.adminTransferNft(msg))
         }
-        case "update_locks": {
+        case "update_contract_locks": {
           const msg = {
             locks: store.locks,
           }
 
           return setResponse(await executeClient.updateLocks(msg))
         }
-        case "update_token_locks": {
+        case "update_NFT_locks": {
           const msg = {
             tokenId: store.tokenId,
             locks: store.locks,
@@ -161,7 +153,7 @@ export default function TokenModuleExecute() {
 
           return setResponse(await executeClient.updateCollectionConfig(msg))
         }
-        case "init_whitelist_config": {
+        case "add_whitelist_module": {
           const msg = {
             codeId: store.codeId,
             instantiateMsg: store.whitelistInstantiateMsg,
@@ -207,20 +199,22 @@ export default function TokenModuleExecute() {
           placeholder="Select execute message"
         />
 
-        {executeMsg === "approve" && <TokenModuleApprove />}
-        {executeMsg === "burn" && <TokenModuleBurn />}
-        {executeMsg === "transfer_nft" && <TokenModuleTransferNFT />}
-        {executeMsg === "admin_transfer_nft" && <TokenModuleAdminTransferNFT />}
-        {executeMsg === "send_nft" && <TokenModuleSendNFT />}
-        {executeMsg === "update_module_operators" && (
+        {executeMsg === "give_operator_access_to_NFT" && <TokenModuleApprove />}
+        {executeMsg === "burn_NFT" && <TokenModuleBurn />}
+        {executeMsg === "transfer_NFT" && <TokenModuleTransferNFT />}
+        {executeMsg === "transfer_NFT_as_admin" && (
+          <TokenModuleAdminTransferNFT />
+        )}
+        {executeMsg === "send_NFT" && <TokenModuleSendNFT />}
+        {executeMsg === "update_contract_operators" && (
           <TokenModuleUpdateModuleOperators />
         )}
-        {executeMsg === "update_locks" && <TokenModuleUpdateLocks />}
-        {executeMsg === "update_token_locks" && <TokenModuleUpdateTokenLocks />}
+        {executeMsg === "update_contract_locks" && <TokenModuleUpdateLocks />}
+        {executeMsg === "update_NFT_locks" && <TokenModuleUpdateTokenLocks />}
         {executeMsg === "update_collection_config" && (
           <TokenModuleUpdateCollectionConfig />
         )}
-        {executeMsg === "create_whitelist_module" && (
+        {executeMsg === "add_whitelist_module" && (
           <TokenModuleInitWhitelistContract />
         )}
       </ContractForm>

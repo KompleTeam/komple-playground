@@ -7,7 +7,9 @@ export const TokenModuleMintedTokensPerAddress = () => {
   return (
     <div>
       <TextInput
-        title="Address"
+        title="User Address"
+        subtitle="The address of the user"
+        placeholder="juno...."
         onChange={store.setRecipient}
         isRequired
         value={store.recipient}

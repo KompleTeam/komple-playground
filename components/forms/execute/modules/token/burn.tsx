@@ -8,6 +8,8 @@ export const TokenModuleBurn = () => {
     <div>
       <TextInput
         title="Token ID"
+        subtitle="The ID of the token"
+        placeholder="17"
         onChange={store.setTokenId}
         isRequired
         value={store.tokenId}

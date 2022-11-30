@@ -7,13 +7,17 @@ export const TokenModuleApprove = () => {
   return (
     <div>
       <TextInput
-        title="Operator"
+        title="Operator Address"
+        subtitle="The address of the operator"
+        placeholder="juno...."
         onChange={store.setRecipient}
         isRequired
         value={store.recipient}
       />
       <TextInput
         title="Token ID"
+        subtitle="The ID of the token"
+        placeholder="17"
         onChange={store.setTokenId}
         isRequired
         value={store.tokenId}
