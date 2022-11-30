@@ -15,12 +15,12 @@ import {
 } from "components/forms/query"
 
 const QUERIES = [
-  "config",
-  "raw_metadata",
-  "metadata",
-  "raw_metadatas",
-  "metadatas",
-  "operators",
+  "contract_config",
+  "get_raw_metadata",
+  "get_metadata",
+  "list_raw_metadatas",
+  "list_metadatas",
+  "contract_operators",
 ]
 
 export default function FeeModuleQuery() {
@@ -48,23 +48,23 @@ export default function FeeModuleQuery() {
       const client = metadataModule.queryClient
 
       switch (queryMsg) {
-        case "config":
+        case "contract_config":
           return setResponse(await client.config())
-        case "raw_metadata": {
+        case "get_raw_metadata": {
           const msg = {
             metadataId: store.id,
           }
 
           return setResponse(await client.rawMetadata(msg))
         }
-        case "metadata": {
+        case "get_metadata": {
           const msg = {
             tokenId: store.id,
           }
 
           return setResponse(await client.metadata(msg))
         }
-        case "raw_metadatas": {
+        case "list_raw_metadatas": {
           const msg = {
             startAfter: store.startAfter,
             limit: store.limit,
@@ -72,7 +72,7 @@ export default function FeeModuleQuery() {
 
           return setResponse(await client.rawMetadatas(msg))
         }
-        case "metadatas": {
+        case "list_metadatas": {
           const msg = {
             startAfter: store.startAfter,
             limit: store.limit,
@@ -80,7 +80,7 @@ export default function FeeModuleQuery() {
 
           return setResponse(await client.metadatas(msg))
         }
-        case "operators":
+        case "contract_operators":
           return setResponse(await client.operators())
       }
     } catch (error: any) {
@@ -120,10 +120,10 @@ export default function FeeModuleQuery() {
           placeholder="Select query message"
         />
 
-        {queryMsg === "metadata" && <MetadataModuleMetadata />}
-        {queryMsg === "metadatas" && <MetadataModuleMetadatas />}
-        {queryMsg === "raw_metadata" && <MetadataModuleRawMetadata />}
-        {queryMsg === "raw_metadatas" && <MetadataModuleRawMetadatas />}
+        {queryMsg === "get_metadata" && <MetadataModuleMetadata />}
+        {queryMsg === "list_metadatas" && <MetadataModuleMetadatas />}
+        {queryMsg === "get_raw_metadata" && <MetadataModuleRawMetadata />}
+        {queryMsg === "list_raw_metadatas" && <MetadataModuleRawMetadatas />}
       </ContractForm>
     </div>
   )

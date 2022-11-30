@@ -9,6 +9,8 @@ export const MetadataModuleUnlinkMetadata = () => {
     <div>
       <TextInput
         title="Token ID"
+        subtitle="ID of the NFT to unlink the metadata from"
+        placeholder="6"
         onChange={(value) => store.setId(isInteger(value) ? Number(value) : 0)}
         isRequired
         value={store.id === 0 ? "" : store.id.toString()}

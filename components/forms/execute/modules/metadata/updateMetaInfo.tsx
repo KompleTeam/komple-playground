@@ -7,9 +7,10 @@ export const MetadataModuleUpdateMetaInfo = () => {
 
   return (
     <div>
-      <Seperator text="Meta Info" />
       <TextInput
         title="Description"
+        subtitle="Description of the NFT"
+        placeholder="My awesome NFT"
         onChange={(description) =>
           store.setMetaInfo({ ...store.metaInfo, description })
         }
@@ -17,11 +18,15 @@ export const MetadataModuleUpdateMetaInfo = () => {
       />
       <TextInput
         title="Image"
+        subtitle="Image of the NFT"
+        placeholder="https://my-awesome-nft.com/image.png"
         onChange={(image) => store.setMetaInfo({ ...store.metaInfo, image })}
         value={store.metaInfo.image?.toString()}
       />
       <TextInput
         title="External URL"
+        subtitle="Link to the NFT"
+        placeholder="https://my-awesome-nft.com"
         onChange={(external_url) =>
           store.setMetaInfo({ ...store.metaInfo, external_url })
         }
@@ -29,6 +34,8 @@ export const MetadataModuleUpdateMetaInfo = () => {
       />
       <TextInput
         title="Animation URL"
+        subtitle="Link to the animation of the NFT"
+        placeholder="https://my-awesome-nft.com/animation.mp4"
         onChange={(animation_url) =>
           store.setMetaInfo({ ...store.metaInfo, animation_url })
         }
@@ -36,6 +43,8 @@ export const MetadataModuleUpdateMetaInfo = () => {
       />
       <TextInput
         title="Youtube URL"
+        subtitle="Link to the youtube video of the NFT"
+        placeholder="https://www.youtube.com"
         onChange={(youtube_url) =>
           store.setMetaInfo({ ...store.metaInfo, youtube_url })
         }

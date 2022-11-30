@@ -19,12 +19,12 @@ import {
 
 const QUERIES = [
   "contract_config",
-  "show_fixed_fee",
-  "show_percentage_fee",
+  "get_fixed_fee",
+  "get_percentage_fee",
   "list_fixed_fees",
   "list_percentage_fees",
-  "show_total_percentage_fees",
-  "show_total_fixed_fees",
+  "get_total_percentage_fees",
+  "get_total_fixed_fees",
   "keys",
 ]
 
@@ -60,7 +60,7 @@ export default function FeeModuleQuery() {
       switch (queryMsg) {
         case "contract_config":
           return setResponse(await queryClient.config())
-        case "show_percentage_fee": {
+        case "get_percentage_fee": {
           const msg = {
             moduleName: store.moduleName,
             feeName: store.feeName,
@@ -68,7 +68,7 @@ export default function FeeModuleQuery() {
 
           return setResponse(await queryClient.percentageFee(msg))
         }
-        case "show_fixed_fee": {
+        case "get_fixed_fee": {
           const msg = {
             moduleName: store.moduleName,
             feeName: store.feeName,
@@ -94,7 +94,7 @@ export default function FeeModuleQuery() {
 
           return setResponse(await queryClient.fixedFees(msg))
         }
-        case "show_total_percentage_fees": {
+        case "get_total_percentage_fees": {
           const msg = {
             moduleName: store.moduleName,
             startAfter: store.startAfter,
@@ -103,7 +103,7 @@ export default function FeeModuleQuery() {
 
           return setResponse(await queryClient.totalPercentageFees(msg))
         }
-        case "show_total_fixed_fees": {
+        case "get_total_fixed_fees": {
           const msg = {
             moduleName: store.moduleName,
             startAfter: store.startAfter,
@@ -163,14 +163,14 @@ export default function FeeModuleQuery() {
           placeholder="Select query message"
         />
 
-        {queryMsg === "show_percentage_fee" && <FeeModulePercentageFee />}
-        {queryMsg === "show_fixed_fee" && <FeeModuleFixedFee />}
+        {queryMsg === "get_percentage_fee" && <FeeModulePercentageFee />}
+        {queryMsg === "get_fixed_fee" && <FeeModuleFixedFee />}
         {queryMsg === "list_percentage_fees" && <FeeModulePercentageFees />}
         {queryMsg === "list_fixed_fees" && <FeeModuleFixedFees />}
-        {queryMsg === "show_total_percentage_fees" && (
+        {queryMsg === "get_total_percentage_fees" && (
           <FeeModuleTotalPercentageFees />
         )}
-        {queryMsg === "show_total_fixed_fees" && <FeeModuleTotalFixedFees />}
+        {queryMsg === "get_total_fixed_fees" && <FeeModuleTotalFixedFees />}
         {queryMsg === "keys" && <FeeModuleKeys />}
       </ContractForm>
     </div>

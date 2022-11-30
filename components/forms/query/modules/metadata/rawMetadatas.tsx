@@ -8,14 +8,18 @@ export const MetadataModuleRawMetadatas = () => {
   return (
     <div>
       <TextInput
-        title="Start After"
+        title="Pagination - Start After"
+        subtitle="ID to start after - exclusive"
+        placeholder="6"
         onChange={(value) =>
           store.setStartAfter(isInteger(value) ? Number(value) : 0)
         }
         value={store.startAfter === 0 ? "" : store.startAfter?.toString()}
       />
       <TextInput
-        title="Limit"
+        title="Pagination - Limit"
+        subtitle="Maximum number of metadatas to return"
+        placeholder="20"
         onChange={(value) =>
           store.setLimit(isInteger(value) ? Number(value) : 0)
         }

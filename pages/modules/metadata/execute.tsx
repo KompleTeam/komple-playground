@@ -20,13 +20,13 @@ import {
 
 const EXECUTES = [
   "add_metadata",
-  "update_meta_info",
+  "update_metadata_info",
   "add_attribute",
   "update_attribute",
   "remove_attribute",
-  "link_metadata",
-  "unlink_metadata",
-  "update_operators",
+  "link_metadata_to_NFT",
+  "unlink_metadata_from_NFT",
+  "update_contract_operators",
 ]
 
 export default function MetadataModuleExecute() {
@@ -62,7 +62,7 @@ export default function MetadataModuleExecute() {
 
           return setResponse(await executeClient.addMetadata(msg))
         }
-        case "update_meta_info": {
+        case "update_metadata_info": {
           const msg = {
             rawMetadata: store.rawMetadata,
             id: store.id,
@@ -104,7 +104,7 @@ export default function MetadataModuleExecute() {
 
           return setResponse(await executeClient.removeAttribute(msg))
         }
-        case "link_metadata": {
+        case "link_metadata_to_NFT": {
           const msg = {
             tokenId: store.id,
             metadataId: store.metadataId === 0 ? undefined : store.metadataId,
@@ -112,14 +112,14 @@ export default function MetadataModuleExecute() {
 
           return setResponse(await executeClient.linkMetadata(msg))
         }
-        case "unlink_metadata": {
+        case "unlink_metadata_from_NFT": {
           const msg = {
             tokenId: store.id,
           }
 
           return setResponse(await executeClient.unlinkMetadata(msg))
         }
-        case "update_operators": {
+        case "update_contract_operators": {
           const msg = {
             addrs: store.addresses,
           }
@@ -165,13 +165,21 @@ export default function MetadataModuleExecute() {
         />
 
         {executeMsg === "add_metadata" && <MetadataModuleAddMetadata />}
-        {executeMsg === "update_meta_info" && <MetadataModuleUpdateMetaInfo />}
+        {executeMsg === "update_metadata_info" && (
+          <MetadataModuleUpdateMetaInfo />
+        )}
         {executeMsg === "add_attribute" && <MetadataModuleAddAttribute />}
         {executeMsg === "update_attribute" && <MetadataModuleUpdateAttribute />}
         {executeMsg === "remove_attribute" && <MetadataModuleRemoveAttribute />}
-        {executeMsg === "link_metadata" && <MetadataModuleLinkMetadata />}
-        {executeMsg === "unlink_metadata" && <MetadataModuleUnlinkMetadata />}
-        {executeMsg === "update_operators" && <MetadataModuleUpdateOperators />}
+        {executeMsg === "link_metadata_to_NFT" && (
+          <MetadataModuleLinkMetadata />
+        )}
+        {executeMsg === "unlink_metadata_from_NFT" && (
+          <MetadataModuleUnlinkMetadata />
+        )}
+        {executeMsg === "update_contract_operators" && (
+          <MetadataModuleUpdateOperators />
+        )}
       </ContractForm>
     </div>
   )
