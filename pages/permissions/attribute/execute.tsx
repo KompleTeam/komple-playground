@@ -10,7 +10,7 @@ import { toBinary } from "@cosmjs/cosmwasm-stargate"
 import { useAttributePermissionStore } from "store"
 import { AttributePermissionCheck } from "components/forms/execute"
 
-const EXECUTES = ["check"]
+const EXECUTES = ["check_permission"]
 
 export default function AttributePermissionExecute() {
   const { getSigningCosmWasmClient, offlineSigner } = useWallet()
@@ -39,7 +39,7 @@ export default function AttributePermissionExecute() {
       const client = attributePermission.client
 
       switch (executeMsg) {
-        case "check": {
+        case "check_permission": {
           const msg = {
             data: store.data === undefined ? "" : toBinary(store.data),
           }
@@ -84,7 +84,7 @@ export default function AttributePermissionExecute() {
           placeholder="Select execute message"
         />
 
-        {executeMsg === "check" && <AttributePermissionCheck />}
+        {executeMsg === "check_permission" && <AttributePermissionCheck />}
       </ContractForm>
     </div>
   )

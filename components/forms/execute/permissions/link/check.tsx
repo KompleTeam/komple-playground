@@ -14,7 +14,11 @@ export const LinkPermissionCheck = () => {
 
   return (
     <div>
-      <JsonTextArea title="Permission Check Message" onChange={parseMsg} />
+      <JsonTextArea
+        title="Permission Check Message"
+        subtitle="List of permission check messages"
+        onChange={parseMsg}
+      />
     </div>
   )
 }

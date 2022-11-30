@@ -7,7 +7,7 @@ import { DOC_LINKS } from "config/docs"
 import { KompleClient } from "komplejs"
 import Head from "next/head"
 
-const QUERIES = ["config"]
+const QUERIES = ["get_contract_config"]
 
 export default function AttributePermissionQuery() {
   const { getSigningCosmWasmClient, offlineSigner } = useWallet()
@@ -34,7 +34,7 @@ export default function AttributePermissionQuery() {
       const client = attributePermission.queryClient
 
       switch (queryMsg) {
-        case "config":
+        case "get_contract_config":
           return setResponse(await client.config())
       }
     } catch (error: any) {

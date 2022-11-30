@@ -10,7 +10,7 @@ import { toBinary } from "@cosmjs/cosmwasm-stargate"
 import { OwnershipPermissionCheck } from "components/forms/execute"
 import { useOwnershipPermissionStore } from "store"
 
-const EXECUTES = ["check"]
+const EXECUTES = ["check_permission"]
 
 export default function OwnershipPermissionExecute() {
   const { getSigningCosmWasmClient, offlineSigner } = useWallet()
@@ -39,7 +39,7 @@ export default function OwnershipPermissionExecute() {
       const client = ownershipPermission.client
 
       switch (executeMsg) {
-        case "check": {
+        case "check_permission": {
           const msg = {
             data: store.data === undefined ? "" : toBinary(store.data),
           }
@@ -84,7 +84,7 @@ export default function OwnershipPermissionExecute() {
           placeholder="Select execute message"
         />
 
-        {executeMsg === "check" && <OwnershipPermissionCheck />}
+        {executeMsg === "check_permission" && <OwnershipPermissionCheck />}
       </ContractForm>
     </div>
   )
