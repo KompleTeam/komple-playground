@@ -23,6 +23,8 @@ export const MarketplaceModuleUpdatePrice = () => {
       />
       <TextInput
         title="Collection ID"
+        subtitle="Collection ID of the listed NFT"
+        placeholder="3"
         onChange={(value) =>
           store.setCollectionId(isInteger(value) ? Number(value) : 0)
         }
@@ -31,6 +33,8 @@ export const MarketplaceModuleUpdatePrice = () => {
       />
       <TextInput
         title="Token ID"
+        subtitle="Token ID of the listed NFT"
+        placeholder="17"
         onChange={(value) =>
           store.setTokenId(isInteger(value) ? Number(value) : 0)
         }
@@ -38,7 +42,9 @@ export const MarketplaceModuleUpdatePrice = () => {
         value={store.tokenId === 0 ? "" : store.tokenId.toString()}
       />
       <TextInput
-        title="Price"
+        title="New Listing Price"
+        subtitle="New price to list the NFT for - $JUNO"
+        placeholder="35"
         onChange={(value) =>
           store.setPrice(isInteger(value) ? Number(value) : 0)
         }

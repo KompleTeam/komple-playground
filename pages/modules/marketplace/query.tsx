@@ -13,7 +13,12 @@ import {
   MarketplaceModuleFixedListings,
 } from "components/forms/query"
 
-const QUERIES = ["config", "fixed_listing", "fixed_listings", "operators"]
+const QUERIES = [
+  "contract_config",
+  "fixed_NFT_listing",
+  "fixed_NFT_listings",
+  "contract_operators",
+]
 
 export default function FeeModuleQuery() {
   const { getSigningCosmWasmClient, offlineSigner } = useWallet()
@@ -40,9 +45,9 @@ export default function FeeModuleQuery() {
       const queryClient = marketplaceModule.queryClient
 
       switch (queryMsg) {
-        case "config":
+        case "contract_config":
           return setResponse(await queryClient.config())
-        case "fixed_listing": {
+        case "fixed_NFT_listing": {
           const msg = {
             collectionId: store.collectionId,
             tokenId: store.tokenId,
@@ -50,7 +55,7 @@ export default function FeeModuleQuery() {
 
           return setResponse(await queryClient.fixedListing(msg))
         }
-        case "fixed_listings": {
+        case "fixed_NFT_listings": {
           const msg = {
             collectionId: store.collectionId,
             startAfter: store.startAfter === 0 ? undefined : store.startAfter,
@@ -59,7 +64,7 @@ export default function FeeModuleQuery() {
 
           return setResponse(await queryClient.fixedListings(msg))
         }
-        case "operators":
+        case "contract_operators":
           return setResponse(await queryClient.operators())
       }
     } catch (error: any) {
@@ -99,8 +104,10 @@ export default function FeeModuleQuery() {
           placeholder="Select query message"
         />
 
-        {queryMsg === "fixed_listing" && <MarketplaceModuleFixedListing />}
-        {queryMsg === "fixed_listings" && <MarketplaceModuleFixedListings />}
+        {queryMsg === "fixed_NFT_listing" && <MarketplaceModuleFixedListing />}
+        {queryMsg === "fixed_NFT_listings" && (
+          <MarketplaceModuleFixedListings />
+        )}
       </ContractForm>
     </div>
   )

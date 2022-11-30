@@ -9,6 +9,8 @@ export const MarketplaceModuleFixedListings = () => {
     <div>
       <TextInput
         title="Collection ID"
+        subtitle="Collection ID of the listed NFT"
+        placeholder="3"
         onChange={(value) =>
           store.setCollectionId(isInteger(value) ? Number(value) : 0)
         }
@@ -16,7 +18,9 @@ export const MarketplaceModuleFixedListings = () => {
         value={store.collectionId === 0 ? "" : store.collectionId.toString()}
       />
       <TextInput
-        title="Start After"
+        title="Pagination - Start After"
+        subtitle="Collection ID to start after - exclusive"
+        placeholder="3"
         onChange={(value) =>
           store.setStartAfter(isInteger(value) ? Number(value) : 0)
         }
@@ -24,7 +28,9 @@ export const MarketplaceModuleFixedListings = () => {
         value={store.startAfter === 0 ? "" : store.startAfter?.toString()}
       />
       <TextInput
-        title="Limit"
+        title="Pagination - Limit"
+        subtitle="Maximum number of listings to return"
+        placeholder="20"
         onChange={(value) =>
           store.setLimit(isInteger(value) ? Number(value) : 0)
         }

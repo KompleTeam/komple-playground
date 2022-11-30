@@ -7,7 +7,7 @@ export const MarketplaceModuleUpdateBuyLock = () => {
   return (
     <div>
       <Switch
-        title="Buy Locked"
+        title="Marketplace Buy Lock"
         initialState={store.lock}
         onChange={store.setLock}
       />

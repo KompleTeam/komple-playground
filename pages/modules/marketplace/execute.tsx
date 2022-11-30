@@ -19,14 +19,14 @@ import { useMarketplaceModuleStore } from "store"
 import { coin } from "@cosmjs/proto-signing"
 
 const EXECUTES = [
-  "update_buy_lock",
-  "list_fixed_token",
-  "delist_fixed_token",
-  "update_price",
-  "buy",
-  "permission_buy",
-  "update_operators",
-  "lock_execute",
+  "update_marketplace_buy_lock",
+  "list_fixed_price_NFT",
+  "remove_fixed_price_NFT",
+  "update_listing_price",
+  "buy_NFT",
+  "buy_NFT_with_permissions",
+  "update_contract_operators",
+  "lock_execute_messages",
 ]
 
 export default function MarketplaceModuleExecute() {
@@ -54,14 +54,14 @@ export default function MarketplaceModuleExecute() {
       const executeClient = marketplaceModule.client
 
       switch (executeMsg) {
-        case "update_buy_lock": {
+        case "update_marketplace_buy_lock": {
           const msg = {
             lock: store.lock,
           }
 
           return setResponse(await executeClient.updateBuyLock(msg))
         }
-        case "list_fixed_token": {
+        case "list_fixed_price_NFT": {
           const msg = {
             collectionId: store.collectionId,
             tokenId: store.tokenId,
@@ -70,7 +70,7 @@ export default function MarketplaceModuleExecute() {
 
           return setResponse(await executeClient.listFixedToken(msg))
         }
-        case "delist_fixed_token": {
+        case "remove_fixed_price_NFT": {
           const msg = {
             collectionId: store.collectionId,
             tokenId: store.tokenId,
@@ -78,7 +78,7 @@ export default function MarketplaceModuleExecute() {
 
           return setResponse(await executeClient.delistFixedToken(msg))
         }
-        case "update_price": {
+        case "update_listing_price": {
           if (store.listingType === undefined) {
             throw new Error("listing type is not defined")
           }
@@ -92,7 +92,7 @@ export default function MarketplaceModuleExecute() {
 
           return setResponse(await executeClient.updatePrice(msg))
         }
-        case "buy": {
+        case "buy_NFT": {
           if (store.listingType === undefined) {
             throw new Error("listing type is not defined")
           }
@@ -109,7 +109,7 @@ export default function MarketplaceModuleExecute() {
             ])
           )
         }
-        case "permission_buy": {
+        case "buy_NFT_with_permissions": {
           if (store.listingType === undefined) {
             throw new Error("listing type is not defined")
           }
@@ -123,14 +123,14 @@ export default function MarketplaceModuleExecute() {
 
           return setResponse(await executeClient.permissionBuy(msg))
         }
-        case "update_operators": {
+        case "update_contract_operators": {
           const msg = {
             addrs: store.addresses,
           }
 
           return setResponse(await executeClient.updateOperators(msg))
         }
-        case "lock_execute": {
+        case "lock_execute_messages": {
           return setResponse(await executeClient.lockExecute())
         }
       }
@@ -171,17 +171,23 @@ export default function MarketplaceModuleExecute() {
           placeholder="Select execute message"
         />
 
-        {executeMsg === "update_buy_lock" && <MarketplaceModuleUpdateBuyLock />}
-        {executeMsg === "list_fixed_token" && (
+        {executeMsg === "update_marketplace_buy_lock" && (
+          <MarketplaceModuleUpdateBuyLock />
+        )}
+        {executeMsg === "list_fixed_price_NFT" && (
           <MarketplaceModuleListFixedToken />
         )}
-        {executeMsg === "delist_fixed_token" && (
+        {executeMsg === "remove_fixed_price_NFT" && (
           <MarketplaceModuleDelistFixedToken />
         )}
-        {executeMsg === "update_price" && <MarketplaceModuleUpdatePrice />}
-        {executeMsg === "buy" && <MarketplaceModuleBuy />}
-        {executeMsg === "permission_buy" && <MarketplaceModulePermissionBuy />}
-        {executeMsg === "update_operators" && (
+        {executeMsg === "update_listing_price" && (
+          <MarketplaceModuleUpdatePrice />
+        )}
+        {executeMsg === "buy_NFT" && <MarketplaceModuleBuy />}
+        {executeMsg === "buy_NFT_with_permissions" && (
+          <MarketplaceModulePermissionBuy />
+        )}
+        {executeMsg === "update_contract_operators" && (
           <MarketplaceModuleUpdateOperators />
         )}
       </ContractForm>
