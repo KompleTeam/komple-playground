@@ -7,7 +7,9 @@ export const MintModuleUpdateCreators = () => {
   return (
     <div>
       <TextInputList
-        title="Creators"
+        title="Colllection Creators"
+        subtitle="List of collection creator addresses"
+        placeholder="juno...."
         onChange={(value) => store.setAddresses(value)}
         value={store.addresses}
       />

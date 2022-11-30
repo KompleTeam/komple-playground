@@ -10,6 +10,8 @@ export const MintModuleUpdateLinkedCollections = () => {
     <div>
       <TextInput
         title="Collection ID"
+        subtitle="The ID of the collection to update linked collections"
+        placeholder="3"
         onChange={(value) =>
           store.setCollectionId(isInteger(value) ? Number(value) : 0)
         }
@@ -18,6 +20,8 @@ export const MintModuleUpdateLinkedCollections = () => {
       />
       <TextInputList
         title="Linked Collections"
+        subtitle="The IDs of the collections to link to the collection"
+        placeholder="6"
         onChange={(value) => store.setLinkedCollections(value)}
         value={store.linkedCollections}
       />

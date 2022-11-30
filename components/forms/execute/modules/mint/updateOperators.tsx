@@ -7,7 +7,9 @@ export const MintModuleUpdateOperators = () => {
   return (
     <div>
       <TextInputList
-        title="Operators"
+        title="Contract Operators"
+        subtitle="List of contract operator addresses"
+        placeholder="juno...."
         onChange={(value) => store.setAddresses(value)}
         value={store.addresses}
       />

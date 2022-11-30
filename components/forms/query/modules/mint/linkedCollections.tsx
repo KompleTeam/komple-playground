@@ -9,6 +9,8 @@ export const MintModuleLinkedCollections = () => {
     <div>
       <TextInput
         title="Collection ID"
+        subtitle="The ID of the collection to get linked collections for"
+        placeholder="3"
         onChange={(value) =>
           store.setCollectionId(isInteger(value) ? Number(value) : 0)
         }

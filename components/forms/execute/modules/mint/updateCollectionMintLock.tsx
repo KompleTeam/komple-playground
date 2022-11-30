@@ -10,6 +10,8 @@ export const MintModuleUpdateCollectionMintLock = () => {
     <div>
       <TextInput
         title="Collection ID"
+        subtitle="The ID of the collection to lock"
+        placeholder="3"
         onChange={(value) =>
           store.setCollectionId(isInteger(value) ? Number(value) : 0)
         }
@@ -17,7 +19,8 @@ export const MintModuleUpdateCollectionMintLock = () => {
         value={store.collectionId === 0 ? "" : store.collectionId.toString()}
       />
       <Switch
-        title="Lock Minting"
+        title="Mint Lock"
+        subtitle="Enable or disable minting for this collection"
         initialState={store.lock}
         onChange={store.setLock}
       />

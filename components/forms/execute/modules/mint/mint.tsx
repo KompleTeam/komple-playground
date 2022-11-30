@@ -9,6 +9,8 @@ export const MintModuleMint = () => {
     <div>
       <TextInput
         title="Collection ID"
+        subtitle="The ID of the collection to mint"
+        placeholder="3"
         onChange={(value) =>
           store.setCollectionId(isInteger(value) ? Number(value) : 0)
         }
@@ -17,6 +19,8 @@ export const MintModuleMint = () => {
       />
       <TextInput
         title="Metadata ID"
+        subtitle="The ID of the metadata to mint"
+        placeholder="17"
         onChange={(value) =>
           store.setMetadataId(isInteger(value) ? Number(value) : 0)
         }

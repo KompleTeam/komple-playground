@@ -16,14 +16,14 @@ import Head from "next/head"
 import { useMintModuleStore } from "store"
 
 const QUERIES = [
-  "config",
-  "collection_address",
-  "collection_info",
-  "operators",
-  "linked_collections",
-  "collections",
-  "creators",
-  "mint_lock",
+  "get_contract_config",
+  "list_collections",
+  "get_collection_address",
+  "get_collection_info",
+  "get_collection_mint_lock",
+  "list_linked_collections",
+  "list_collection_creators",
+  "list_contract_operators",
 ]
 
 export default function MintModuleQuery() {
@@ -51,23 +51,23 @@ export default function MintModuleQuery() {
       const queryClient = mintModule.queryClient
 
       switch (queryMsg) {
-        case "config":
+        case "get_contract_config":
           return setResponse(await queryClient.config())
-        case "collection_address": {
+        case "get_collection_address": {
           const msg = {
             collectionId: store.collectionId,
           }
 
           return setResponse(await queryClient.collectionAddress(msg))
         }
-        case "collection_info": {
+        case "get_collection_info": {
           const msg = {
             collectionId: store.collectionId,
           }
 
           return setResponse(await queryClient.collectionInfo(msg))
         }
-        case "operators":
+        case "list_contract_operators":
           return setResponse(await queryClient.operators())
         case "linked_collections": {
           const msg = {
@@ -76,7 +76,7 @@ export default function MintModuleQuery() {
 
           return setResponse(await queryClient.linkedCollections(msg))
         }
-        case "collections": {
+        case "list_linked_collections": {
           const msg = {
             blacklist: store.isBlacklist,
             startAfter: store.startAfter,
@@ -85,9 +85,9 @@ export default function MintModuleQuery() {
 
           return setResponse(await queryClient.collections(msg))
         }
-        case "creators":
+        case "list_collection_creators":
           return setResponse(await queryClient.creators())
-        case "mint_lock": {
+        case "get_collection_mint_lock": {
           const msg = {
             collectionId: store.collectionId,
           }
@@ -132,11 +132,15 @@ export default function MintModuleQuery() {
           placeholder="Select query message"
         />
 
-        {queryMsg === "collection_address" && <MintModuleCollectionAddress />}
-        {queryMsg === "collection_info" && <MintModuleCollectionInfo />}
-        {queryMsg === "linked_collections" && <MintModuleLinkedCollections />}
-        {queryMsg === "collections" && <MintModuleCollections />}
-        {queryMsg === "mint_lock" && <MintModuleMintLock />}
+        {queryMsg === "get_collection_address" && (
+          <MintModuleCollectionAddress />
+        )}
+        {queryMsg === "get_collection_info" && <MintModuleCollectionInfo />}
+        {queryMsg === "list_linked_collections" && (
+          <MintModuleLinkedCollections />
+        )}
+        {queryMsg === "list_collections" && <MintModuleCollections />}
+        {queryMsg === "get_collection_mint_lock" && <MintModuleMintLock />}
       </ContractForm>
     </div>
   )

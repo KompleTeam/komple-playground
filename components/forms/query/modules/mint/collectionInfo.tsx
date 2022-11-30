@@ -9,6 +9,8 @@ export const MintModuleCollectionInfo = () => {
     <div>
       <TextInput
         title="Collection ID"
+        subtitle="The ID of the collection"
+        placeholder="3"
         onChange={(value) =>
           store.setCollectionId(isInteger(value) ? Number(value) : 0)
         }

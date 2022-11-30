@@ -26,14 +26,14 @@ const EXECUTES = [
   "create_collection",
   "update_public_collection_creation",
   "update_collection_mint_lock",
-  "mint",
-  "admin_mint",
-  "permission_mint",
-  "update_operators",
+  "update_collection_creators",
+  "mint_NFT",
+  "mint_NFT_as_admin",
+  "mint_NFT_with_permissions",
   "update_linked_collections",
-  "update_collection_status",
-  "lock_execute",
-  "update_creators",
+  "blacklist/whitelist_collection",
+  "lock_execute_messages",
+  "update_contract_operators",
 ]
 
 export default function MintModuleExecute() {
@@ -83,7 +83,10 @@ export default function MintModuleExecute() {
                   ? undefined
                   : store.collectionConfig.ipfs_link,
             },
-            tokenInfo: store.tokenInfo,
+            tokenInfo: {
+              symbol: "KMPL",
+              minter: "",
+            },
             metadataInfo: store.metadataInfo,
             fundInfo: {
               ...store.fundInfo,
@@ -114,7 +117,7 @@ export default function MintModuleExecute() {
 
           return setResponse(await executeClient.updateCollectionMintLock(msg))
         }
-        case "mint": {
+        case "mint_NFT": {
           const msg = {
             collectionId: store.collectionId,
             metadataId: store.metadataId === 0 ? undefined : store.metadataId,
@@ -122,7 +125,7 @@ export default function MintModuleExecute() {
 
           return setResponse(await executeClient.mint(msg))
         }
-        case "admin_mint": {
+        case "mint_NFT_as_admin": {
           const msg = {
             collectionId: store.collectionId,
             recipient: store.recipient,
@@ -131,7 +134,7 @@ export default function MintModuleExecute() {
 
           return setResponse(await executeClient.adminMint(msg))
         }
-        case "permission_mint": {
+        case "mint_NFT_with_permissions": {
           const msg = {
             permissionMsg: toBinary(store.permissionMsg),
             mintMsg: {
@@ -144,7 +147,7 @@ export default function MintModuleExecute() {
 
           return setResponse(await executeClient.permissionMint(msg))
         }
-        case "update_operators": {
+        case "update_contract_operators": {
           const msg = {
             addrs: store.addresses,
           }
@@ -167,7 +170,7 @@ export default function MintModuleExecute() {
 
           return setResponse(await executeClient.updateLinkedCollections(msg))
         }
-        case "update_collection_status": {
+        case "blacklist/whitelist_collection": {
           const msg = {
             collectionId: store.collectionId,
             isBlacklist: store.isBlacklist,
@@ -175,10 +178,10 @@ export default function MintModuleExecute() {
 
           return setResponse(await executeClient.updateCollectionStatus(msg))
         }
-        case "lock_execute": {
+        case "lock_execute_messages": {
           return setResponse(await executeClient.lockExecute())
         }
-        case "update_creators": {
+        case "update_collection_creators": {
           const msg = {
             addrs: store.addresses,
           }
@@ -230,17 +233,23 @@ export default function MintModuleExecute() {
         {executeMsg === "update_collection_mint_lock" && (
           <MintModuleUpdateCollectionMintLock />
         )}
-        {executeMsg === "mint" && <MintModuleMint />}
-        {executeMsg === "admin_mint" && <MintModuleAdminMint />}
-        {executeMsg === "permission_mint" && <MintModulePermissionMint />}
-        {executeMsg === "update_operators" && <MintModuleUpdateOperators />}
+        {executeMsg === "mint_NFT" && <MintModuleMint />}
+        {executeMsg === "mint_NFT_as_admin" && <MintModuleAdminMint />}
+        {executeMsg === "mint_NFT_with_permissions" && (
+          <MintModulePermissionMint />
+        )}
+        {executeMsg === "update_contract_operators" && (
+          <MintModuleUpdateOperators />
+        )}
         {executeMsg === "update_linked_collections" && (
           <MintModuleUpdateLinkedCollections />
         )}
-        {executeMsg === "update_collection_status" && (
+        {executeMsg === "blacklist/whitelist_collection" && (
           <MintModuleUpdateCollectionStatus />
         )}
-        {executeMsg === "update_creators" && <MintModuleUpdateCreators />}
+        {executeMsg === "update_collection_creators" && (
+          <MintModuleUpdateCreators />
+        )}
       </ContractForm>
     </div>
   )

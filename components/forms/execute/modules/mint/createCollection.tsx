@@ -46,6 +46,8 @@ export const MintModuleCreateCollection = () => {
       <Seperator text="Token Module" />
       <TextInput
         title="Token Module Code ID"
+        subtitle="The code ID of the Token Module"
+        placeholder="50"
         onChange={(value) =>
           store.setCodeId(isInteger(value) ? Number(value) : 0)
         }
@@ -63,6 +65,8 @@ export const MintModuleCreateCollection = () => {
       />
       <TextInput
         title="Collection Name"
+        subtitle="The name of the collection"
+        placeholder="My awesome collection"
         onChange={(name) =>
           store.setCollectionInfo({ ...store.collectionInfo, name })
         }
@@ -71,6 +75,8 @@ export const MintModuleCreateCollection = () => {
       />
       <TextInput
         title="Collection Description"
+        subtitle="The description of the collection"
+        placeholder="My awesome collection is awesome"
         onChange={(description) =>
           store.setCollectionInfo({ ...store.collectionInfo, description })
         }
@@ -79,6 +85,8 @@ export const MintModuleCreateCollection = () => {
       />
       <TextInput
         title="Collection Image"
+        subtitle="The image of the collection"
+        placeholder="https://my-awesome-collection.com/image.png"
         onChange={(image) =>
           store.setCollectionInfo({ ...store.collectionInfo, image })
         }
@@ -87,6 +95,8 @@ export const MintModuleCreateCollection = () => {
       />
       <TextInput
         title="Collection External Link"
+        subtitle="The external link to the collection"
+        placeholder="https://my-awesome-collection.com"
         onChange={(external_link) =>
           store.setCollectionInfo({ ...store.collectionInfo, external_link })
         }
@@ -95,7 +105,9 @@ export const MintModuleCreateCollection = () => {
 
       <Seperator text="Collection Config" />
       <TextInput
-        title="Per Address Limit"
+        title="Tokens Per Address Limit"
+        subtitle="The maximum number of tokens that can be minted per address"
+        placeholder="10"
         onChange={(value) =>
           store.setCollectionConfig({
             ...store.collectionConfig,
@@ -109,7 +121,8 @@ export const MintModuleCreateCollection = () => {
         }
       />
       <InputDateTime
-        title="Start Time"
+        title="Minting Start Time"
+        subtitle="The time when minting starts - DD/MM/YYYY"
         minDate={new Date()}
         onChange={(date: Date) =>
           store.setCollectionConfig({
@@ -127,6 +140,8 @@ export const MintModuleCreateCollection = () => {
       />
       <TextInput
         title="Max Token Limit"
+        subtitle="The maximum number of tokens that can be minted in total"
+        placeholder="5000"
         onChange={(value) =>
           store.setCollectionConfig({
             ...store.collectionConfig,
@@ -141,6 +156,8 @@ export const MintModuleCreateCollection = () => {
       />
       <TextInput
         title="IPFS Link"
+        subtitle="The IPFS link of the collection"
+        placeholder="ipfs://...."
         onChange={(ipfs_link) =>
           store.setCollectionConfig({
             ...store.collectionConfig,
@@ -150,9 +167,11 @@ export const MintModuleCreateCollection = () => {
         value={store.collectionConfig.ipfs_link?.toString()}
       />
 
-      <Seperator text="Token Info" />
+      {/* <Seperator text="Token Info" />
       <TextInput
         title="Symbol"
+        subtitle="The symbol of the collection"
+        placeholder="AWESOME"
         onChange={(symbol) =>
           store.setTokenInfo({
             ...store.tokenInfo,
@@ -164,6 +183,7 @@ export const MintModuleCreateCollection = () => {
       />
       <TextInput
         title="Minter"
+        subtitle="The minter of the collection"
         isRequired
         onChange={(minter) =>
           store.setTokenInfo({
@@ -172,11 +192,13 @@ export const MintModuleCreateCollection = () => {
           })
         }
         value={store.tokenInfo.minter}
-      />
+      /> */}
 
       <Seperator text="Metadata Info" />
       <TextInput
         title="Metadata Module Code ID"
+        subtitle="The code ID of the Metadata Module"
+        placeholder="50"
         onChange={(value) =>
           store.setMetadataInfo({
             ...store.metadataInfo,
@@ -200,33 +222,40 @@ export const MintModuleCreateCollection = () => {
 
       <Seperator text="Minting Currency Info" />
       <Switch
-        title="Native Tokens"
+        title="Native Token"
+        subtitle="Select native or cw20 tokens"
         onChange={(is_native) =>
           store.setFundInfo({ ...store.fundInfo, is_native })
         }
         initialState={store.fundInfo.is_native}
       />
       <TextInput
-        title="Denom"
+        title={`${store.fundInfo.is_native ? "Native" : "CW20"} Token Denom`}
+        subtitle="The denom of the token"
+        placeholder={store.fundInfo.is_native ? "ujunox" : "utoken"}
         onChange={(denom) => store.setFundInfo({ ...store.fundInfo, denom })}
         isRequired
         value={store.fundInfo.denom}
       />
       {!store.fundInfo.is_native && (
         <TextInput
-          title="CW20 Address"
+          title="CW20 Token Address"
+          subtitle="The address of the cw20 token contract"
+          placeholder="juno...."
           onChange={(cw20_address) =>
             store.setFundInfo({ ...store.fundInfo, cw20_address })
           }
           value={store.fundInfo.cw20_address?.toString()}
+          isRequired
         />
       )}
 
       <Seperator text="Collections" />
       <TextInputList
         title="Linked Collection IDs"
-        onChange={() => {}}
-        placeholder="1"
+        subtitle="The IDs of the collections that are linked to this collection"
+        placeholder="6"
+        onChange={store.setLinkedCollections}
       />
     </div>
   )

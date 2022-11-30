@@ -8,6 +8,7 @@ export const MintModuleUpdatePublicCollectionCreation = () => {
     <div>
       <Switch
         title="Public Collection Creation"
+        subtitle="Enable or disable public collection creation"
         initialState={store.lock}
         onChange={store.setPublicCollectionCreation}
       />
