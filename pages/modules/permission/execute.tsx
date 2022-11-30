@@ -17,10 +17,10 @@ import {
 
 const EXECUTES = [
   "register_permission",
-  "update_module_permissions",
-  "check",
-  "update_operators",
-  "lock_execute",
+  "update_permissions_for_module",
+  "check_permission",
+  "update_contract_operators",
+  "lock_execute_messages",
 ]
 
 export default function PermissionModuleExecute() {
@@ -57,7 +57,7 @@ export default function PermissionModuleExecute() {
 
           return setResponse(await executeClient.registerPermission(msg))
         }
-        case "update_module_permissions": {
+        case "update_permissions_for_module": {
           const msg = {
             module: store.module,
             permissions: store.permissions,
@@ -65,7 +65,7 @@ export default function PermissionModuleExecute() {
 
           return setResponse(await executeClient.updateModulePermissions(msg))
         }
-        case "check": {
+        case "check_permission": {
           if (store.msg === undefined) {
             throw new Error("msg is undefined")
           }
@@ -77,14 +77,14 @@ export default function PermissionModuleExecute() {
 
           return setResponse(await executeClient.check(msg))
         }
-        case "update_operators": {
+        case "update_contract_operators": {
           const msg = {
             addrs: store.addresses,
           }
 
           return setResponse(await executeClient.updateOperators(msg))
         }
-        case "lock_execute": {
+        case "lock_execute_messages": {
           return setResponse(await executeClient.lockExecute())
         }
       }
@@ -107,7 +107,7 @@ export default function PermissionModuleExecute() {
 
       <ContractHeader
         title="Permission Module"
-        description="Permission Module is used to perform some actions - execute or query - in front of some of the operations"
+        description="Permission Module is used to perform some actions - execute or query - in front of some of the operations."
         documentation={DOC_LINKS.modules.permission}
       />
       <ContractForm
@@ -128,11 +128,11 @@ export default function PermissionModuleExecute() {
         {executeMsg === "register_permission" && (
           <PermissionModuleRegisterPermission />
         )}
-        {executeMsg === "update_module_permissions" && (
+        {executeMsg === "update_permissions_for_module" && (
           <PermissionModuleUpdateModulePermissions />
         )}
-        {executeMsg === "check" && <PermissionModuleCheck />}
-        {executeMsg === "update_operators" && (
+        {executeMsg === "check_permission" && <PermissionModuleCheck />}
+        {executeMsg === "update_contract_operators" && (
           <PermissionModuleUpdateOperators />
         )}
       </ContractForm>

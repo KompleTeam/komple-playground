@@ -17,11 +17,18 @@ export const PermissionModuleCheck = () => {
     <div>
       <TextInput
         title="Module Name"
+        subtitle="Name of module to check permission for"
+        placeholder="marketplace"
         onChange={store.setModule}
         isRequired
         value={store.module}
       />
-      <JsonTextArea title="Check Message" onChange={parseMsg} isRequired />
+      <JsonTextArea
+        title="Permission Check Message"
+        subtitle="List of permission check messages"
+        onChange={parseMsg}
+        isRequired
+      />
     </div>
   )
 }

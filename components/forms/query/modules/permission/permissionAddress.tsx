@@ -8,6 +8,8 @@ export const PermissionModulePermissionAddress = () => {
     <div>
       <TextInput
         title="Permission Name"
+        subtitle="Name of permission to resolve address for"
+        placeholder="attribute"
         onChange={store.setPermission}
         isRequired
         value={store.permission}

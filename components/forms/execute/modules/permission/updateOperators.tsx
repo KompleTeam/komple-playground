@@ -7,7 +7,9 @@ export const PermissionModuleUpdateOperators = () => {
   return (
     <div>
       <TextInputList
-        title="Operators"
+        title="Contract Operators"
+        subtitle="List of contract operators"
+        placeholder="juno...."
         onChange={(value) => store.setAddresses(value)}
         value={store.addresses}
       />

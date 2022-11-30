@@ -17,12 +17,16 @@ export const PermissionModuleUpdateModulePermissions = () => {
     <div>
       <TextInput
         title="Module Name"
+        subtitle="Name of module to update permissions for"
+        placeholder="marketplace"
         onChange={store.setModule}
         isRequired
         value={store.module}
       />
       <TextInputList
         title="Permissions"
+        subtitle="List of permissions to update"
+        placeholder="attribute"
         onChange={store.setPermissions}
         value={store.permissions}
       />

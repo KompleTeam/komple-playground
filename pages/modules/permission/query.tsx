@@ -12,7 +12,11 @@ import {
   PermissionModulePermissionAddress,
 } from "components/forms/query"
 
-const QUERIES = ["permission_address", "module_permissions", "operators"]
+const QUERIES = [
+  "get_permission_address",
+  "list_permissions_for_module",
+  "list_contract_operators",
+]
 
 export default function FeeModuleQuery() {
   const { getSigningCosmWasmClient, offlineSigner } = useWallet()
@@ -39,21 +43,21 @@ export default function FeeModuleQuery() {
       const queryClient = permissionModule.queryClient
 
       switch (queryMsg) {
-        case "permission_address": {
+        case "get_permission_address": {
           const msg = {
             permission: store.permission,
           }
 
           return setResponse(await queryClient.permissionAddress(msg))
         }
-        case "module_permissions": {
+        case "list_permissions_for_module": {
           const msg = {
             module: store.module,
           }
 
           return setResponse(await queryClient.modulePermissions(msg))
         }
-        case "operators":
+        case "list_contract_operators":
           return setResponse(await queryClient.operators())
       }
     } catch (error: any) {
@@ -75,7 +79,7 @@ export default function FeeModuleQuery() {
 
       <ContractHeader
         title="Permission Module"
-        description="Permission Module is used to perform some actions - execute or query - in front of some of the operations"
+        description="Permission Module is used to perform some actions - execute or query - in front of some of the operations."
         documentation={DOC_LINKS.modules.permission}
       />
       <ContractForm
@@ -93,10 +97,10 @@ export default function FeeModuleQuery() {
           placeholder="Select query message"
         />
 
-        {queryMsg === "permission_address" && (
+        {queryMsg === "get_permission_address" && (
           <PermissionModulePermissionAddress />
         )}
-        {queryMsg === "module_permissions" && (
+        {queryMsg === "list_permissions_for_module" && (
           <PermissionModuleModulePermissions />
         )}
       </ContractForm>

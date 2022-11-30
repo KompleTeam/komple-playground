@@ -8,6 +8,8 @@ export const PermissionModuleModulePermissions = () => {
     <div>
       <TextInput
         title="Module Name"
+        subtitle="Name of module to list permissions"
+        placeholder="marketplace"
         onChange={store.setModule}
         isRequired
         value={store.module}
