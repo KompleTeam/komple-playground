@@ -17,10 +17,10 @@ import {
 
 const EXECUTES = [
   "update_merge_lock",
-  "merge",
-  "permission_merge",
-  "update_operators",
-  "lock_execute",
+  "merge_NFTs",
+  "merge_NFTs_with_permissions",
+  "update_contract_operators",
+  "lock_execute_messages",
 ]
 
 export default function MergeModuleExecute() {
@@ -55,7 +55,7 @@ export default function MergeModuleExecute() {
 
           return setResponse(await executeClient.updateMergeLock(msg))
         }
-        case "merge": {
+        case "merge_NFTs": {
           const msg = {
             msg: {
               recipient: store.recipient,
@@ -68,7 +68,7 @@ export default function MergeModuleExecute() {
 
           return setResponse(await executeClient.merge(msg))
         }
-        case "permission_merge": {
+        case "merge_NFTs_with_permissions": {
           const msg = {
             permissionMsg: toBinary(store.permissionMsg),
             mergeMsg: {
@@ -81,14 +81,14 @@ export default function MergeModuleExecute() {
 
           return setResponse(await executeClient.permissionMerge(msg))
         }
-        case "update_operators": {
+        case "update_contract_operators": {
           const msg = {
             addrs: store.addresses,
           }
 
           return setResponse(await executeClient.updateOperators(msg))
         }
-        case "lock_execute": {
+        case "lock_execute_messages": {
           return setResponse(await executeClient.lockExecute())
         }
       }
@@ -130,9 +130,13 @@ export default function MergeModuleExecute() {
         />
 
         {executeMsg === "update_merge_lock" && <MergeModuleUpdateMergeLock />}
-        {executeMsg === "merge" && <MergeModuleMerge />}
-        {executeMsg === "permission_merge" && <MergeModulePermissionMerge />}
-        {executeMsg === "update_operators" && <MergeModuleUpdateOperators />}
+        {executeMsg === "merge_NFTs" && <MergeModuleMerge />}
+        {executeMsg === "merge_NFTs_with_permissions" && (
+          <MergeModulePermissionMerge />
+        )}
+        {executeMsg === "update_contract_operators" && (
+          <MergeModuleUpdateOperators />
+        )}
       </ContractForm>
     </div>
   )

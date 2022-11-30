@@ -21,12 +21,16 @@ export const MergeModuleMerge = () => {
     <div>
       <TextInput
         title="Recipient"
+        subtitle="Address of the user for the merged NFT"
+        placeholder="juno...."
         onChange={(value) => store.setRecipient(value)}
         isRequired
         value={store.recipient}
       />
       <TextInput
-        title="Collection ID for Mint"
+        title="Collection ID"
+        subtitle="Collection ID to be use on new NFT mint"
+        placeholder="3"
         onChange={(value) =>
           store.setMintId(isInteger(value) ? Number(value) : 0)
         }
@@ -34,7 +38,9 @@ export const MergeModuleMerge = () => {
         value={store.mintId === 0 ? "" : store.mintId.toString()}
       />
       <TextInput
-        title="Metadata ID for Mint"
+        title="Metadata ID"
+        subtitle="Metadata ID to be use on new NFT mint"
+        placeholder="6"
         onChange={(value) =>
           store.setMetadataId(isInteger(value) ? Number(value) : 0)
         }
@@ -43,6 +49,7 @@ export const MergeModuleMerge = () => {
       <TextMultiInputList
         onChange={burnIdsOnChange}
         titles={["Collection ID", "Token ID"]}
+        placeholder={["3", "6"]}
       />
     </div>
   )

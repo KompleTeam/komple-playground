@@ -7,7 +7,8 @@ export const MergeModuleUpdateMergeLock = () => {
   return (
     <div>
       <Switch
-        title="Lock Merge Operation"
+        title="Merge Lock"
+        subtitle="Enable or disable merge lock"
         initialState={store.lock}
         onChange={store.setLock}
       />
