@@ -18,9 +18,9 @@ import {
 
 const EXECUTES = [
   "register_module",
-  "deregister_module",
+  "remove_module",
   "update_hub_info",
-  "update_operators",
+  "update_contract_operators",
   "migrate_contracts",
 ]
 
@@ -58,7 +58,7 @@ export default function HubModuleExecute() {
 
           return setResponse(await executeClient.registerModule(msg))
         }
-        case "deregister_module": {
+        case "remove_module": {
           const msg = {
             module: store.module,
           }
@@ -78,7 +78,7 @@ export default function HubModuleExecute() {
 
           return setResponse(await executeClient.updateHubInfo(msg))
         }
-        case "update_operators": {
+        case "update_contract_operators": {
           const msg = {
             addrs: store.addresses,
           }
@@ -136,10 +136,12 @@ export default function HubModuleExecute() {
         />
 
         {executeMsg === "register_module" && <HubModuleRegisterModule />}
-        {executeMsg === "deregister_module" && <HubModuleDeregisterModule />}
+        {executeMsg === "remove_module" && <HubModuleDeregisterModule />}
         {executeMsg === "update_hub_info" && <HubModuleUpdateHubInfo />}
         {executeMsg === "migrate_contracts" && <HubModuleMigrateContracts />}
-        {executeMsg === "update_operators" && <HubModuleUpdateOperators />}
+        {executeMsg === "update_contract_operators" && (
+          <HubModuleUpdateOperators />
+        )}
       </ContractForm>
     </div>
   )

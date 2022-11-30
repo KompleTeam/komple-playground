@@ -19,12 +19,12 @@ import {
 
 const QUERIES = [
   "contract_config",
-  "percentage_fee",
-  "fixed_fee",
-  "percentage_fees",
-  "fixed_fees",
-  "total_percentage_fees",
-  "total_fixed_fees",
+  "show_fixed_fee",
+  "show_percentage_fee",
+  "list_fixed_fees",
+  "list_percentage_fees",
+  "show_total_percentage_fees",
+  "show_total_fixed_fees",
   "keys",
 ]
 
@@ -60,7 +60,7 @@ export default function FeeModuleQuery() {
       switch (queryMsg) {
         case "contract_config":
           return setResponse(await queryClient.config())
-        case "percentage_fee": {
+        case "show_percentage_fee": {
           const msg = {
             moduleName: store.moduleName,
             feeName: store.feeName,
@@ -68,7 +68,7 @@ export default function FeeModuleQuery() {
 
           return setResponse(await queryClient.percentageFee(msg))
         }
-        case "fixed_fee": {
+        case "show_fixed_fee": {
           const msg = {
             moduleName: store.moduleName,
             feeName: store.feeName,
@@ -76,7 +76,7 @@ export default function FeeModuleQuery() {
 
           return setResponse(await queryClient.fixedFee(msg))
         }
-        case "percentage_fees": {
+        case "list_percentage_fees": {
           const msg = {
             moduleName: store.moduleName,
             startAfter: store.startAfter,
@@ -85,7 +85,7 @@ export default function FeeModuleQuery() {
 
           return setResponse(await queryClient.percentageFees(msg))
         }
-        case "fixed_fees": {
+        case "list_fixed_fees": {
           const msg = {
             moduleName: store.moduleName,
             startAfter: store.startAfter,
@@ -94,7 +94,7 @@ export default function FeeModuleQuery() {
 
           return setResponse(await queryClient.fixedFees(msg))
         }
-        case "total_percentage_fees": {
+        case "show_total_percentage_fees": {
           const msg = {
             moduleName: store.moduleName,
             startAfter: store.startAfter,
@@ -103,7 +103,7 @@ export default function FeeModuleQuery() {
 
           return setResponse(await queryClient.totalPercentageFees(msg))
         }
-        case "total_fixed_fees": {
+        case "show_total_fixed_fees": {
           const msg = {
             moduleName: store.moduleName,
             startAfter: store.startAfter,
@@ -163,14 +163,14 @@ export default function FeeModuleQuery() {
           placeholder="Select query message"
         />
 
-        {queryMsg === "percentage_fee" && <FeeModulePercentageFee />}
-        {queryMsg === "fixed_fee" && <FeeModuleFixedFee />}
-        {queryMsg === "percentage_fees" && <FeeModulePercentageFees />}
-        {queryMsg === "fixed_fees" && <FeeModuleFixedFees />}
-        {queryMsg === "total_percentage_fees" && (
+        {queryMsg === "show_percentage_fee" && <FeeModulePercentageFee />}
+        {queryMsg === "show_fixed_fee" && <FeeModuleFixedFee />}
+        {queryMsg === "list_percentage_fees" && <FeeModulePercentageFees />}
+        {queryMsg === "list_fixed_fees" && <FeeModuleFixedFees />}
+        {queryMsg === "show_total_percentage_fees" && (
           <FeeModuleTotalPercentageFees />
         )}
-        {queryMsg === "total_fixed_fees" && <FeeModuleTotalFixedFees />}
+        {queryMsg === "show_total_fixed_fees" && <FeeModuleTotalFixedFees />}
         {queryMsg === "keys" && <FeeModuleKeys />}
       </ContractForm>
     </div>

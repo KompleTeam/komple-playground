@@ -14,7 +14,7 @@ import {
   FeeModuleSetFee,
 } from "components/forms/execute"
 
-const EXECUTES = ["set_fee", "remove_fee", "distribute", "lock_execute"]
+const EXECUTES = ["set_fee", "remove_fee", "distribute_fees", "lock_execute"]
 
 export default function FeeModuleExecute() {
   const { getSigningCosmWasmClient, offlineSigner } = useWallet()
@@ -74,7 +74,7 @@ export default function FeeModuleExecute() {
 
           return setResponse(await executeClient.removeFee(msg))
         }
-        case "distribute": {
+        case "distribute_fees": {
           if (!store.feeType) {
             throw Error("fee type is undefined")
           }
@@ -128,7 +128,7 @@ export default function FeeModuleExecute() {
 
         {executeMsg === "set_fee" && <FeeModuleSetFee />}
         {executeMsg === "remove_fee" && <FeeModuleRemoveFee />}
-        {executeMsg === "distribute" && <FeeModuleDistribute />}
+        {executeMsg === "distribute_fees" && <FeeModuleDistribute />}
       </ContractForm>
     </div>
   )
