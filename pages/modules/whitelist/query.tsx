@@ -6,7 +6,7 @@ import { useWallet } from "@cosmos-kit/react"
 import { DOC_LINKS } from "config/docs"
 import { KompleClient } from "komplejs"
 import Head from "next/head"
-import { useWhitelistModuleStore } from "store"
+import { useAppStore, useWhitelistModuleStore } from "store"
 import {
   WhitelistModuleIsMember,
   WhitelistModuleMembers,
@@ -23,6 +23,7 @@ export default function FeeModuleQuery() {
   const { getSigningCosmWasmClient, offlineSigner } = useWallet()
 
   const store = useWhitelistModuleStore((state) => state)
+  const setLoading = useAppStore((state) => state.setLoading)
 
   const [queryMsg, setQueryMsg] = useState<string>("")
   const [response, setResponse] = useState<any>({})
@@ -34,6 +35,8 @@ export default function FeeModuleQuery() {
 
   const submit = async ({ contract }: { contract: string }) => {
     try {
+      setLoading(true)
+
       const signingClient = await getSigningCosmWasmClient()
       if (signingClient === undefined || offlineSigner === undefined) {
         throw new Error("client or signer is not ready")
@@ -45,28 +48,34 @@ export default function FeeModuleQuery() {
 
       switch (queryMsg) {
         case "get_contract_config":
-          return setResponse(await client.config())
+          setResponse(await client.config())
+          break
         case "list_whitelist_members": {
           const msg = {
             startAfter: store.startAfter,
             limit: store.limit,
           }
 
-          return setResponse(await client.members(msg))
+          setResponse(await client.members(msg))
+          break
         }
         case "check_whitelist_status":
-          return setResponse(await client.isActive())
+          setResponse(await client.isActive())
+          break
         case "check_whitelist_membership": {
           const msg = {
             member: store.member,
           }
 
-          return setResponse(await client.isMember(msg))
+          setResponse(await client.isMember(msg))
+          break
         }
       }
+
+      setLoading(false)
     } catch (error: any) {
-      console.log(error)
       setResponse(error.message)
+      setLoading(false)
     }
   }
 

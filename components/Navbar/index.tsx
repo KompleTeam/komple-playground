@@ -43,7 +43,7 @@ const CONTRACT_URLS = {
 export const Navbar = () => {
   const walletManager = useWallet()
 
-  const { walletStatus, username, address } = walletManager
+  const { walletStatus, username, address, isWalletConnecting } = walletManager
   const { connect, disconnect, setCurrentChain } = walletManager
 
   const isConnected = walletStatus === "Connected"
@@ -128,6 +128,7 @@ export const Navbar = () => {
               text="Connect wallet"
               onClick={handleConnect}
               className="h-[40px] mx-3"
+              loading={isWalletConnecting}
             />
           )}
         </div>

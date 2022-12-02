@@ -6,11 +6,14 @@ import { useWallet } from "@cosmos-kit/react"
 import { DOC_LINKS } from "config/docs"
 import { KompleClient } from "komplejs"
 import Head from "next/head"
+import { useAppStore } from "store"
 
 const QUERIES = ["get_contract_config"]
 
 export default function AttributePermissionQuery() {
   const { getSigningCosmWasmClient, offlineSigner } = useWallet()
+
+  const setLoading = useAppStore((state) => state.setLoading)
 
   const [queryMsg, setQueryMsg] = useState<string>("")
   const [response, setResponse] = useState<any>({})
@@ -22,6 +25,8 @@ export default function AttributePermissionQuery() {
 
   const submit = async ({ contract }: { contract: string }) => {
     try {
+      setLoading(true)
+
       const signingClient = await getSigningCosmWasmClient()
       if (signingClient === undefined || offlineSigner === undefined) {
         throw new Error("client or signer is not ready")
@@ -35,11 +40,14 @@ export default function AttributePermissionQuery() {
 
       switch (queryMsg) {
         case "get_contract_config":
-          return setResponse(await client.config())
+          setResponse(await client.config())
+          break
       }
+
+      setLoading(false)
     } catch (error: any) {
-      console.log(error)
       setResponse(error.message)
+      setLoading(false)
     }
   }
 

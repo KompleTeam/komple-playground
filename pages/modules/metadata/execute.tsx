@@ -6,7 +6,7 @@ import { ContractHeader } from "components/contracts/ContractHeader"
 import { KompleClient } from "komplejs"
 import Head from "next/head"
 import { useWallet } from "@cosmos-kit/react"
-import { useMetadataModuleStore } from "store"
+import { useAppStore, useMetadataModuleStore } from "store"
 import {
   MetadataModuleAddAttribute,
   MetadataModuleAddMetadata,
@@ -33,6 +33,7 @@ export default function MetadataModuleExecute() {
   const { getSigningCosmWasmClient, offlineSigner } = useWallet()
 
   const store = useMetadataModuleStore((state) => state)
+  const setLoading = useAppStore((state) => state.setLoading)
 
   const [executeMsg, setExecuteMsg] = useState<string>("")
   const [response, setResponse] = useState<any>({})
@@ -44,6 +45,8 @@ export default function MetadataModuleExecute() {
 
   const submit = async ({ contract }: { contract: string }) => {
     try {
+      setLoading(true)
+
       const signingClient = await getSigningCosmWasmClient()
       if (signingClient === undefined || offlineSigner === undefined) {
         throw new Error("client or signer is not ready")
@@ -60,7 +63,8 @@ export default function MetadataModuleExecute() {
             attributes: store.attributes,
           }
 
-          return setResponse(await executeClient.addMetadata(msg))
+          setResponse(await executeClient.addMetadata(msg))
+          break
         }
         case "update_metadata_info": {
           const msg = {
@@ -69,7 +73,8 @@ export default function MetadataModuleExecute() {
             metaInfo: store.metaInfo,
           }
 
-          return setResponse(await executeClient.updateMetaInfo(msg))
+          setResponse(await executeClient.updateMetaInfo(msg))
+          break
         }
         case "add_attribute": {
           const msg = {
@@ -81,7 +86,8 @@ export default function MetadataModuleExecute() {
             },
           }
 
-          return setResponse(await executeClient.addAttribute(msg))
+          setResponse(await executeClient.addAttribute(msg))
+          break
         }
         case "update_attribute": {
           const msg = {
@@ -93,7 +99,8 @@ export default function MetadataModuleExecute() {
             },
           }
 
-          return setResponse(await executeClient.updateAttribute(msg))
+          setResponse(await executeClient.updateAttribute(msg))
+          break
         }
         case "remove_attribute": {
           const msg = {
@@ -102,7 +109,8 @@ export default function MetadataModuleExecute() {
             traitType: store.traitType,
           }
 
-          return setResponse(await executeClient.removeAttribute(msg))
+          setResponse(await executeClient.removeAttribute(msg))
+          break
         }
         case "link_metadata_to_NFT": {
           const msg = {
@@ -110,26 +118,31 @@ export default function MetadataModuleExecute() {
             metadataId: store.metadataId === 0 ? undefined : store.metadataId,
           }
 
-          return setResponse(await executeClient.linkMetadata(msg))
+          setResponse(await executeClient.linkMetadata(msg))
+          break
         }
         case "unlink_metadata_from_NFT": {
           const msg = {
             tokenId: store.id,
           }
 
-          return setResponse(await executeClient.unlinkMetadata(msg))
+          setResponse(await executeClient.unlinkMetadata(msg))
+          break
         }
         case "update_contract_operators": {
           const msg = {
             addrs: store.addresses,
           }
 
-          return setResponse(await executeClient.updateOperators(msg))
+          setResponse(await executeClient.updateOperators(msg))
+          break
         }
       }
+
+      setLoading(false)
     } catch (error: any) {
-      console.log(error)
       setResponse(error.message)
+      setLoading(false)
     }
   }
 

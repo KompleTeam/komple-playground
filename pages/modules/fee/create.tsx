@@ -5,13 +5,14 @@ import { ContractForm } from "components/contracts/ContractLayout"
 import { DOC_LINKS } from "config/docs"
 import Head from "next/head"
 import { KompleClient } from "komplejs"
-import { useFeeModuleStore } from "store"
+import { useFeeModuleStore, useAppStore } from "store"
 import { useWallet } from "@cosmos-kit/react"
 
 export default function FeeModuleCreate() {
   const { getSigningCosmWasmClient, offlineSigner } = useWallet()
 
   const store = useFeeModuleStore((state) => state)
+  const setLoading = useAppStore((state) => state.setLoading)
 
   const [response, setResponse] = useState({})
 
@@ -21,19 +22,28 @@ export default function FeeModuleCreate() {
   }, [])
 
   const submit = async ({ codeId }: { codeId: number }) => {
-    const signingClient = await getSigningCosmWasmClient()
-    if (signingClient === undefined || offlineSigner === undefined) {
-      throw new Error("No signing client")
+    try {
+      setLoading(true)
+
+      const signingClient = await getSigningCosmWasmClient()
+      if (signingClient === undefined || offlineSigner === undefined) {
+        throw new Error("No signing client")
+      }
+
+      const kompleClient = new KompleClient(signingClient, offlineSigner)
+      const feeModule = await kompleClient.feeModule("")
+
+      const res = await feeModule.instantiate({
+        codeId,
+        admin: store.admin,
+      })
+
+      setResponse(res)
+      setLoading(false)
+    } catch (error: any) {
+      setResponse(error.message)
+      setLoading(false)
     }
-
-    const kompleClient = new KompleClient(signingClient, offlineSigner)
-    const feeModule = await kompleClient.feeModule("")
-
-    const res = await feeModule.instantiate({
-      codeId,
-      admin: store.admin,
-    })
-    setResponse(res)
   }
 
   return (

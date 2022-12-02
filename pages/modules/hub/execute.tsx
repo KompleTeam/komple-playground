@@ -7,7 +7,7 @@ import { KompleClient } from "komplejs"
 import { toBinary } from "@cosmjs/cosmwasm-stargate"
 import Head from "next/head"
 import { useWallet } from "@cosmos-kit/react"
-import { useHubModuleStore } from "store"
+import { useAppStore, useHubModuleStore } from "store"
 import {
   HubModuleDeregisterModule,
   HubModuleMigrateContracts,
@@ -28,6 +28,7 @@ export default function HubModuleExecute() {
   const { getSigningCosmWasmClient, offlineSigner } = useWallet()
 
   const store = useHubModuleStore((state) => state)
+  const setLoading = useAppStore((state) => state.setLoading)
 
   const [executeMsg, setExecuteMsg] = useState<string>("")
   const [response, setResponse] = useState<any>({})
@@ -39,6 +40,8 @@ export default function HubModuleExecute() {
 
   const submit = async ({ contract }: { contract: string }) => {
     try {
+      setLoading(true)
+
       const signingClient = await getSigningCosmWasmClient()
       if (signingClient === undefined || offlineSigner === undefined) {
         throw new Error("client or signer is not ready")
@@ -56,14 +59,16 @@ export default function HubModuleExecute() {
             msg: store.msg !== undefined ? toBinary(store.msg) : undefined,
           }
 
-          return setResponse(await executeClient.registerModule(msg))
+          setResponse(await executeClient.registerModule(msg))
+          break
         }
         case "remove_module": {
           const msg = {
             module: store.module,
           }
 
-          return setResponse(await executeClient.deregisterModule(msg))
+          setResponse(await executeClient.deregisterModule(msg))
+          break
         }
         case "update_hub_info": {
           const msg = {
@@ -76,14 +81,16 @@ export default function HubModuleExecute() {
                 : store.hubInfo.external_link,
           }
 
-          return setResponse(await executeClient.updateHubInfo(msg))
+          setResponse(await executeClient.updateHubInfo(msg))
+          break
         }
         case "update_contract_operators": {
           const msg = {
             addrs: store.addresses,
           }
 
-          return setResponse(await executeClient.updateOperators(msg))
+          setResponse(await executeClient.updateOperators(msg))
+          break
         }
         case "migrate_contracts": {
           if (store.msg === undefined) {
@@ -96,12 +103,15 @@ export default function HubModuleExecute() {
             msg: toBinary(store.msg),
           }
 
-          return setResponse(await executeClient.migrateContracts(msg))
+          setResponse(await executeClient.migrateContracts(msg))
+          break
         }
       }
+
+      setLoading(false)
     } catch (error: any) {
-      console.log(error)
       setResponse(error.message)
+      setLoading(false)
     }
   }
 

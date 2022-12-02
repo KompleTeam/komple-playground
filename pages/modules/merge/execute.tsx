@@ -7,7 +7,7 @@ import { KompleClient } from "komplejs"
 import Head from "next/head"
 import { useWallet } from "@cosmos-kit/react"
 import { toBinary } from "@cosmjs/cosmwasm-stargate"
-import { useMergeModuleStore } from "store"
+import { useAppStore, useMergeModuleStore } from "store"
 import {
   MergeModuleMerge,
   MergeModulePermissionMerge,
@@ -27,6 +27,7 @@ export default function MergeModuleExecute() {
   const { getSigningCosmWasmClient, offlineSigner } = useWallet()
 
   const store = useMergeModuleStore((state) => state)
+  const setLoading = useAppStore((state) => state.setLoading)
 
   const [executeMsg, setExecuteMsg] = useState<string>("")
   const [response, setResponse] = useState<any>({})
@@ -38,6 +39,8 @@ export default function MergeModuleExecute() {
 
   const submit = async ({ contract }: { contract: string }) => {
     try {
+      setLoading(true)
+
       const signingClient = await getSigningCosmWasmClient()
       if (signingClient === undefined || offlineSigner === undefined) {
         throw new Error("client or signer is not ready")
@@ -53,7 +56,8 @@ export default function MergeModuleExecute() {
             lock: store.lock,
           }
 
-          return setResponse(await executeClient.updateMergeLock(msg))
+          setResponse(await executeClient.updateMergeLock(msg))
+          break
         }
         case "merge_NFTs": {
           const msg = {
@@ -66,7 +70,8 @@ export default function MergeModuleExecute() {
             },
           }
 
-          return setResponse(await executeClient.merge(msg))
+          setResponse(await executeClient.merge(msg))
+          break
         }
         case "merge_NFTs_with_permissions": {
           const msg = {
@@ -79,22 +84,27 @@ export default function MergeModuleExecute() {
             },
           }
 
-          return setResponse(await executeClient.permissionMerge(msg))
+          setResponse(await executeClient.permissionMerge(msg))
+          break
         }
         case "update_contract_operators": {
           const msg = {
             addrs: store.addresses,
           }
 
-          return setResponse(await executeClient.updateOperators(msg))
+          setResponse(await executeClient.updateOperators(msg))
+          break
         }
         case "lock_execute_messages": {
-          return setResponse(await executeClient.lockExecute())
+          setResponse(await executeClient.lockExecute())
+          break
         }
       }
+
+      setLoading(false)
     } catch (error: any) {
-      console.log(error)
       setResponse(error.message)
+      setLoading(false)
     }
   }
 

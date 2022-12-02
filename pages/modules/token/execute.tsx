@@ -6,7 +6,7 @@ import { ContractHeader } from "components/contracts/ContractHeader"
 import { KompleClient } from "komplejs"
 import Head from "next/head"
 import { useWallet } from "@cosmos-kit/react"
-import { useTokenModuleStore } from "store"
+import { useAppStore, useTokenModuleStore } from "store"
 import { toBinary } from "@cosmjs/cosmwasm-stargate"
 import {
   TokenModuleUpdateModuleOperators,
@@ -41,6 +41,7 @@ export default function TokenModuleExecute() {
   const { getSigningCosmWasmClient, offlineSigner, address } = useWallet()
 
   const store = useTokenModuleStore((state) => state)
+  const setLoading = useAppStore((state) => state.setLoading)
 
   const [executeMsg, setExecuteMsg] = useState<string>("")
   const [response, setResponse] = useState<any>({})
@@ -52,6 +53,8 @@ export default function TokenModuleExecute() {
 
   const submit = async ({ contract }: { contract: string }) => {
     try {
+      setLoading(true)
+
       const signingClient = await getSigningCosmWasmClient()
       if (signingClient === undefined || offlineSigner === undefined) {
         throw new Error("client or signer is not ready")
@@ -70,7 +73,7 @@ export default function TokenModuleExecute() {
             },
           }
 
-          return setResponse(
+          setResponse(
             await executeClient.client.execute(
               address || "",
               contract,
@@ -78,6 +81,7 @@ export default function TokenModuleExecute() {
               "auto"
             )
           )
+          break
         }
         case "transfer_NFT": {
           const msg = {
@@ -85,7 +89,8 @@ export default function TokenModuleExecute() {
             tokenId: store.tokenId,
           }
 
-          return setResponse(await executeClient.transferNft(msg))
+          setResponse(await executeClient.transferNft(msg))
+          break
         }
         case "send_NFT": {
           const msg = {
@@ -94,14 +99,16 @@ export default function TokenModuleExecute() {
             msg: toBinary(store.sendMsg),
           }
 
-          return setResponse(await executeClient.sendNft(msg))
+          setResponse(await executeClient.sendNft(msg))
+          break
         }
         case "burn_NFT": {
           const msg = {
             tokenId: store.tokenId,
           }
 
-          return setResponse(await executeClient.burn(msg))
+          setResponse(await executeClient.burn(msg))
+          break
         }
         case "update_contract_operators": {
           const msg = {
@@ -114,7 +121,7 @@ export default function TokenModuleExecute() {
             },
           }
 
-          return setResponse(
+          setResponse(
             await executeClient.client.execute(
               address || "",
               contract,
@@ -122,6 +129,7 @@ export default function TokenModuleExecute() {
               "auto"
             )
           )
+          break
         }
         case "transfer_NFT_as_admin": {
           const msg = {
@@ -129,14 +137,16 @@ export default function TokenModuleExecute() {
             tokenId: store.tokenId,
           }
 
-          return setResponse(await executeClient.adminTransferNft(msg))
+          setResponse(await executeClient.adminTransferNft(msg))
+          break
         }
         case "update_contract_locks": {
           const msg = {
             locks: store.locks,
           }
 
-          return setResponse(await executeClient.updateLocks(msg))
+          setResponse(await executeClient.updateLocks(msg))
+          break
         }
         case "update_NFT_locks": {
           const msg = {
@@ -144,14 +154,16 @@ export default function TokenModuleExecute() {
             locks: store.locks,
           }
 
-          return setResponse(await executeClient.updateTokenLocks(msg))
+          setResponse(await executeClient.updateTokenLocks(msg))
+          break
         }
         case "update_collection_config": {
           const msg = {
             collectionConfig: store.collectionConfig,
           }
 
-          return setResponse(await executeClient.updateCollectionConfig(msg))
+          setResponse(await executeClient.updateCollectionConfig(msg))
+          break
         }
         case "add_whitelist_module": {
           const msg = {
@@ -159,12 +171,15 @@ export default function TokenModuleExecute() {
             instantiateMsg: store.whitelistInstantiateMsg,
           }
 
-          return setResponse(await executeClient.initWhitelistContract(msg))
+          setResponse(await executeClient.initWhitelistContract(msg))
+          break
         }
       }
+
+      setLoading(false)
     } catch (error: any) {
-      console.log(error)
       setResponse(error.message)
+      setLoading(false)
     }
   }
 

@@ -15,7 +15,7 @@ import {
   MarketplaceModulePermissionBuy,
   MarketplaceModuleUpdateOperators,
 } from "components/forms/execute"
-import { useMarketplaceModuleStore } from "store"
+import { useMarketplaceModuleStore, useAppStore } from "store"
 import { coin } from "@cosmjs/proto-signing"
 
 const EXECUTES = [
@@ -33,6 +33,7 @@ export default function MarketplaceModuleExecute() {
   const { getSigningCosmWasmClient, offlineSigner } = useWallet()
 
   const store = useMarketplaceModuleStore((state) => state)
+  const setLoading = useAppStore((state) => state.setLoading)
 
   const [executeMsg, setExecuteMsg] = useState<string>("")
   const [response, setResponse] = useState<any>({})
@@ -44,6 +45,8 @@ export default function MarketplaceModuleExecute() {
 
   const submit = async ({ contract }: { contract: string }) => {
     try {
+      setLoading(true)
+
       const signingClient = await getSigningCosmWasmClient()
       if (signingClient === undefined || offlineSigner === undefined) {
         throw new Error("client or signer is not ready")
@@ -59,7 +62,8 @@ export default function MarketplaceModuleExecute() {
             lock: store.lock,
           }
 
-          return setResponse(await executeClient.updateBuyLock(msg))
+          setResponse(await executeClient.updateBuyLock(msg))
+          break
         }
         case "list_fixed_price_NFT": {
           const msg = {
@@ -68,7 +72,8 @@ export default function MarketplaceModuleExecute() {
             price: store.price.toString(),
           }
 
-          return setResponse(await executeClient.listFixedToken(msg))
+          setResponse(await executeClient.listFixedToken(msg))
+          break
         }
         case "remove_fixed_price_NFT": {
           const msg = {
@@ -76,7 +81,8 @@ export default function MarketplaceModuleExecute() {
             tokenId: store.tokenId,
           }
 
-          return setResponse(await executeClient.delistFixedToken(msg))
+          setResponse(await executeClient.delistFixedToken(msg))
+          break
         }
         case "update_listing_price": {
           if (store.listingType === undefined) {
@@ -90,7 +96,8 @@ export default function MarketplaceModuleExecute() {
             price: store.price.toString(),
           }
 
-          return setResponse(await executeClient.updatePrice(msg))
+          setResponse(await executeClient.updatePrice(msg))
+          break
         }
         case "buy_NFT": {
           if (store.listingType === undefined) {
@@ -103,11 +110,12 @@ export default function MarketplaceModuleExecute() {
             tokenId: store.tokenId,
           }
 
-          return setResponse(
+          setResponse(
             await executeClient.buy(msg, "auto", undefined, [
               coin(1000000, "ujunox"),
             ])
           )
+          break
         }
         case "buy_NFT_with_permissions": {
           if (store.listingType === undefined) {
@@ -121,22 +129,27 @@ export default function MarketplaceModuleExecute() {
             buyer: store.buyer,
           }
 
-          return setResponse(await executeClient.permissionBuy(msg))
+          setResponse(await executeClient.permissionBuy(msg))
+          break
         }
         case "update_contract_operators": {
           const msg = {
             addrs: store.addresses,
           }
 
-          return setResponse(await executeClient.updateOperators(msg))
+          setResponse(await executeClient.updateOperators(msg))
+          break
         }
         case "lock_execute_messages": {
-          return setResponse(await executeClient.lockExecute())
+          setResponse(await executeClient.lockExecute())
+          break
         }
       }
+
+      setLoading(false)
     } catch (error: any) {
-      console.log(error)
       setResponse(error.message)
+      setLoading(false)
     }
   }
 

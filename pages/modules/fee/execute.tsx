@@ -7,7 +7,7 @@ import { KompleClient } from "komplejs"
 import { toBinary } from "@cosmjs/cosmwasm-stargate"
 import Head from "next/head"
 import { useWallet } from "@cosmos-kit/react"
-import { useFeeModuleStore } from "store"
+import { useFeeModuleStore, useAppStore } from "store"
 import {
   FeeModuleDistribute,
   FeeModuleRemoveFee,
@@ -20,6 +20,7 @@ export default function FeeModuleExecute() {
   const { getSigningCosmWasmClient, offlineSigner } = useWallet()
 
   const store = useFeeModuleStore((state) => state)
+  const setLoading = useAppStore((state) => state.setLoading)
 
   const [executeMsg, setExecuteMsg] = useState<string>("")
   const [response, setResponse] = useState<any>({})
@@ -31,6 +32,8 @@ export default function FeeModuleExecute() {
 
   const submit = async ({ contract }: { contract: string }) => {
     try {
+      setLoading(true)
+
       const signingClient = await getSigningCosmWasmClient()
       if (signingClient === undefined || offlineSigner === undefined) {
         throw new Error("client or signer is not ready")
@@ -59,7 +62,8 @@ export default function FeeModuleExecute() {
             }),
           }
 
-          return setResponse(await executeClient.setFee(msg))
+          setResponse(await executeClient.setFee(msg))
+          break
         }
         case "remove_fee": {
           if (!store.feeType) {
@@ -72,7 +76,8 @@ export default function FeeModuleExecute() {
             feeName: store.feeName,
           }
 
-          return setResponse(await executeClient.removeFee(msg))
+          setResponse(await executeClient.removeFee(msg))
+          break
         }
         case "distribute_fees": {
           if (!store.feeType) {
@@ -85,14 +90,18 @@ export default function FeeModuleExecute() {
             customPaymentAddresses: store.customPaymentAddresses,
           }
 
-          return setResponse(await executeClient.distribute(msg))
+          setResponse(await executeClient.distribute(msg))
+          break
         }
         case "lock_execute":
-          return setResponse(await executeClient.lockExecute())
+          setResponse(await executeClient.lockExecute())
+          break
       }
+
+      setLoading(false)
     } catch (error: any) {
-      console.log(error)
       setResponse(error.message)
+      setLoading(false)
     }
   }
 

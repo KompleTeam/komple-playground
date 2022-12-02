@@ -5,6 +5,7 @@ import { TextInput } from "components/TextInput"
 import { useRouter } from "next/router"
 import { Button } from "components/Button"
 import { isInteger } from "utils/isInteger"
+import { useAppStore } from "store"
 
 type ActionType = "create" | "execute" | "query"
 
@@ -26,6 +27,8 @@ export const ContractForm = ({
   hidden?: string[]
 }) => {
   const router = useRouter()
+
+  const loading = useAppStore((state) => state.loading)
 
   const [codeId, setCodeId] = useState(0)
   const [contract, setContract] = useState(
@@ -89,6 +92,7 @@ export const ContractForm = ({
           className="capitalize"
           text={`${action} ${name} ${isModule ? "Module" : "Permission"}`}
           onClick={() => submit({ contract, codeId })}
+          loading={loading}
         />
       </div>
       <div className="w-20" />

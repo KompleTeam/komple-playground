@@ -13,7 +13,7 @@ import {
 } from "components/forms/query"
 import { KompleClient } from "komplejs"
 import Head from "next/head"
-import { useMintModuleStore } from "store"
+import { useAppStore, useMintModuleStore } from "store"
 
 const QUERIES = [
   "get_contract_config",
@@ -30,6 +30,7 @@ export default function MintModuleQuery() {
   const { getSigningCosmWasmClient, offlineSigner } = useWallet()
 
   const store = useMintModuleStore((state) => state)
+  const setLoading = useAppStore((state) => state.setLoading)
 
   const [queryMsg, setQueryMsg] = useState<string>("")
   const [response, setResponse] = useState<any>({})
@@ -41,6 +42,8 @@ export default function MintModuleQuery() {
 
   const submit = async ({ contract }: { contract: string }) => {
     try {
+      setLoading(true)
+
       const signingClient = await getSigningCosmWasmClient()
       if (signingClient === undefined || offlineSigner === undefined) {
         throw new Error("client or signer is not ready")
@@ -52,29 +55,34 @@ export default function MintModuleQuery() {
 
       switch (queryMsg) {
         case "get_contract_config":
-          return setResponse(await queryClient.config())
+          setResponse(await queryClient.config())
+          break
         case "get_collection_address": {
           const msg = {
             collectionId: store.collectionId,
           }
 
-          return setResponse(await queryClient.collectionAddress(msg))
+          setResponse(await queryClient.collectionAddress(msg))
+          break
         }
         case "get_collection_info": {
           const msg = {
             collectionId: store.collectionId,
           }
 
-          return setResponse(await queryClient.collectionInfo(msg))
+          setResponse(await queryClient.collectionInfo(msg))
+          break
         }
         case "list_contract_operators":
-          return setResponse(await queryClient.operators())
+          setResponse(await queryClient.operators())
+          break
         case "linked_collections": {
           const msg = {
             collectionId: store.collectionId,
           }
 
-          return setResponse(await queryClient.linkedCollections(msg))
+          setResponse(await queryClient.linkedCollections(msg))
+          break
         }
         case "list_linked_collections": {
           const msg = {
@@ -83,21 +91,26 @@ export default function MintModuleQuery() {
             limit: store.limit,
           }
 
-          return setResponse(await queryClient.collections(msg))
+          setResponse(await queryClient.collections(msg))
+          break
         }
         case "list_collection_creators":
-          return setResponse(await queryClient.creators())
+          setResponse(await queryClient.creators())
+          break
         case "get_collection_mint_lock": {
           const msg = {
             collectionId: store.collectionId,
           }
 
-          return setResponse(await queryClient.mintLock(msg))
+          setResponse(await queryClient.mintLock(msg))
+          break
         }
       }
+
+      setLoading(false)
     } catch (error: any) {
-      console.log(error)
       setResponse(error.message)
+      setLoading(false)
     }
   }
 

@@ -7,7 +7,7 @@ import { KompleClient } from "komplejs"
 import { toBinary } from "@cosmjs/cosmwasm-stargate"
 import Head from "next/head"
 import { useWallet } from "@cosmos-kit/react"
-import { usePermissionModuleStore } from "store"
+import { useAppStore, usePermissionModuleStore } from "store"
 import {
   PermissionModuleCheck,
   PermissionModuleRegisterPermission,
@@ -27,6 +27,7 @@ export default function PermissionModuleExecute() {
   const { getSigningCosmWasmClient, offlineSigner } = useWallet()
 
   const store = usePermissionModuleStore((state) => state)
+  const setLoading = useAppStore((state) => state.setLoading)
 
   const [executeMsg, setExecuteMsg] = useState<string>("")
   const [response, setResponse] = useState<any>({})
@@ -38,6 +39,8 @@ export default function PermissionModuleExecute() {
 
   const submit = async ({ contract }: { contract: string }) => {
     try {
+      setLoading(true)
+
       const signingClient = await getSigningCosmWasmClient()
       if (signingClient === undefined || offlineSigner === undefined) {
         throw new Error("client or signer is not ready")
@@ -55,7 +58,8 @@ export default function PermissionModuleExecute() {
             msg: store.msg !== undefined ? toBinary(store.msg) : undefined,
           }
 
-          return setResponse(await executeClient.registerPermission(msg))
+          setResponse(await executeClient.registerPermission(msg))
+          break
         }
         case "update_permissions_for_module": {
           const msg = {
@@ -63,7 +67,8 @@ export default function PermissionModuleExecute() {
             permissions: store.permissions,
           }
 
-          return setResponse(await executeClient.updateModulePermissions(msg))
+          setResponse(await executeClient.updateModulePermissions(msg))
+          break
         }
         case "check_permission": {
           if (store.msg === undefined) {
@@ -75,22 +80,27 @@ export default function PermissionModuleExecute() {
             msg: store.msg,
           }
 
-          return setResponse(await executeClient.check(msg))
+          setResponse(await executeClient.check(msg))
+          break
         }
         case "update_contract_operators": {
           const msg = {
             addrs: store.addresses,
           }
 
-          return setResponse(await executeClient.updateOperators(msg))
+          setResponse(await executeClient.updateOperators(msg))
+          break
         }
         case "lock_execute_messages": {
-          return setResponse(await executeClient.lockExecute())
+          setResponse(await executeClient.lockExecute())
+          break
         }
       }
+
+      setLoading(false)
     } catch (error: any) {
-      console.log(error)
       setResponse(error.message)
+      setLoading(false)
     }
   }
 

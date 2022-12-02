@@ -8,7 +8,7 @@ import Head from "next/head"
 import { useWallet } from "@cosmos-kit/react"
 import { toBinary } from "@cosmjs/cosmwasm-stargate"
 import { OwnershipPermissionCheck } from "components/forms/execute"
-import { useOwnershipPermissionStore } from "store"
+import { useAppStore, useOwnershipPermissionStore } from "store"
 
 const EXECUTES = ["check_permission"]
 
@@ -16,6 +16,7 @@ export default function OwnershipPermissionExecute() {
   const { getSigningCosmWasmClient, offlineSigner } = useWallet()
 
   const store = useOwnershipPermissionStore((state) => state)
+  const setLoading = useAppStore((state) => state.setLoading)
 
   const [executeMsg, setExecuteMsg] = useState<string>("")
   const [response, setResponse] = useState<any>({})
@@ -27,6 +28,8 @@ export default function OwnershipPermissionExecute() {
 
   const submit = async ({ contract }: { contract: string }) => {
     try {
+      setLoading(true)
+
       const signingClient = await getSigningCosmWasmClient()
       if (signingClient === undefined || offlineSigner === undefined) {
         throw new Error("client or signer is not ready")
@@ -44,12 +47,15 @@ export default function OwnershipPermissionExecute() {
             data: store.data === undefined ? "" : toBinary(store.data),
           }
 
-          return setResponse(await client.check(msg))
+          setResponse(await client.check(msg))
+          break
         }
       }
+
+      setLoading(false)
     } catch (error: any) {
-      console.log(error)
       setResponse(error.message)
+      setLoading(false)
     }
   }
 
