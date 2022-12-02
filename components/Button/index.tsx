@@ -29,7 +29,7 @@ export const Button = ({
         <div className="flex items-center justify-center">
           <svg
             aria-hidden="true"
-            className="mr-2 w-6 h-6 text-komple-red-300 animate-spin dark:text-gray-600 fill-white"
+            className="mr-2 w-5 h-5 text-komple-red-300 animate-spin dark:text-gray-600 fill-white"
             viewBox="0 0 100 101"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
