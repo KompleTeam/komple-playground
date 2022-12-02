@@ -6,7 +6,7 @@ import { ContractHeader } from "components/contracts/ContractHeader"
 import { KompleClient } from "komplejs"
 import Head from "next/head"
 import { useWallet } from "@cosmos-kit/react"
-import { useWhitelistModuleStore } from "store"
+import { useAppStore, useWhitelistModuleStore } from "store"
 import {
   WhitelistModuleAddMembers,
   WhitelistModuleRemoveMembers,
@@ -23,6 +23,7 @@ export default function WhitelistModuleExecute() {
   const { getSigningCosmWasmClient, offlineSigner } = useWallet()
 
   const store = useWhitelistModuleStore((state) => state)
+  const setLoading = useAppStore((state) => state.setLoading)
 
   const [executeMsg, setExecuteMsg] = useState<string>("")
   const [response, setResponse] = useState<any>({})
@@ -34,6 +35,8 @@ export default function WhitelistModuleExecute() {
 
   const submit = async ({ contract }: { contract: string }) => {
     try {
+      setLoading(true)
+
       const signingClient = await getSigningCosmWasmClient()
       if (signingClient === undefined || offlineSigner === undefined) {
         throw new Error("client or signer is not ready")
@@ -66,9 +69,11 @@ export default function WhitelistModuleExecute() {
           return setResponse(await client.removeMembers(msg))
         }
       }
+
+      setLoading(false)
     } catch (error: any) {
-      console.log(error)
       setResponse(error.message)
+      setLoading(false)
     }
   }
 
