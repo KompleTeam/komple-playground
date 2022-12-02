@@ -6,7 +6,7 @@ import { useWallet } from "@cosmos-kit/react"
 import { DOC_LINKS } from "config/docs"
 import { KompleClient } from "komplejs"
 import Head from "next/head"
-import { useHubModuleStore } from "store"
+import { useHubModuleStore, useAppStore } from "store"
 import { HubModuleModuleAddress } from "components/forms/query"
 
 const QUERIES = ["contract_config", "get_module_address", "contract_operators"]
@@ -15,6 +15,7 @@ export default function HubModuleQuery() {
   const { getSigningCosmWasmClient, offlineSigner } = useWallet()
 
   const store = useHubModuleStore((state) => state)
+  const setLoading = useAppStore((state) => state.setLoading)
 
   const [queryMsg, setQueryMsg] = useState<string>("")
   const [response, setResponse] = useState<any>({})
@@ -26,6 +27,8 @@ export default function HubModuleQuery() {
 
   const submit = async ({ contract }: { contract: string }) => {
     try {
+      setLoading(true)
+
       const signingClient = await getSigningCosmWasmClient()
       if (signingClient === undefined || offlineSigner === undefined) {
         throw new Error("client or signer is not ready")
@@ -48,9 +51,11 @@ export default function HubModuleQuery() {
         case "contract_operators":
           return setResponse(await queryClient.operators())
       }
+
+      setLoading(false)
     } catch (error: any) {
-      console.log(error)
       setResponse(error.message)
+      setLoading(false)
     }
   }
 

@@ -6,17 +6,20 @@ import { ContractForm } from "components/contracts/ContractLayout"
 import { DOC_LINKS } from "config/docs"
 import Head from "next/head"
 import { KompleClient } from "komplejs"
-import { useHubModuleStore } from "store"
+import { useHubModuleStore, useAppStore } from "store"
 
 export default function HubModuleCreate() {
   const { getSigningCosmWasmClient, offlineSigner, address } = useWallet()
 
   const store = useHubModuleStore((state) => state)
+  const setLoading = useAppStore((state) => state.setLoading)
 
   const [response, setResponse] = useState({})
 
   const submit = async ({ codeId }: { codeId: number }) => {
     try {
+      setLoading(true)
+
       const signingClient = await getSigningCosmWasmClient()
       if (signingClient === undefined || offlineSigner === undefined) {
         throw new Error("No signing client")
@@ -32,9 +35,11 @@ export default function HubModuleCreate() {
         // marbuFeeModule: store.marbuFeeModule,
       })
       setResponse(res)
+
+      setLoading(false)
     } catch (error: any) {
-      console.log(error)
       setResponse(error.message)
+      setLoading(false)
     }
   }
 
