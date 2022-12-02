@@ -7,7 +7,7 @@ import { KompleClient } from "komplejs"
 import { toBinary } from "@cosmjs/cosmwasm-stargate"
 import Head from "next/head"
 import { useWallet } from "@cosmos-kit/react"
-import { usePermissionModuleStore } from "store"
+import { useAppStore, usePermissionModuleStore } from "store"
 import {
   PermissionModuleCheck,
   PermissionModuleRegisterPermission,
@@ -27,6 +27,7 @@ export default function PermissionModuleExecute() {
   const { getSigningCosmWasmClient, offlineSigner } = useWallet()
 
   const store = usePermissionModuleStore((state) => state)
+  const setLoading = useAppStore((state) => state.setLoading)
 
   const [executeMsg, setExecuteMsg] = useState<string>("")
   const [response, setResponse] = useState<any>({})
@@ -38,6 +39,8 @@ export default function PermissionModuleExecute() {
 
   const submit = async ({ contract }: { contract: string }) => {
     try {
+      setLoading(true)
+
       const signingClient = await getSigningCosmWasmClient()
       if (signingClient === undefined || offlineSigner === undefined) {
         throw new Error("client or signer is not ready")
@@ -88,9 +91,11 @@ export default function PermissionModuleExecute() {
           return setResponse(await executeClient.lockExecute())
         }
       }
+
+      setLoading(false)
     } catch (error: any) {
-      console.log(error)
       setResponse(error.message)
+      setLoading(false)
     }
   }
 
