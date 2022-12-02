@@ -52,21 +52,24 @@ export default function WhitelistModuleExecute() {
             whitelistConfig: store.config,
           }
 
-          return setResponse(await client.updateWhitelistConfig(msg))
+          setResponse(await client.updateWhitelistConfig(msg))
+          break
         }
         case "add_members_to_whitelist": {
           const msg = {
             members: store.members,
           }
 
-          return setResponse(await client.addMembers(msg))
+          setResponse(await client.addMembers(msg))
+          break
         }
         case "remove_members_from_whitelist": {
           const msg = {
             members: store.members,
           }
 
-          return setResponse(await client.removeMembers(msg))
+          setResponse(await client.removeMembers(msg))
+          break
         }
       }
 

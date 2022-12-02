@@ -51,17 +51,20 @@ export default function FeeModuleQuery() {
             permission: store.permission,
           }
 
-          return setResponse(await queryClient.permissionAddress(msg))
+          setResponse(await queryClient.permissionAddress(msg))
+          break
         }
         case "list_permissions_for_module": {
           const msg = {
             module: store.module,
           }
 
-          return setResponse(await queryClient.modulePermissions(msg))
+          setResponse(await queryClient.modulePermissions(msg))
+          break
         }
         case "list_contract_operators":
-          return setResponse(await queryClient.operators())
+          setResponse(await queryClient.operators())
+          break
       }
 
       setLoading(false)

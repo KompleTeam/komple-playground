@@ -59,14 +59,16 @@ export default function HubModuleExecute() {
             msg: store.msg !== undefined ? toBinary(store.msg) : undefined,
           }
 
-          return setResponse(await executeClient.registerModule(msg))
+          setResponse(await executeClient.registerModule(msg))
+          break
         }
         case "remove_module": {
           const msg = {
             module: store.module,
           }
 
-          return setResponse(await executeClient.deregisterModule(msg))
+          setResponse(await executeClient.deregisterModule(msg))
+          break
         }
         case "update_hub_info": {
           const msg = {
@@ -79,14 +81,16 @@ export default function HubModuleExecute() {
                 : store.hubInfo.external_link,
           }
 
-          return setResponse(await executeClient.updateHubInfo(msg))
+          setResponse(await executeClient.updateHubInfo(msg))
+          break
         }
         case "update_contract_operators": {
           const msg = {
             addrs: store.addresses,
           }
 
-          return setResponse(await executeClient.updateOperators(msg))
+          setResponse(await executeClient.updateOperators(msg))
+          break
         }
         case "migrate_contracts": {
           if (store.msg === undefined) {
@@ -99,7 +103,8 @@ export default function HubModuleExecute() {
             msg: toBinary(store.msg),
           }
 
-          return setResponse(await executeClient.migrateContracts(msg))
+          setResponse(await executeClient.migrateContracts(msg))
+          break
         }
       }
 

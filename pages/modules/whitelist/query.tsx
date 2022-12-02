@@ -48,23 +48,27 @@ export default function FeeModuleQuery() {
 
       switch (queryMsg) {
         case "get_contract_config":
-          return setResponse(await client.config())
+          setResponse(await client.config())
+          break
         case "list_whitelist_members": {
           const msg = {
             startAfter: store.startAfter,
             limit: store.limit,
           }
 
-          return setResponse(await client.members(msg))
+          setResponse(await client.members(msg))
+          break
         }
         case "check_whitelist_status":
-          return setResponse(await client.isActive())
+          setResponse(await client.isActive())
+          break
         case "check_whitelist_membership": {
           const msg = {
             member: store.member,
           }
 
-          return setResponse(await client.isMember(msg))
+          setResponse(await client.isMember(msg))
+          break
         }
       }
 

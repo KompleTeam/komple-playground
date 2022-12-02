@@ -62,14 +62,16 @@ export default function FeeModuleQuery() {
 
       switch (queryMsg) {
         case "contract_config":
-          return setResponse(await queryClient.config())
+          setResponse(await queryClient.config())
+          break
         case "get_percentage_fee": {
           const msg = {
             moduleName: store.moduleName,
             feeName: store.feeName,
           }
 
-          return setResponse(await queryClient.percentageFee(msg))
+          setResponse(await queryClient.percentageFee(msg))
+          break
         }
         case "get_fixed_fee": {
           const msg = {
@@ -77,7 +79,8 @@ export default function FeeModuleQuery() {
             feeName: store.feeName,
           }
 
-          return setResponse(await queryClient.fixedFee(msg))
+          setResponse(await queryClient.fixedFee(msg))
+          break
         }
         case "list_percentage_fees": {
           const msg = {
@@ -86,7 +89,8 @@ export default function FeeModuleQuery() {
             limit: store.limit,
           }
 
-          return setResponse(await queryClient.percentageFees(msg))
+          setResponse(await queryClient.percentageFees(msg))
+          break
         }
         case "list_fixed_fees": {
           const msg = {
@@ -95,7 +99,8 @@ export default function FeeModuleQuery() {
             limit: store.limit,
           }
 
-          return setResponse(await queryClient.fixedFees(msg))
+          setResponse(await queryClient.fixedFees(msg))
+          break
         }
         case "get_total_percentage_fees": {
           const msg = {
@@ -104,7 +109,8 @@ export default function FeeModuleQuery() {
             limit: store.limit,
           }
 
-          return setResponse(await queryClient.totalPercentageFees(msg))
+          setResponse(await queryClient.totalPercentageFees(msg))
+          break
         }
         case "get_total_fixed_fees": {
           const msg = {
@@ -113,7 +119,8 @@ export default function FeeModuleQuery() {
             limit: store.limit,
           }
 
-          return setResponse(await queryClient.totalFixedFees(msg))
+          setResponse(await queryClient.totalFixedFees(msg))
+          break
         }
         case "keys": {
           if (!store.feeType) {
@@ -126,7 +133,8 @@ export default function FeeModuleQuery() {
             limit: store.limit,
           }
 
-          return setResponse(await queryClient.keys(msg))
+          setResponse(await queryClient.keys(msg))
+          break
         }
       }
 

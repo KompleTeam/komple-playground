@@ -56,7 +56,8 @@ export default function MergeModuleExecute() {
             lock: store.lock,
           }
 
-          return setResponse(await executeClient.updateMergeLock(msg))
+          setResponse(await executeClient.updateMergeLock(msg))
+          break
         }
         case "merge_NFTs": {
           const msg = {
@@ -69,7 +70,8 @@ export default function MergeModuleExecute() {
             },
           }
 
-          return setResponse(await executeClient.merge(msg))
+          setResponse(await executeClient.merge(msg))
+          break
         }
         case "merge_NFTs_with_permissions": {
           const msg = {
@@ -82,17 +84,20 @@ export default function MergeModuleExecute() {
             },
           }
 
-          return setResponse(await executeClient.permissionMerge(msg))
+          setResponse(await executeClient.permissionMerge(msg))
+          break
         }
         case "update_contract_operators": {
           const msg = {
             addrs: store.addresses,
           }
 
-          return setResponse(await executeClient.updateOperators(msg))
+          setResponse(await executeClient.updateOperators(msg))
+          break
         }
         case "lock_execute_messages": {
-          return setResponse(await executeClient.lockExecute())
+          setResponse(await executeClient.lockExecute())
+          break
         }
       }
 

@@ -47,7 +47,8 @@ export default function OwnershipPermissionExecute() {
             data: store.data === undefined ? "" : toBinary(store.data),
           }
 
-          return setResponse(await client.check(msg))
+          setResponse(await client.check(msg))
+          break
         }
       }
 

@@ -49,14 +49,16 @@ export default function FeeModuleQuery() {
 
       switch (queryMsg) {
         case "contract_config":
-          return setResponse(await queryClient.config())
+          setResponse(await queryClient.config())
+          break
         case "fixed_NFT_listing": {
           const msg = {
             collectionId: store.collectionId,
             tokenId: store.tokenId,
           }
 
-          return setResponse(await queryClient.fixedListing(msg))
+          setResponse(await queryClient.fixedListing(msg))
+          break
         }
         case "fixed_NFT_listings": {
           const msg = {
@@ -65,10 +67,12 @@ export default function FeeModuleQuery() {
             limit: store.limit === 0 ? undefined : store.limit,
           }
 
-          return setResponse(await queryClient.fixedListings(msg))
+          setResponse(await queryClient.fixedListings(msg))
+          break
         }
         case "contract_operators":
-          return setResponse(await queryClient.operators())
+          setResponse(await queryClient.operators())
+          break
       }
 
       setLoading(false)

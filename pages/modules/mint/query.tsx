@@ -55,29 +55,34 @@ export default function MintModuleQuery() {
 
       switch (queryMsg) {
         case "get_contract_config":
-          return setResponse(await queryClient.config())
+          setResponse(await queryClient.config())
+          break
         case "get_collection_address": {
           const msg = {
             collectionId: store.collectionId,
           }
 
-          return setResponse(await queryClient.collectionAddress(msg))
+          setResponse(await queryClient.collectionAddress(msg))
+          break
         }
         case "get_collection_info": {
           const msg = {
             collectionId: store.collectionId,
           }
 
-          return setResponse(await queryClient.collectionInfo(msg))
+          setResponse(await queryClient.collectionInfo(msg))
+          break
         }
         case "list_contract_operators":
-          return setResponse(await queryClient.operators())
+          setResponse(await queryClient.operators())
+          break
         case "linked_collections": {
           const msg = {
             collectionId: store.collectionId,
           }
 
-          return setResponse(await queryClient.linkedCollections(msg))
+          setResponse(await queryClient.linkedCollections(msg))
+          break
         }
         case "list_linked_collections": {
           const msg = {
@@ -86,16 +91,19 @@ export default function MintModuleQuery() {
             limit: store.limit,
           }
 
-          return setResponse(await queryClient.collections(msg))
+          setResponse(await queryClient.collections(msg))
+          break
         }
         case "list_collection_creators":
-          return setResponse(await queryClient.creators())
+          setResponse(await queryClient.creators())
+          break
         case "get_collection_mint_lock": {
           const msg = {
             collectionId: store.collectionId,
           }
 
-          return setResponse(await queryClient.mintLock(msg))
+          setResponse(await queryClient.mintLock(msg))
+          break
         }
       }
 

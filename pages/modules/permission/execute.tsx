@@ -58,7 +58,8 @@ export default function PermissionModuleExecute() {
             msg: store.msg !== undefined ? toBinary(store.msg) : undefined,
           }
 
-          return setResponse(await executeClient.registerPermission(msg))
+          setResponse(await executeClient.registerPermission(msg))
+          break
         }
         case "update_permissions_for_module": {
           const msg = {
@@ -66,7 +67,8 @@ export default function PermissionModuleExecute() {
             permissions: store.permissions,
           }
 
-          return setResponse(await executeClient.updateModulePermissions(msg))
+          setResponse(await executeClient.updateModulePermissions(msg))
+          break
         }
         case "check_permission": {
           if (store.msg === undefined) {
@@ -78,17 +80,20 @@ export default function PermissionModuleExecute() {
             msg: store.msg,
           }
 
-          return setResponse(await executeClient.check(msg))
+          setResponse(await executeClient.check(msg))
+          break
         }
         case "update_contract_operators": {
           const msg = {
             addrs: store.addresses,
           }
 
-          return setResponse(await executeClient.updateOperators(msg))
+          setResponse(await executeClient.updateOperators(msg))
+          break
         }
         case "lock_execute_messages": {
-          return setResponse(await executeClient.lockExecute())
+          setResponse(await executeClient.lockExecute())
+          break
         }
       }
 

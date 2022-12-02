@@ -38,7 +38,8 @@ export default function LinkPermissionQuery() {
 
       switch (queryMsg) {
         case "get_contract_config":
-          return setResponse(await client.config())
+          setResponse(await client.config())
+          break
       }
 
       setLoading(false)

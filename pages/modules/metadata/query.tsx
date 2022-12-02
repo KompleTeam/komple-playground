@@ -52,20 +52,23 @@ export default function FeeModuleQuery() {
 
       switch (queryMsg) {
         case "contract_config":
-          return setResponse(await client.config())
+          setResponse(await client.config())
+          break
         case "get_raw_metadata": {
           const msg = {
             metadataId: store.id,
           }
 
-          return setResponse(await client.rawMetadata(msg))
+          setResponse(await client.rawMetadata(msg))
+          break
         }
         case "get_metadata": {
           const msg = {
             tokenId: store.id,
           }
 
-          return setResponse(await client.metadata(msg))
+          setResponse(await client.metadata(msg))
+          break
         }
         case "list_raw_metadatas": {
           const msg = {
@@ -73,7 +76,8 @@ export default function FeeModuleQuery() {
             limit: store.limit,
           }
 
-          return setResponse(await client.rawMetadatas(msg))
+          setResponse(await client.rawMetadatas(msg))
+          break
         }
         case "list_metadatas": {
           const msg = {
@@ -81,10 +85,12 @@ export default function FeeModuleQuery() {
             limit: store.limit,
           }
 
-          return setResponse(await client.metadatas(msg))
+          setResponse(await client.metadatas(msg))
+          break
         }
         case "contract_operators":
-          return setResponse(await client.operators())
+          setResponse(await client.operators())
+          break
       }
 
       setLoading(false)

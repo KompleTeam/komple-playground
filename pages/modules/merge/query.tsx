@@ -38,9 +38,11 @@ export default function MergeModuleQuery() {
 
       switch (queryMsg) {
         case "config":
-          return setResponse(await client.config())
+          setResponse(await client.config())
+          break
         case "operators":
-          return setResponse(await client.operators())
+          setResponse(await client.operators())
+          break
       }
 
       setLoading(false)

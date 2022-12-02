@@ -40,7 +40,8 @@ export default function AttributePermissionQuery() {
 
       switch (queryMsg) {
         case "get_contract_config":
-          return setResponse(await client.config())
+          setResponse(await client.config())
+          break
       }
 
       setLoading(false)

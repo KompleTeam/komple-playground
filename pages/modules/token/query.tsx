@@ -51,7 +51,7 @@ export default function FeeModuleQuery() {
 
       switch (queryMsg) {
         case "get_contract_config":
-          return setResponse(
+          setResponse(
             await client.queryContractSmart(contract, {
               extension: {
                 msg: {
@@ -60,8 +60,9 @@ export default function FeeModuleQuery() {
               },
             })
           )
+          break
         case "list_contract_locks":
-          return setResponse(
+          setResponse(
             await client.queryContractSmart(contract, {
               extension: {
                 msg: {
@@ -70,12 +71,13 @@ export default function FeeModuleQuery() {
               },
             })
           )
+          break
         case "list_NFT_locks": {
           const msg = {
             token_id: store.tokenId,
           }
 
-          return setResponse(
+          setResponse(
             await client.queryContractSmart(contract, {
               extension: {
                 msg: {
@@ -84,13 +86,14 @@ export default function FeeModuleQuery() {
               },
             })
           )
+          break
         }
         case "get_total_minted_tokens_per_address": {
           const msg = {
             address: store.recipient,
           }
 
-          return setResponse(
+          setResponse(
             await client.queryContractSmart(contract, {
               extension: {
                 msg: {
@@ -99,9 +102,10 @@ export default function FeeModuleQuery() {
               },
             })
           )
+          break
         }
         case "list_sub_modules":
-          return setResponse(
+          setResponse(
             await client.queryContractSmart(contract, {
               extension: {
                 msg: {
@@ -110,8 +114,9 @@ export default function FeeModuleQuery() {
               },
             })
           )
+          break
         case "list_contract_operators":
-          return setResponse(
+          setResponse(
             await client.queryContractSmart(contract, {
               extension: {
                 msg: {
@@ -120,6 +125,7 @@ export default function FeeModuleQuery() {
               },
             })
           )
+          break
       }
 
       setLoading(false)

@@ -62,7 +62,8 @@ export default function MarketplaceModuleExecute() {
             lock: store.lock,
           }
 
-          return setResponse(await executeClient.updateBuyLock(msg))
+          setResponse(await executeClient.updateBuyLock(msg))
+          break
         }
         case "list_fixed_price_NFT": {
           const msg = {
@@ -71,7 +72,8 @@ export default function MarketplaceModuleExecute() {
             price: store.price.toString(),
           }
 
-          return setResponse(await executeClient.listFixedToken(msg))
+          setResponse(await executeClient.listFixedToken(msg))
+          break
         }
         case "remove_fixed_price_NFT": {
           const msg = {
@@ -79,7 +81,8 @@ export default function MarketplaceModuleExecute() {
             tokenId: store.tokenId,
           }
 
-          return setResponse(await executeClient.delistFixedToken(msg))
+          setResponse(await executeClient.delistFixedToken(msg))
+          break
         }
         case "update_listing_price": {
           if (store.listingType === undefined) {
@@ -93,7 +96,8 @@ export default function MarketplaceModuleExecute() {
             price: store.price.toString(),
           }
 
-          return setResponse(await executeClient.updatePrice(msg))
+          setResponse(await executeClient.updatePrice(msg))
+          break
         }
         case "buy_NFT": {
           if (store.listingType === undefined) {
@@ -106,11 +110,12 @@ export default function MarketplaceModuleExecute() {
             tokenId: store.tokenId,
           }
 
-          return setResponse(
+          setResponse(
             await executeClient.buy(msg, "auto", undefined, [
               coin(1000000, "ujunox"),
             ])
           )
+          break
         }
         case "buy_NFT_with_permissions": {
           if (store.listingType === undefined) {
@@ -124,17 +129,20 @@ export default function MarketplaceModuleExecute() {
             buyer: store.buyer,
           }
 
-          return setResponse(await executeClient.permissionBuy(msg))
+          setResponse(await executeClient.permissionBuy(msg))
+          break
         }
         case "update_contract_operators": {
           const msg = {
             addrs: store.addresses,
           }
 
-          return setResponse(await executeClient.updateOperators(msg))
+          setResponse(await executeClient.updateOperators(msg))
+          break
         }
         case "lock_execute_messages": {
-          return setResponse(await executeClient.lockExecute())
+          setResponse(await executeClient.lockExecute())
+          break
         }
       }
 

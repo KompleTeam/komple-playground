@@ -62,7 +62,8 @@ export default function FeeModuleExecute() {
             }),
           }
 
-          return setResponse(await executeClient.setFee(msg))
+          setResponse(await executeClient.setFee(msg))
+          break
         }
         case "remove_fee": {
           if (!store.feeType) {
@@ -75,7 +76,8 @@ export default function FeeModuleExecute() {
             feeName: store.feeName,
           }
 
-          return setResponse(await executeClient.removeFee(msg))
+          setResponse(await executeClient.removeFee(msg))
+          break
         }
         case "distribute_fees": {
           if (!store.feeType) {
@@ -88,10 +90,12 @@ export default function FeeModuleExecute() {
             customPaymentAddresses: store.customPaymentAddresses,
           }
 
-          return setResponse(await executeClient.distribute(msg))
+          setResponse(await executeClient.distribute(msg))
+          break
         }
         case "lock_execute":
-          return setResponse(await executeClient.lockExecute())
+          setResponse(await executeClient.lockExecute())
+          break
       }
 
       setLoading(false)

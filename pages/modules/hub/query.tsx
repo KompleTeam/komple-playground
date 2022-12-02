@@ -40,16 +40,19 @@ export default function HubModuleQuery() {
 
       switch (queryMsg) {
         case "contract_config":
-          return setResponse(await queryClient.config())
+          setResponse(await queryClient.config())
+          break
         case "get_module_address": {
           const msg = {
             module: store.module,
           }
 
-          return setResponse(await queryClient.moduleAddress(msg))
+          setResponse(await queryClient.moduleAddress(msg))
+          break
         }
         case "contract_operators":
-          return setResponse(await queryClient.operators())
+          setResponse(await queryClient.operators())
+          break
       }
 
       setLoading(false)

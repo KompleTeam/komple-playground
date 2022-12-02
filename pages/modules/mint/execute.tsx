@@ -101,16 +101,16 @@ export default function MintModuleExecute() {
             linkedCollections: store.collectionsIds,
           }
 
-          return setResponse(await executeClient.createCollection(msg))
+          setResponse(await executeClient.createCollection(msg))
+          break
         }
         case "update_public_collection_creation": {
           const msg = {
             publicCollectionCreation: store.publicCollectionCreation,
           }
 
-          return setResponse(
-            await executeClient.updatePublicCollectionCreation(msg)
-          )
+          setResponse(await executeClient.updatePublicCollectionCreation(msg))
+          break
         }
         case "update_collection_mint_lock": {
           const msg = {
@@ -118,7 +118,8 @@ export default function MintModuleExecute() {
             lock: store.lock,
           }
 
-          return setResponse(await executeClient.updateCollectionMintLock(msg))
+          setResponse(await executeClient.updateCollectionMintLock(msg))
+          break
         }
         case "mint_NFT": {
           const msg = {
@@ -126,7 +127,8 @@ export default function MintModuleExecute() {
             metadataId: store.metadataId === 0 ? undefined : store.metadataId,
           }
 
-          return setResponse(await executeClient.mint(msg))
+          setResponse(await executeClient.mint(msg))
+          break
         }
         case "mint_NFT_as_admin": {
           const msg = {
@@ -135,7 +137,8 @@ export default function MintModuleExecute() {
             metadataId: store.metadataId === 0 ? undefined : store.metadataId,
           }
 
-          return setResponse(await executeClient.adminMint(msg))
+          setResponse(await executeClient.adminMint(msg))
+          break
         }
         case "mint_NFT_with_permissions": {
           const msg = {
@@ -148,14 +151,16 @@ export default function MintModuleExecute() {
             },
           }
 
-          return setResponse(await executeClient.permissionMint(msg))
+          setResponse(await executeClient.permissionMint(msg))
+          break
         }
         case "update_contract_operators": {
           const msg = {
             addrs: store.addresses,
           }
 
-          return setResponse(await executeClient.updateOperators(msg))
+          setResponse(await executeClient.updateOperators(msg))
+          break
         }
         case "update_linked_collections": {
           store.linkedCollections.forEach((id) => {
@@ -171,7 +176,8 @@ export default function MintModuleExecute() {
             ),
           }
 
-          return setResponse(await executeClient.updateLinkedCollections(msg))
+          setResponse(await executeClient.updateLinkedCollections(msg))
+          break
         }
         case "blacklist/whitelist_collection": {
           const msg = {
@@ -179,17 +185,20 @@ export default function MintModuleExecute() {
             isBlacklist: store.isBlacklist,
           }
 
-          return setResponse(await executeClient.updateCollectionStatus(msg))
+          setResponse(await executeClient.updateCollectionStatus(msg))
+          break
         }
         case "lock_execute_messages": {
-          return setResponse(await executeClient.lockExecute())
+          setResponse(await executeClient.lockExecute())
+          break
         }
         case "update_collection_creators": {
           const msg = {
             addrs: store.addresses,
           }
 
-          return setResponse(await executeClient.updateCreators(msg))
+          setResponse(await executeClient.updateCreators(msg))
+          break
         }
       }
 
