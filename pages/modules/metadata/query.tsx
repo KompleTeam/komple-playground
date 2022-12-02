@@ -6,7 +6,7 @@ import { useWallet } from "@cosmos-kit/react"
 import { DOC_LINKS } from "config/docs"
 import { KompleClient } from "komplejs"
 import Head from "next/head"
-import { useMetadataModuleStore } from "store"
+import { useAppStore, useMetadataModuleStore } from "store"
 import {
   MetadataModuleMetadata,
   MetadataModuleMetadatas,
@@ -27,6 +27,7 @@ export default function FeeModuleQuery() {
   const { getSigningCosmWasmClient, offlineSigner } = useWallet()
 
   const store = useMetadataModuleStore((state) => state)
+  const setLoading = useAppStore((state) => state.setLoading)
 
   const [queryMsg, setQueryMsg] = useState<string>("")
   const [response, setResponse] = useState<any>({})
@@ -38,6 +39,8 @@ export default function FeeModuleQuery() {
 
   const submit = async ({ contract }: { contract: string }) => {
     try {
+      setLoading(true)
+
       const signingClient = await getSigningCosmWasmClient()
       if (signingClient === undefined || offlineSigner === undefined) {
         throw new Error("client or signer is not ready")
@@ -83,9 +86,11 @@ export default function FeeModuleQuery() {
         case "contract_operators":
           return setResponse(await client.operators())
       }
+
+      setLoading(false)
     } catch (error: any) {
-      console.log(error)
       setResponse(error.message)
+      setLoading(false)
     }
   }
 
