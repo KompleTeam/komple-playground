@@ -7,7 +7,7 @@ import { DOC_LINKS } from "config/docs"
 
 import { KompleClient } from "komplejs"
 import Head from "next/head"
-import { useMarketplaceModuleStore } from "store"
+import { useMarketplaceModuleStore, useAppStore } from "store"
 import {
   MarketplaceModuleFixedListing,
   MarketplaceModuleFixedListings,
@@ -24,6 +24,7 @@ export default function FeeModuleQuery() {
   const { getSigningCosmWasmClient, offlineSigner } = useWallet()
 
   const store = useMarketplaceModuleStore((state) => state)
+  const setLoading = useAppStore((state) => state.setLoading)
 
   const [queryMsg, setQueryMsg] = useState<string>("")
   const [response, setResponse] = useState<any>({})
@@ -35,6 +36,8 @@ export default function FeeModuleQuery() {
 
   const submit = async ({ contract }: { contract: string }) => {
     try {
+      setLoading(true)
+
       const signingClient = await getSigningCosmWasmClient()
       if (signingClient === undefined || offlineSigner === undefined) {
         throw new Error("client or signer is not ready")
@@ -67,9 +70,11 @@ export default function FeeModuleQuery() {
         case "contract_operators":
           return setResponse(await queryClient.operators())
       }
+
+      setLoading(false)
     } catch (error: any) {
-      console.log(error)
       setResponse(error.message)
+      setLoading(true)
     }
   }
 
