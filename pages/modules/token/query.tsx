@@ -10,7 +10,7 @@ import {
   TokenModuleMintedTokensPerAddress,
   TokenModuleTokenLocks,
 } from "components/forms/query"
-import { useTokenModuleStore } from "store"
+import { useAppStore, useTokenModuleStore } from "store"
 
 const QUERIES = [
   "get_contract_config",
@@ -26,6 +26,7 @@ export default function FeeModuleQuery() {
   const { getSigningCosmWasmClient, offlineSigner } = useWallet()
 
   const store = useTokenModuleStore((state) => state)
+  const setLoading = useAppStore((state) => state.setLoading)
 
   const [queryMsg, setQueryMsg] = useState<string>("")
   const [response, setResponse] = useState<any>({})
@@ -37,6 +38,8 @@ export default function FeeModuleQuery() {
 
   const submit = async ({ contract }: { contract: string }) => {
     try {
+      setLoading(true)
+
       const signingClient = await getSigningCosmWasmClient()
       if (signingClient === undefined || offlineSigner === undefined) {
         throw new Error("client or signer is not ready")
@@ -118,9 +121,11 @@ export default function FeeModuleQuery() {
             })
           )
       }
+
+      setLoading(false)
     } catch (error: any) {
-      console.log(error)
       setResponse(error.message)
+      setLoading(false)
     }
   }
 
