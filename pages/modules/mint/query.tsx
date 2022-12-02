@@ -13,7 +13,7 @@ import {
 } from "components/forms/query"
 import { KompleClient } from "komplejs"
 import Head from "next/head"
-import { useMintModuleStore } from "store"
+import { useAppStore, useMintModuleStore } from "store"
 
 const QUERIES = [
   "get_contract_config",
@@ -30,6 +30,7 @@ export default function MintModuleQuery() {
   const { getSigningCosmWasmClient, offlineSigner } = useWallet()
 
   const store = useMintModuleStore((state) => state)
+  const setLoading = useAppStore((state) => state.setLoading)
 
   const [queryMsg, setQueryMsg] = useState<string>("")
   const [response, setResponse] = useState<any>({})
@@ -41,6 +42,8 @@ export default function MintModuleQuery() {
 
   const submit = async ({ contract }: { contract: string }) => {
     try {
+      setLoading(true)
+
       const signingClient = await getSigningCosmWasmClient()
       if (signingClient === undefined || offlineSigner === undefined) {
         throw new Error("client or signer is not ready")
@@ -95,9 +98,11 @@ export default function MintModuleQuery() {
           return setResponse(await queryClient.mintLock(msg))
         }
       }
+
+      setLoading(false)
     } catch (error: any) {
-      console.log(error)
       setResponse(error.message)
+      setLoading(false)
     }
   }
 

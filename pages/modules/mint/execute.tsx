@@ -18,7 +18,7 @@ import {
   MintModuleUpdateCreators,
   MintModuleUpdateCollectionStatus,
 } from "components/forms/execute"
-import { useMintModuleStore } from "store"
+import { useAppStore, useMintModuleStore } from "store"
 import { toBinary } from "@cosmjs/cosmwasm-stargate"
 import { isInteger } from "utils/isInteger"
 
@@ -40,6 +40,7 @@ export default function MintModuleExecute() {
   const { getSigningCosmWasmClient, offlineSigner } = useWallet()
 
   const store = useMintModuleStore((state) => state)
+  const setLoading = useAppStore((state) => state.setLoading)
 
   const [executeMsg, setExecuteMsg] = useState<string>("")
   const [response, setResponse] = useState<any>({})
@@ -51,6 +52,8 @@ export default function MintModuleExecute() {
 
   const submit = async ({ contract }: { contract: string }) => {
     try {
+      setLoading(true)
+
       const signingClient = await getSigningCosmWasmClient()
       if (signingClient === undefined || offlineSigner === undefined) {
         throw new Error("client or signer is not ready")
@@ -189,9 +192,11 @@ export default function MintModuleExecute() {
           return setResponse(await executeClient.updateCreators(msg))
         }
       }
+
+      setLoading(false)
     } catch (error: any) {
-      console.log(error)
       setResponse(error.message)
+      setLoading(false)
     }
   }
 
