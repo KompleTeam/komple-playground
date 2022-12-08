@@ -1,0 +1,7 @@
+{
+  "hosting": {
+    "site": "komple-playground",
+    "public": "out",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
+  }
+}

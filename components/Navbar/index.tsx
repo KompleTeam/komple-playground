@@ -51,6 +51,7 @@ export const Navbar = () => {
 
   const handleConnect = async () => {
     if (!isConnected) {
+      setCurrentChain("junotestnet")
       await connect()
     } else await disconnect()
   }
