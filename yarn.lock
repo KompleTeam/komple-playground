@@ -3501,10 +3501,10 @@ keyvaluestorage-interface@^1.0.0:
   resolved "https://registry.yarnpkg.com/keyvaluestorage-interface/-/keyvaluestorage-interface-1.0.0.tgz#13ebdf71f5284ad54be94bd1ad9ed79adad515ff"
   integrity sha512-8t6Q3TclQ4uZynJY9IGr2+SsIGwK9JHcO6ootkHCGA0CrQCRy+VkouYNO2xicET6b9al7QKzpebNow+gkpCL8g==
 
-komplejs@^1.0.2-beta:
-  version "1.0.2-beta"
-  resolved "https://registry.yarnpkg.com/komplejs/-/komplejs-1.0.2-beta.tgz#24b3e51539fe9f9b1cce1ac9df2fa092f53b65ff"
-  integrity sha512-jPs2cD7FPRguakCoe1Im4L/hCWIE1CGR26+4+AcPTR80IOAT+WHrmPjy60htUhWeOgtcQTF/slzyDGi02CSdkg==
+komplejs@^1.0.3-beta:
+  version "1.0.3-beta"
+  resolved "https://registry.yarnpkg.com/komplejs/-/komplejs-1.0.3-beta.tgz#71d9c3d3d5708f5c3eb6e383123aa40caa7db3cc"
+  integrity sha512-UlZiKhkm3hd8LaaiihvhYPnntKrjfia+NY5Wt/23LddNAChFusUCqS2h5Xi/7s7xnk+qZ+i3uJVbc0iop4yZFQ==
   dependencies:
     "@cosmjs/cosmwasm-stargate" "^0.29.3"
     "@cosmjs/proto-signing" "^0.29.3"

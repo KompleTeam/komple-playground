@@ -19,6 +19,9 @@ import {
   TokenModuleAdminTransferNFT,
   TokenModuleInitWhitelistContract,
   TokenModuleApprove,
+  TokenModuleRevoke,
+  TokenModuleApproveAll,
+  TokenModuleRevokeAll,
 } from "components/forms/execute"
 
 const EXECUTES = [
@@ -38,7 +41,7 @@ const EXECUTES = [
 ]
 
 export default function TokenModuleExecute() {
-  const { getSigningCosmWasmClient, offlineSigner, address } = useWallet()
+  const { getSigningCosmWasmClient, offlineSigner } = useWallet()
 
   const store = useTokenModuleStore((state) => state)
   const setLoading = useAppStore((state) => state.setLoading)
@@ -67,20 +70,36 @@ export default function TokenModuleExecute() {
       switch (executeMsg) {
         case "give_operator_access_to_NFT": {
           const msg = {
-            approve: {
-              spender: store.recipient,
-              token_id: store.tokenId,
-            },
+            spender: store.recipient,
+            tokenId: store.tokenId,
           }
 
-          setResponse(
-            await executeClient.client.execute(
-              address || "",
-              contract,
-              msg,
-              "auto"
-            )
-          )
+          setResponse(await executeClient.approve(msg))
+          break
+        }
+        case "remove_operator_access_from_NFT": {
+          const msg = {
+            spender: store.recipient,
+            tokenId: store.tokenId,
+          }
+
+          setResponse(await executeClient.revoke(msg))
+          break
+        }
+        case "give_operator_access_to_all_NFTs": {
+          const msg = {
+            operator: store.recipient,
+          }
+
+          setResponse(await executeClient.approveAll(msg))
+          break
+        }
+        case "remove_operator_access_from_all_NFTs": {
+          const msg = {
+            operator: store.recipient,
+          }
+
+          setResponse(await executeClient.approveAll(msg))
           break
         }
         case "transfer_NFT": {
@@ -112,23 +131,10 @@ export default function TokenModuleExecute() {
         }
         case "update_contract_operators": {
           const msg = {
-            extension: {
-              msg: {
-                update_module_operators: {
-                  addrs: store.addresses,
-                },
-              },
-            },
+            addrs: store.addresses,
           }
 
-          setResponse(
-            await executeClient.client.execute(
-              address || "",
-              contract,
-              msg,
-              "auto"
-            )
-          )
+          setResponse(await executeClient.updateModuleOperators(msg))
           break
         }
         case "transfer_NFT_as_admin": {
@@ -215,6 +221,15 @@ export default function TokenModuleExecute() {
         />
 
         {executeMsg === "give_operator_access_to_NFT" && <TokenModuleApprove />}
+        {executeMsg === "remove_operator_access_from_NFT" && (
+          <TokenModuleRevoke />
+        )}
+        {executeMsg === "give_operator_access_to_all_NFTs" && (
+          <TokenModuleApproveAll />
+        )}
+        {executeMsg === "remove_operator_access_from_all_NFTs" && (
+          <TokenModuleRevokeAll />
+        )}
         {executeMsg === "burn_NFT" && <TokenModuleBurn />}
         {executeMsg === "transfer_NFT" && <TokenModuleTransferNFT />}
         {executeMsg === "transfer_NFT_as_admin" && (
