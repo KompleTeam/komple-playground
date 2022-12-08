@@ -44,19 +44,29 @@ export const Navbar = () => {
   const walletManager = useWallet()
 
   const { walletStatus, username, address, isWalletConnecting } = walletManager
-  const { connect, disconnect, setCurrentChain } = walletManager
+  const { connect, disconnect, setCurrentChain, currentChainName } =
+    walletManager
 
   const isConnected = walletStatus === "Connected"
 
   const handleConnect = async () => {
     if (!isConnected) {
-      setCurrentChain("junotestnet")
       await connect()
     } else await disconnect()
   }
 
   const copyAddress = () => {
     navigator.clipboard.writeText(address || "")
+  }
+
+  const switchNetwork = async () => {
+    await disconnect()
+    if (currentChainName === "junotestnet") {
+      setCurrentChain("juno")
+    } else {
+      setCurrentChain("junotestnet")
+    }
+    await connect()
   }
 
   return (
@@ -67,10 +77,29 @@ export const Navbar = () => {
       )}
     >
       <div className="flex items-center justify-between max-w-[1440px] w-[1440px]">
-        <div className="w-[200px]">
+        <div className="w-[230px] flex items-center">
           <Link href="/">
             <Logo />
           </Link>
+          {isConnected && (
+            <button
+              className="ml-[24px] flex items-center group"
+              onClick={switchNetwork}
+            >
+              <div className="h-[32px] w-[32px] rounded-full bg-komple-black-700/20 flex items-center justify-center group-hover:animate-spin">
+                <Image
+                  src="/icons/switch.svg"
+                  alt="Switch Icon"
+                  width={16}
+                  height={16}
+                />
+              </div>
+              <div className="ml-2">
+                Switch to{" "}
+                {currentChainName === "junotestnet" ? "mainnet" : "testnet"}
+              </div>
+            </button>
+          )}
         </div>
 
         <div className="flex">
@@ -93,7 +122,7 @@ export const Navbar = () => {
           </Link>
         </div>
 
-        <div className="w-[200px] flex justify-end">
+        <div className="w-[230px] flex justify-end">
           {isConnected ? (
             <div>
               <div className="flex justify-end items-center">

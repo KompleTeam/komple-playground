@@ -18,6 +18,8 @@ export interface TokenModuleStore {
   collectionConfig: CollectionConfig
   codeId: number
   whitelistInstantiateMsg: InstantiateMsg
+  startAfter?: string
+  limit?: number
 }
 
 export interface TokenModuleActions {
@@ -33,6 +35,8 @@ export interface TokenModuleActions {
   setCollectionConfig: (collectionConfig: CollectionConfig) => void
   setCodeId: (codeId: number) => void
   setWhitelistInstantiateMsg: (whitelistInstantiateMsg: InstantiateMsg) => void
+  setStartAfter: (startAfter?: string) => void
+  setLimit: (limit?: number) => void
 }
 
 const initialState: TokenModuleStore = {
@@ -65,6 +69,8 @@ const initialState: TokenModuleStore = {
     },
     members: [],
   },
+  startAfter: undefined,
+  limit: undefined,
 }
 
 const useTokenModuleStore = create(
@@ -87,6 +93,9 @@ const useTokenModuleStore = create(
     setCodeId: (codeId: number) => set((state) => ({ ...state, codeId })),
     setWhitelistInstantiateMsg: (whitelistInstantiateMsg: InstantiateMsg) =>
       set((state) => ({ ...state, whitelistInstantiateMsg })),
+    setStartAfter: (startAfter?: string) =>
+      set((state) => ({ ...state, startAfter })),
+    setLimit: (limit?: number) => set((state) => ({ ...state, limit })),
   }))
 )
 
