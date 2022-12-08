@@ -94,7 +94,7 @@ export const Navbar = () => {
                   height={16}
                 />
               </div>
-              <div className="ml-2">
+              <div className="ml-2 text-white">
                 Switch to{" "}
                 {currentChainName === "junotestnet" ? "mainnet" : "testnet"}
               </div>
