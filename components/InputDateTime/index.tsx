@@ -1,6 +1,8 @@
 import clsx from "clsx"
-import type { DateTimePickerProps } from "react-datetime-picker/dist/entry.nostyle"
-import DateTimePicker from "react-datetime-picker/dist/entry.nostyle"
+const { DateTimePickerProps } =
+  require("react-datetime-picker/dist/entry.nostyle").default
+const DateTimePicker =
+  require("react-datetime-picker/dist/entry.nostyle").default
 import { FaCalendar, FaTimes } from "react-icons/fa"
 
 export const InputDateTime = ({
@@ -9,7 +11,7 @@ export const InputDateTime = ({
   isRequired,
   className,
   ...rest
-}: DateTimePickerProps) => {
+}: typeof DateTimePickerProps) => {
   return (
     <div className="mb-6">
       {title && (
