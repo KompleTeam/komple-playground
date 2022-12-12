@@ -77,7 +77,7 @@ export const Navbar = () => {
         "flex items-center justify-center z-20"
       )}
     >
-      <div className="flex items-center justify-between max-w-[1440px] w-[1440px]">
+      <div className="flex items-center justify-between max-w-[1380px] w-[1380px]">
         <div className="w-[230px] flex items-center">
           <Link href="/">
             <Logo />
