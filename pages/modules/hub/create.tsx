@@ -69,7 +69,7 @@ export default function HubModuleCreate() {
         <TextInput
           title="Hub Name"
           subtitle="Name of the project"
-          placeholder="My awesome project"
+          placeholder="My new project"
           onChange={(name) => store.setHubInfo({ ...store.hubInfo, name })}
           isRequired
           value={store.hubInfo.name}
@@ -77,7 +77,7 @@ export default function HubModuleCreate() {
         <TextInput
           title="Hub Description"
           subtitle="Description of the project"
-          placeholder="My awesome project is awesome"
+          placeholder="My new project is new"
           onChange={(description) =>
             store.setHubInfo({ ...store.hubInfo, description })
           }
@@ -87,7 +87,7 @@ export default function HubModuleCreate() {
         <TextInput
           title="Hub Image"
           subtitle="Image of the project"
-          placeholder="https://my-awesome-project.com/image.png"
+          placeholder="https://my-new-project.com/image.png"
           onChange={(image) => store.setHubInfo({ ...store.hubInfo, image })}
           isRequired
           value={store.hubInfo.image}
@@ -95,7 +95,7 @@ export default function HubModuleCreate() {
         <TextInput
           title="External Link"
           subtitle="Link to the project"
-          placeholder="https://my-awesome-project.com"
+          placeholder="https://my-new-project.com"
           onChange={(external_link) =>
             store.setHubInfo({
               ...store.hubInfo,

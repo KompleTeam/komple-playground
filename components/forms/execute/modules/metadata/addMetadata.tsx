@@ -20,7 +20,7 @@ export const MetadataModuleAddMetadata = () => {
       <TextInput
         title="Description"
         subtitle="Description of the NFT"
-        placeholder="My awesome NFT"
+        placeholder="My new NFT"
         onChange={(description) =>
           store.setMetaInfo({ ...store.metaInfo, description })
         }
@@ -29,14 +29,14 @@ export const MetadataModuleAddMetadata = () => {
       <TextInput
         title="Image"
         subtitle="Image of the NFT"
-        placeholder="https://my-awesome-nft.com/image.png"
+        placeholder="https://my-new-nft.com/image.png"
         onChange={(image) => store.setMetaInfo({ ...store.metaInfo, image })}
         value={store.metaInfo.image?.toString()}
       />
       <TextInput
         title="External URL"
         subtitle="Link to the NFT"
-        placeholder="https://my-awesome-nft.com"
+        placeholder="https://my-new-nft.com"
         onChange={(external_url) =>
           store.setMetaInfo({ ...store.metaInfo, external_url })
         }
@@ -45,7 +45,7 @@ export const MetadataModuleAddMetadata = () => {
       <TextInput
         title="Animation URL"
         subtitle="Link to the animation of the NFT"
-        placeholder="https://my-awesome-nft.com/animation.mp4"
+        placeholder="https://my-new-nft.com/animation.mp4"
         onChange={(animation_url) =>
           store.setMetaInfo({ ...store.metaInfo, animation_url })
         }

@@ -66,7 +66,7 @@ export const MintModuleCreateCollection = () => {
       <TextInput
         title="Collection Name"
         subtitle="The name of the collection"
-        placeholder="My awesome collection"
+        placeholder="My new collection"
         onChange={(name) =>
           store.setCollectionInfo({ ...store.collectionInfo, name })
         }
@@ -76,7 +76,7 @@ export const MintModuleCreateCollection = () => {
       <TextInput
         title="Collection Description"
         subtitle="The description of the collection"
-        placeholder="My awesome collection is awesome"
+        placeholder="My new collection is new"
         onChange={(description) =>
           store.setCollectionInfo({ ...store.collectionInfo, description })
         }
@@ -86,7 +86,7 @@ export const MintModuleCreateCollection = () => {
       <TextInput
         title="Collection Image"
         subtitle="The image of the collection"
-        placeholder="https://my-awesome-collection.com/image.png"
+        placeholder="https://my-new-collection.com/image.png"
         onChange={(image) =>
           store.setCollectionInfo({ ...store.collectionInfo, image })
         }
@@ -96,7 +96,7 @@ export const MintModuleCreateCollection = () => {
       <TextInput
         title="Collection External Link"
         subtitle="The external link to the collection"
-        placeholder="https://my-awesome-collection.com"
+        placeholder="https://my-new-collection.com"
         onChange={(external_link) =>
           store.setCollectionInfo({ ...store.collectionInfo, external_link })
         }
@@ -171,7 +171,7 @@ export const MintModuleCreateCollection = () => {
       <TextInput
         title="Symbol"
         subtitle="The symbol of the collection"
-        placeholder="AWESOME"
+        placeholder="new"
         onChange={(symbol) =>
           store.setTokenInfo({
             ...store.tokenInfo,
