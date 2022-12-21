@@ -4,12 +4,12 @@ import { TextInput } from "components/TextInput"
 import { ContractForm } from "components/contracts/ContractLayout"
 import { DOC_LINKS } from "config/docs"
 import Head from "next/head"
-import { KompleClient } from "komplejs"
 import { useFeeModuleStore, useAppStore } from "store"
 import { useWallet } from "@cosmos-kit/react"
+import { FEE_MODULE_CODE_ID } from "config/codeIds"
 
 export default function FeeModuleCreate() {
-  const { getSigningCosmWasmClient, offlineSigner } = useWallet()
+  const { getSigningCosmWasmClient, address } = useWallet()
 
   const store = useFeeModuleStore((state) => state)
   const setLoading = useAppStore((state) => state.setLoading)
@@ -21,22 +21,24 @@ export default function FeeModuleCreate() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const submit = async ({ codeId }: { codeId: number }) => {
+  const submit = async () => {
     try {
       setLoading(true)
 
       const signingClient = await getSigningCosmWasmClient()
-      if (signingClient === undefined || offlineSigner === undefined) {
+      if (signingClient === undefined) {
         throw new Error("No signing client")
       }
 
-      const kompleClient = new KompleClient(signingClient, offlineSigner)
-      const feeModule = await kompleClient.feeModule("")
-
-      const res = await feeModule.instantiate({
-        codeId,
-        admin: store.admin,
-      })
+      const res = await signingClient.instantiate(
+        address || "",
+        FEE_MODULE_CODE_ID,
+        {
+          admin: store.admin,
+        },
+        "Komple Fee Module",
+        "auto"
+      )
 
       setResponse(res)
       setLoading(false)
