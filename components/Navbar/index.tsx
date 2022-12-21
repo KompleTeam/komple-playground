@@ -82,7 +82,7 @@ export const Navbar = () => {
           <Link href="/">
             <Logo />
           </Link>
-          {isConnected && (
+          {/* {isConnected && (
             <button
               className="ml-[24px] flex items-center group"
               onClick={switchNetwork}
@@ -100,7 +100,7 @@ export const Navbar = () => {
                 {currentChainName === "junotestnet" ? "mainnet" : "testnet"}
               </div>
             </button>
-          )}
+          )} */}
         </div>
 
         <div className="flex">
