@@ -5,35 +5,36 @@ import { useWallet } from "@cosmos-kit/react"
 import { ContractForm } from "components/contracts/ContractLayout"
 import { DOC_LINKS } from "config/docs"
 import Head from "next/head"
-import { KompleClient } from "komplejs"
 import { useHubModuleStore, useAppStore } from "store"
+import { MARBU_CONTROLLER_ADDRESS } from "config/marbu"
 
 export default function HubModuleCreate() {
-  const { getSigningCosmWasmClient, offlineSigner, address } = useWallet()
+  const { getSigningCosmWasmClient, address } = useWallet()
 
   const store = useHubModuleStore((state) => state)
   const setLoading = useAppStore((state) => state.setLoading)
 
   const [response, setResponse] = useState({})
 
-  const submit = async ({ codeId }: { codeId: number }) => {
+  const submit = async () => {
     try {
       setLoading(true)
 
       const signingClient = await getSigningCosmWasmClient()
-      if (signingClient === undefined || offlineSigner === undefined) {
+      if (signingClient === undefined) {
         throw new Error("No signing client")
       }
 
-      const kompleClient = new KompleClient(signingClient, offlineSigner)
-      const hubModule = await kompleClient.hubModule("")
-
-      const res = await hubModule.instantiate({
-        codeId,
-        admin: store.admin || address,
-        hubInfo: store.hubInfo,
-        // marbuFeeModule: store.marbuFeeModule,
-      })
+      const res = await signingClient.execute(
+        address || "",
+        MARBU_CONTROLLER_ADDRESS,
+        {
+          create_hub_module: {
+            hub_info: store.hubInfo,
+          },
+        },
+        "auto"
+      )
       setResponse(res)
 
       setLoading(false)
