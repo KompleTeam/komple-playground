@@ -62,7 +62,7 @@ export const ContractForm = ({
       </div>
       <div className="w-20" />
       <div>
-        {action === "create" && (
+        {/* {action === "create" && (
           <TextInput
             title="Code ID"
             subtitle="The code ID of the contract to create"
@@ -73,7 +73,7 @@ export const ContractForm = ({
             placeholder="10"
             isRequired
           />
-        )}
+        )} */}
 
         {(action === "query" || action === "execute") && (
           <TextInput
