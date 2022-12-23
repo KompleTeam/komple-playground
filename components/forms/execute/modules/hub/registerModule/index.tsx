@@ -28,7 +28,7 @@ export const HubModuleRegisterModule = () => {
     }
   }
 
-  const feeTypeOnChange = (index: number) => {
+  const moduleNameOnChange = (index: number) => {
     let value
 
     switch (index) {
@@ -70,7 +70,7 @@ export const HubModuleRegisterModule = () => {
         items={["fee", "marketplace", "merge", "mint", "permission", "custom"]}
         title="Module Name"
         subtitle="Name of the module to register"
-        onChange={feeTypeOnChange}
+        onChange={moduleNameOnChange}
         placeholder="Select Module Name"
         isRequired
       />
@@ -88,7 +88,7 @@ export const HubModuleRegisterModule = () => {
             value={store.codeId === 0 ? "" : store.codeId.toString()}
           />
           <TextInput
-            title="Module Name"
+            title="Custom Module Name"
             subtitle="Name of module to register"
             placeholder="marketplace"
             onChange={store.setModule}
