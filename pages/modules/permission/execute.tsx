@@ -51,7 +51,7 @@ export default function PermissionModuleExecute() {
       const executeClient = permissionModule.client
 
       switch (executeMsg) {
-        case "register_module": {
+        case "register_permission": {
           const msg = {
             codeId: store.codeId,
             permission: store.permission,

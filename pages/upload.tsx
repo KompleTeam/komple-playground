@@ -5,12 +5,15 @@ import { ContractHeader } from "components/contracts/ContractHeader"
 import Head from "next/head"
 import Image from "next/image"
 import { useEffect, useRef, useState } from "react"
+import { useAppStore } from "store"
 import { getShortAddress } from "utils/getShortAddress"
 
 export const Upload = () => {
   const { isWalletConnected, address, getSigningCosmWasmClient } = useWallet()
 
   const inputFile = useRef<HTMLInputElement>(null)
+
+  const store = useAppStore((state) => state)
 
   const [response, setResponse] = useState<any>({})
   const [wasmFile, setWasmFile] = useState<File | null>(null)
@@ -46,6 +49,8 @@ export const Upload = () => {
       if (!wasmFile || !wasmByteArray)
         return setResponse("No wasm file selected")
 
+      store.setLoading(true)
+
       const client = await getSigningCosmWasmClient()
       if (!client) return
 
@@ -58,8 +63,11 @@ export const Upload = () => {
         originalChecksum: result.originalChecksum,
         compressedChecksum: result.compressedChecksum,
       })
+
+      store.setLoading(false)
     } catch (err: any) {
       setResponse(err.message)
+      store.setLoading(false)
     }
   }
 
@@ -138,7 +146,8 @@ export const Upload = () => {
           <Button
             text="Upload Contract"
             onClick={submit}
-            disabled={!wasmFile || !wasmByteArray}
+            disabled={!wasmFile || !wasmByteArray || store.loading}
+            loading={store.loading}
           />
         </div>
 
