@@ -41,6 +41,7 @@ export const PermissionModuleRegisterPermission = () => {
         break
       case 3:
         value = "custom"
+        store.setCodeId(0)
         break
       default:
         value = ""

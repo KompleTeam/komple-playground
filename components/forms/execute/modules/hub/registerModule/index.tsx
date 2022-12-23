@@ -54,6 +54,7 @@ export const HubModuleRegisterModule = () => {
         break
       case 5:
         value = "custom"
+        store.setCodeId(0)
         break
       default:
         value = ""
