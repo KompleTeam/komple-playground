@@ -43,7 +43,7 @@ export const MintModuleCreateCollection = () => {
 
   return (
     <div>
-      <Seperator text="Token Module" />
+      {/* <Seperator text="Token Module" />
       <TextInput
         title="Token Module Code ID"
         subtitle="The code ID of the Token Module"
@@ -53,7 +53,7 @@ export const MintModuleCreateCollection = () => {
         }
         isRequired
         value={store.codeId === 0 ? "" : store.codeId.toString()}
-      />
+      /> */}
 
       <Seperator text="Collection Info" />
       <Dropdown
@@ -195,7 +195,7 @@ export const MintModuleCreateCollection = () => {
       /> */}
 
       <Seperator text="Metadata Info" />
-      <TextInput
+      {/* <TextInput
         title="Metadata Module Code ID"
         subtitle="The code ID of the Metadata Module"
         placeholder="50"
@@ -211,7 +211,7 @@ export const MintModuleCreateCollection = () => {
             ? ""
             : store.metadataInfo.code_id.toString()
         }
-      />
+      /> */}
       <Dropdown
         items={["standard", "shared", "dynamic"]}
         title="Metadata Type"
@@ -250,13 +250,13 @@ export const MintModuleCreateCollection = () => {
         />
       )}
 
-      <Seperator text="Collections" />
+      {/* <Seperator text="Collections" />
       <TextInputList
         title="Linked Collection IDs"
         subtitle="The IDs of the collections that are linked to this collection"
         placeholder="6"
         onChange={store.setLinkedCollections}
-      />
+      /> */}
     </div>
   )
 }

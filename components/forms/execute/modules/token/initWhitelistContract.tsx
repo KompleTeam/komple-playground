@@ -9,7 +9,7 @@ export const TokenModuleInitWhitelistContract = () => {
 
   return (
     <div>
-      <TextInput
+      {/* <TextInput
         title="Code ID"
         subtitle="The code ID of the Whitelist Module"
         placeholder="200"
@@ -18,7 +18,7 @@ export const TokenModuleInitWhitelistContract = () => {
         }
         isRequired
         value={store.codeId === 0 ? "" : store.codeId.toString()}
-      />
+      /> */}
       <TextInputList
         title="Whitelist Members"
         subtitle="List of addresses to whitelist"

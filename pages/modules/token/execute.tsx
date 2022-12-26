@@ -23,6 +23,7 @@ import {
   TokenModuleApproveAll,
   TokenModuleRevokeAll,
 } from "components/forms/execute"
+import { WHITELIST_MODULE_CODE_ID } from "config/codeIds"
 
 const EXECUTES = [
   "give_operator_access_to_NFT",
@@ -173,7 +174,7 @@ export default function TokenModuleExecute() {
         }
         case "add_whitelist_module": {
           const msg = {
-            codeId: store.codeId,
+            codeId: WHITELIST_MODULE_CODE_ID,
             instantiateMsg: store.whitelistInstantiateMsg,
           }
 
