@@ -104,6 +104,11 @@ export default function MarketplaceModuleExecute() {
             throw new Error("listing type is not defined")
           }
 
+          const priceRes = await marketplaceModule.queryClient.fixedListing({
+            collectionId: store.collectionId,
+            tokenId: store.tokenId,
+          })
+
           const msg = {
             listingType: store.listingType,
             collectionId: store.collectionId,
@@ -112,7 +117,7 @@ export default function MarketplaceModuleExecute() {
 
           setResponse(
             await executeClient.buy(msg, "auto", undefined, [
-              coin(1000000, "ujunox"),
+              coin(priceRes.data.price, "ujunox"),
             ])
           )
           break
