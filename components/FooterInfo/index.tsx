@@ -16,7 +16,7 @@ export const FooterInfo = ({
       href={link}
       target="_blank"
       rel="noopener noreferrer"
-      className="h-[90px] w-[210px] flex flex-col items-center justify-center"
+      className="h-[90px] w-[210px] flex flex-col items-center justify-center opacity-40 hover:opacity-100"
     >
       <div className="text-[#AAAAAA] text-[16px] mb-3">{text}</div>
       <Image

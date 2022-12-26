@@ -1,5 +1,6 @@
 import { FooterInfo } from "components/FooterInfo"
 import Image from "next/image"
+import Link from "next/link"
 
 export const Footer = () => {
   return (
@@ -33,43 +34,36 @@ export const Footer = () => {
         </div>
       </div>
       <div className="flex w-full justify-center">
-        <a
-          href="https://github.com/KompleTeam"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            src="/icons/github.svg"
-            alt="Github Logo"
-            height={30}
-            width={30}
-          />
-        </a>
-        <a
-          href="https://docs.komple.io"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mx-5"
-        >
-          <Image
-            src="/icons/docs.svg"
-            alt="Documentation Logo"
-            height={30}
-            width={30}
-          />
-        </a>
-        <a
-          href="https://twitter.com/KompleSocial"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            src="/icons/twitter.svg"
-            alt="Twitter Logo"
-            height={30}
-            width={30}
-          />
-        </a>
+        <Link href="https://github.com/KompleTeam" passHref legacyBehavior>
+          <a target="_blank" className="opacity-40 hover:opacity-100">
+            <Image
+              src="/icons/github.svg"
+              alt="Github Logo"
+              height={30}
+              width={30}
+            />
+          </a>
+        </Link>
+        <Link href="https://docs.komple.io" passHref legacyBehavior>
+          <a target="_blank" className="opacity-40 hover:opacity-100 mx-5">
+            <Image
+              src="/icons/docs.svg"
+              alt="Documentation Logo"
+              height={30}
+              width={30}
+            />
+          </a>
+        </Link>
+        <Link href="https://twitter.com/KompleSocial" passHref legacyBehavior>
+          <a target="_blank" className="opacity-40 hover:opacity-100">
+            <Image
+              src="/icons/twitter.svg"
+              alt="Twitter Logo"
+              height={30}
+              width={30}
+            />
+          </a>
+        </Link>
       </div>
     </div>
   )
