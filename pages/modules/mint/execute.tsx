@@ -21,6 +21,7 @@ import {
 import { useAppStore, useMintModuleStore } from "store"
 import { toBinary } from "@cosmjs/cosmwasm-stargate"
 import { isInteger } from "utils/isInteger"
+import { METADATA_MODULE_CODE_ID, TOKEN_MODULE_CODE_ID } from "config/codeIds"
 
 const EXECUTES = [
   "create_collection",
@@ -66,7 +67,7 @@ export default function MintModuleExecute() {
       switch (executeMsg) {
         case "create_collection": {
           const msg = {
-            codeId: store.codeId,
+            codeId: TOKEN_MODULE_CODE_ID,
             collectionInfo: store.collectionInfo,
             collectionConfig: {
               per_address_limit:
@@ -90,7 +91,10 @@ export default function MintModuleExecute() {
               symbol: "KMPL",
               minter: "",
             },
-            metadataInfo: store.metadataInfo,
+            metadataInfo: {
+              code_id: METADATA_MODULE_CODE_ID,
+              instantiate_msg: store.metadataInfo.instantiate_msg,
+            },
             fundInfo: {
               ...store.fundInfo,
               cw20_address:
@@ -98,7 +102,7 @@ export default function MintModuleExecute() {
                   ? undefined
                   : store.fundInfo.cw20_address,
             },
-            linkedCollections: store.collectionsIds,
+            linkedCollections: [],
           }
 
           setResponse(await executeClient.createCollection(msg))
