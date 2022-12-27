@@ -14,7 +14,7 @@ export const JsonViewer = ({
   const [open, setOpen] = useState(isOpen)
 
   return (
-    <div className="w-[650px] max-w-[650px] overflow-hidden">
+    <div className="w-[400px] max-w-[400px] overflow-hidden">
       <div className="border-[2px] border-komple-black-300 rounded-md">
         <button
           className={clsx(

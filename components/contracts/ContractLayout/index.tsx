@@ -4,8 +4,8 @@ import { JsonViewer } from "../../JsonViewer"
 import { TextInput } from "components/TextInput"
 import { useRouter } from "next/router"
 import { Button } from "components/Button"
-import { isInteger } from "utils/isInteger"
 import { useAppStore } from "store"
+import { InfoBoxProps, InfoBox } from "components/InfoBox"
 
 type ActionType = "create" | "execute" | "query"
 
@@ -18,6 +18,7 @@ export const ContractForm = ({
   submit,
   hidden = [],
   showResponse,
+  customInfoBox,
 }: {
   children?: ReactNode
   name: string
@@ -27,6 +28,7 @@ export const ContractForm = ({
   submit: ({ contract, codeId }: { contract: string; codeId: number }) => void
   hidden?: string[]
   showResponse?: boolean
+  customInfoBox?: InfoBoxProps[]
 }) => {
   const router = useRouter()
 
@@ -62,7 +64,7 @@ export const ContractForm = ({
           hidden={hidden}
         />
       </div>
-      <div className="w-20" />
+      <div className="w-28" />
       <div>
         {/* {action === "create" && (
           <TextInput
@@ -88,7 +90,7 @@ export const ContractForm = ({
           />
         )}
 
-        <div className="max-w-[380px]">{children}</div>
+        <div className="w-auto">{children}</div>
 
         <Button
           className="capitalize"
@@ -98,13 +100,19 @@ export const ContractForm = ({
         />
       </div>
       <div className="w-20" />
-      {response && (
-        <JsonViewer
-          title={`${action} Response`}
-          json={response}
-          isOpen={showResponse}
-        />
-      )}
+      <div className="w-[550px] max-w-[550px]">
+        {customInfoBox?.map((item) => (
+          <InfoBox key={item.title} {...item} />
+        ))}
+        <div className="h-2" />
+        {response && (
+          <JsonViewer
+            title={`${action} Response`}
+            json={response}
+            isOpen={showResponse}
+          />
+        )}
+      </div>
     </div>
   )
 }

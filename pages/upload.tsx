@@ -114,9 +114,6 @@ export const Upload = () => {
         <div className="border-[1px] border-komple-black-300 mx-[32px]" />
 
         <div className="flex flex-col justify-around">
-          <div className="flex text-[18px] text-white mb-1 justify-between">
-            Contract Details
-          </div>
           <InfoBox
             title="Tx Hash"
             data={response.transactionHash}
