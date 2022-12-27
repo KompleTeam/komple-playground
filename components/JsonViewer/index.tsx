@@ -1,6 +1,7 @@
 import clsx from "clsx"
 import Image from "next/image"
 import { useState } from "react"
+import { showToast } from "utils/showToast"
 
 export const JsonViewer = ({
   title,
@@ -14,8 +15,17 @@ export const JsonViewer = ({
   const [open, setOpen] = useState(isOpen)
 
   const copyOnClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    e.stopPropagation()
-    navigator.clipboard.writeText(JSON.stringify(json))
+    try {
+      e.stopPropagation()
+      navigator.clipboard.writeText(JSON.stringify(json))
+      showToast({
+        type: "info",
+        title: "JSON Message",
+        message: "Copied to clipboard",
+      })
+    } catch (error) {
+      showToast({ type: "error", title, message: "Failed to copy" })
+    }
   }
 
   return (
