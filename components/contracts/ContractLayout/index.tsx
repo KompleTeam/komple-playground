@@ -17,7 +17,6 @@ export const ContractForm = ({
   action,
   submit,
   hidden = [],
-  showResponse,
 }: {
   children?: ReactNode
   name: string
@@ -26,7 +25,6 @@ export const ContractForm = ({
   action: ActionType
   submit: ({ contract, codeId }: { contract: string; codeId: number }) => void
   hidden?: string[]
-  showResponse?: boolean
 }) => {
   const router = useRouter()
 
@@ -105,11 +103,7 @@ export const ContractForm = ({
         ))}
         <div className="h-2" />
         {response && (
-          <JsonViewer
-            title={`${action} Response`}
-            json={response}
-            isOpen={showResponse}
-          />
+          <JsonViewer title={`${action} Response`} json={response} />
         )}
       </div>
     </div>

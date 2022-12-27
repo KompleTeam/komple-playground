@@ -33,12 +33,14 @@ export default function HubModuleExecute() {
   const setResponseInfoBoxList = useAppStore(
     (state) => state.setResponseInfoBoxList
   )
+  const setShowResponse = useAppStore((state) => state.setShowResponse)
 
   const [executeMsg, setExecuteMsg] = useState<string>("")
   const [response, setResponse] = useState<any>({})
 
   useEffect(() => {
     setResponseInfoBoxList([])
+    setShowResponse(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

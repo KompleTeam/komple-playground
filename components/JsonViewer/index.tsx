@@ -1,18 +1,11 @@
 import clsx from "clsx"
 import Image from "next/image"
-import { useState } from "react"
+import { useAppStore } from "store"
 import { showToast } from "utils/showToast"
 
-export const JsonViewer = ({
-  title,
-  json,
-  isOpen = true,
-}: {
-  title: string
-  json: any
-  isOpen?: boolean
-}) => {
-  const [open, setOpen] = useState(isOpen)
+export const JsonViewer = ({ title, json }: { title: string; json: any }) => {
+  const showResponse = useAppStore((state) => state.showResponse)
+  const setShowResponse = useAppStore((state) => state.setShowResponse)
 
   const copyOnClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     try {
@@ -34,10 +27,10 @@ export const JsonViewer = ({
         <button
           className={clsx(
             "flex items-center justify-between w-full p-3",
-            open && "border-b-[2px] border-komple-black-300",
+            showResponse && "border-b-[2px] border-komple-black-300",
             "capitalize font-[14px]"
           )}
-          onClick={() => setOpen(!open)}
+          onClick={() => setShowResponse(!showResponse)}
         >
           <div className="flex items-center">
             <div className="mr-2">{title}</div>
@@ -46,7 +39,7 @@ export const JsonViewer = ({
               width={14}
               height={14}
               alt="Arrow Icon"
-              className={clsx(open && "transform rotate-180")}
+              className={clsx(showResponse && "transform rotate-180")}
             />
           </div>
           <button onClick={copyOnClick}>
@@ -59,7 +52,7 @@ export const JsonViewer = ({
             />
           </button>
         </button>
-        {open && (
+        {showResponse && (
           <pre className="text-white text-[14px] p-3 overflow-scroll">
             {JSON.stringify(json, null, 2)}
           </pre>

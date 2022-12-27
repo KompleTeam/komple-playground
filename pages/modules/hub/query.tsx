@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ContractForm } from "components/contracts/ContractLayout"
 import { ContractHeader } from "components/contracts/ContractHeader"
 import { Dropdown } from "components/Dropdown"
@@ -16,9 +16,19 @@ export default function HubModuleQuery() {
 
   const store = useHubModuleStore((state) => state)
   const setLoading = useAppStore((state) => state.setLoading)
+  const setResponseInfoBoxList = useAppStore(
+    (state) => state.setResponseInfoBoxList
+  )
+  const setShowResponse = useAppStore((state) => state.setShowResponse)
 
   const [queryMsg, setQueryMsg] = useState<string>("")
   const [response, setResponse] = useState<any>({})
+
+  useEffect(() => {
+    setResponseInfoBoxList([])
+    setShowResponse(true)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const dropdownOnChange = (index: number) => {
     let value = QUERIES[index]
