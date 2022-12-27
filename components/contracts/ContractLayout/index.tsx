@@ -5,7 +5,7 @@ import { TextInput } from "components/TextInput"
 import { useRouter } from "next/router"
 import { Button } from "components/Button"
 import { useAppStore } from "store"
-import { InfoBoxProps, InfoBox } from "components/InfoBox"
+import { InfoBox } from "components/InfoBox"
 
 type ActionType = "create" | "execute" | "query"
 
@@ -18,7 +18,6 @@ export const ContractForm = ({
   submit,
   hidden = [],
   showResponse,
-  customInfoBox,
 }: {
   children?: ReactNode
   name: string
@@ -28,11 +27,11 @@ export const ContractForm = ({
   submit: ({ contract, codeId }: { contract: string; codeId: number }) => void
   hidden?: string[]
   showResponse?: boolean
-  customInfoBox?: InfoBoxProps[]
 }) => {
   const router = useRouter()
 
   const loading = useAppStore((state) => state.loading)
+  const responseInfoBoxList = useAppStore((state) => state.responseInfoBoxList)
 
   const [codeId, setCodeId] = useState(0)
   const [contract, setContract] = useState(
@@ -101,7 +100,7 @@ export const ContractForm = ({
       </div>
       <div className="w-20" />
       <div className="w-[550px] max-w-[550px]">
-        {customInfoBox?.map((item) => (
+        {responseInfoBoxList.map((item) => (
           <InfoBox key={item.title} {...item} />
         ))}
         <div className="h-2" />
