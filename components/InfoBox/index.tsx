@@ -1,5 +1,6 @@
 import Image from "next/image"
 import { getShortAddress } from "utils/getShortAddress"
+import { showToast } from "utils/showToast"
 
 export interface InfoBoxProps {
   title: string
@@ -9,7 +10,12 @@ export interface InfoBoxProps {
 
 export const InfoBox = ({ title, data, short }: InfoBoxProps) => {
   const copyOnClick = (value: string) => {
-    navigator.clipboard.writeText(value)
+    try {
+      showToast({ type: "info", title, message: "Copied to clipboard" })
+      navigator.clipboard.writeText(value)
+    } catch (error) {
+      showToast({ type: "error", title, message: "Failed to copy" })
+    }
   }
 
   return (

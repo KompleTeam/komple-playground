@@ -22,6 +22,7 @@ module.exports = {
           200: "#FFB7A6",
           300: "#FF7950",
           400: "#EB360C",
+          500: "#D01931",
         },
         "komple-green": "#D5EB82",
       },

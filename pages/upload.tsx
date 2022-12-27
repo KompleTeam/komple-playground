@@ -115,7 +115,7 @@ export const Upload = () => {
 
         <div className="flex flex-col justify-around">
           <InfoBox
-            title="Tx Hash"
+            title="Transaction Hash"
             data={response.transactionHash}
             short={true}
           />
