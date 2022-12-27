@@ -7,9 +7,10 @@ import { DOC_LINKS } from "config/docs"
 import Head from "next/head"
 import { useHubModuleStore, useAppStore } from "store"
 import { MARBU_CONTROLLER_ADDRESS } from "config/marbu"
+import { showToast } from "utils/showToast"
 
 export default function HubModuleCreate() {
-  const { getSigningCosmWasmClient, address } = useWallet()
+  const { getSigningCosmWasmClient, address, isWalletConnected } = useWallet()
 
   const store = useHubModuleStore((state) => state)
   const setLoading = useAppStore((state) => state.setLoading)
@@ -28,6 +29,8 @@ export default function HubModuleCreate() {
 
   const submit = async () => {
     try {
+      if (!isWalletConnected) return showToast({ type: "wallet" })
+
       setLoading(true)
 
       const signingClient = await getSigningCosmWasmClient()

@@ -1,6 +1,6 @@
 import { toast } from "react-toastify"
 
-type MsgType = "info" | "error"
+type MsgType = "info" | "error" | "wallet"
 
 const getColors = (type: string) => {
   switch (type) {
@@ -10,6 +10,7 @@ const getColors = (type: string) => {
         background: "#333333",
       }
     case "error":
+    case "wallet":
       return {
         color: "#FFFFFF",
         background: "#D01931",
@@ -28,8 +29,12 @@ export const showToast = ({
 }) =>
   toast(
     <div>
-      <div className="font-semibold">{title}</div>
-      {message && <div>{message}</div>}
+      <div className="font-semibold">
+        {title || (type === "wallet" && "Wallet Connection")}
+      </div>
+      <div>
+        {message || (type === "wallet" && "Please connect your wallet")}
+      </div>
     </div>,
     {
       position: "top-right",

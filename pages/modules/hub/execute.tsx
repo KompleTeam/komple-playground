@@ -16,6 +16,7 @@ import {
   HubModuleUpdateOperators,
 } from "components/forms/execute"
 import { InfoBoxProps } from "components/InfoBox"
+import { showToast } from "utils/showToast"
 
 const EXECUTES = [
   "register_module",
@@ -26,7 +27,8 @@ const EXECUTES = [
 ]
 
 export default function HubModuleExecute() {
-  const { getSigningCosmWasmClient, offlineSigner } = useWallet()
+  const { getSigningCosmWasmClient, offlineSigner, isWalletConnected } =
+    useWallet()
 
   const store = useHubModuleStore((state) => state)
   const setLoading = useAppStore((state) => state.setLoading)
@@ -51,6 +53,8 @@ export default function HubModuleExecute() {
 
   const submit = async ({ contract }: { contract: string }) => {
     try {
+      if (!isWalletConnected) return showToast({ type: "wallet" })
+
       setLoading(true)
 
       const signingClient = await getSigningCosmWasmClient()

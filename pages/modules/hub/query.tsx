@@ -8,11 +8,13 @@ import { KompleClient } from "komplejs"
 import Head from "next/head"
 import { useHubModuleStore, useAppStore } from "store"
 import { HubModuleModuleAddress } from "components/forms/query"
+import { showToast } from "utils/showToast"
 
 const QUERIES = ["contract_config", "get_module_address", "contract_operators"]
 
 export default function HubModuleQuery() {
-  const { getSigningCosmWasmClient, offlineSigner } = useWallet()
+  const { getSigningCosmWasmClient, offlineSigner, isWalletConnected } =
+    useWallet()
 
   const store = useHubModuleStore((state) => state)
   const setLoading = useAppStore((state) => state.setLoading)
@@ -37,6 +39,8 @@ export default function HubModuleQuery() {
 
   const submit = async ({ contract }: { contract: string }) => {
     try {
+      if (!isWalletConnected) return showToast({ type: "wallet" })
+
       setLoading(true)
 
       const signingClient = await getSigningCosmWasmClient()

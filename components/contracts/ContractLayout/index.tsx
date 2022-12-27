@@ -99,9 +99,11 @@ export const ContractForm = ({
       <div className="w-20" />
       <div className="w-[550px] max-w-[550px]">
         {responseInfoBoxList.map((item) => (
-          <InfoBox key={item.title} {...item} />
+          <div key={item.title} className="mb-4">
+            <InfoBox {...item} />
+          </div>
         ))}
-        <div className="h-2" />
+        <div className="h-3" />
         {response && (
           <JsonViewer title={`${action} Response`} json={response} />
         )}
