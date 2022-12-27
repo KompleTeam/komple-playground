@@ -14,7 +14,7 @@ export const InfoBox = ({ title, data, short }: InfoBoxProps) => {
 
   return (
     <div className="mb-2">
-      <div className="text-white font-[16px] mb-2">{title}</div>
+      <div className="text-white font-[16px] mb-2 capitalize">{title}</div>
       <div className="flex h-[48px] w-[400px] px-4 bg-komple-black-800 border-[2px] border-komple-black-300 rounded-md text-white items-center justify-between">
         <div className="text-komple-black-100">
           {short ? (
