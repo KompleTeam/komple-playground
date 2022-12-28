@@ -36,13 +36,13 @@ export default function MarketplaceModuleExecute() {
 
   const store = useMarketplaceModuleStore((state) => state)
   const setLoading = useAppStore((state) => state.setLoading)
-
-  const [executeMsg, setExecuteMsg] = useState<string>("")
-  const [response, setResponse] = useState<any>({})
   const setResponseInfoBoxList = useAppStore(
     (state) => state.setResponseInfoBoxList
   )
   const setShowResponse = useAppStore((state) => state.setShowResponse)
+
+  const [executeMsg, setExecuteMsg] = useState<string>("")
+  const [response, setResponse] = useState<any>({})
 
   useEffect(() => {
     store.clear()
