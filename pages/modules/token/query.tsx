@@ -53,7 +53,7 @@ export default function FeeModuleQuery() {
   useEffect(() => {
     store.clear()
     setResponseInfoBoxList([])
-    setShowResponse(false)
+    setShowResponse(true)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

@@ -57,7 +57,7 @@ export default function MergeModuleQuery() {
     } catch (error: any) {
       showToast({
         type: "error",
-        title: "Query Marketplace Module",
+        title: "Query Merge Module",
         message: error.message,
       })
       setLoading(false)
