@@ -118,6 +118,16 @@ export default function PermissionModuleExecute() {
           short: true,
         },
       ]
+      if (executeMsg === "register_permission") {
+        const permissionAddress = response.logs[0].events
+          .find((event) => event.type === "instantiate")
+          ?.attributes.find((attr) => attr.key === "_contract_address")?.value
+        infoBoxList.push({
+          title: `${store.module} Permission Address`,
+          data: permissionAddress,
+          short: true,
+        })
+      }
 
       setResponseInfoBoxList(infoBoxList)
       setResponse(response)
