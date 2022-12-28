@@ -1,22 +1,32 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ContractForm } from "components/contracts/ContractLayout"
 import { ContractHeader } from "components/contracts/ContractHeader"
 import { Dropdown } from "components/Dropdown"
-import { useWallet } from "@cosmos-kit/react"
 import { DOC_LINKS } from "config/docs"
-import { KompleClient } from "komplejs"
 import Head from "next/head"
 import { useAppStore } from "store"
+import { showToast } from "utils/showToast"
+import { useKompleClient } from "hooks/kompleClient"
 
 const QUERIES = ["config", "operators"]
 
 export default function MergeModuleQuery() {
-  const { getSigningCosmWasmClient, offlineSigner } = useWallet()
+  const { kompleClient } = useKompleClient()
 
   const setLoading = useAppStore((state) => state.setLoading)
+  const setResponseInfoBoxList = useAppStore(
+    (state) => state.setResponseInfoBoxList
+  )
+  const setShowResponse = useAppStore((state) => state.setShowResponse)
 
   const [queryMsg, setQueryMsg] = useState<string>("")
   const [response, setResponse] = useState<any>({})
+
+  useEffect(() => {
+    setResponseInfoBoxList([])
+    setShowResponse(true)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const dropdownOnChange = (index: number) => {
     let value = QUERIES[index]
@@ -27,12 +37,10 @@ export default function MergeModuleQuery() {
     try {
       setLoading(true)
 
-      const signingClient = await getSigningCosmWasmClient()
-      if (signingClient === undefined || offlineSigner === undefined) {
-        throw new Error("client or signer is not ready")
+      if (!kompleClient) {
+        throw new Error("Komple client is not initialized")
       }
 
-      const kompleClient = new KompleClient(signingClient, offlineSigner)
       const mergeModule = await kompleClient.mergeModule(contract)
       const client = mergeModule.queryClient
 
@@ -47,7 +55,11 @@ export default function MergeModuleQuery() {
 
       setLoading(false)
     } catch (error: any) {
-      setResponse(error.message)
+      showToast({
+        type: "error",
+        title: "Query Marketplace Module",
+        message: error.message,
+      })
       setLoading(false)
     }
   }
