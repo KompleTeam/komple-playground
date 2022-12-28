@@ -2,19 +2,17 @@ import { useEffect, useState } from "react"
 import { ContractForm } from "components/contracts/ContractLayout"
 import { ContractHeader } from "components/contracts/ContractHeader"
 import { Dropdown } from "components/Dropdown"
-import { useWallet } from "@cosmos-kit/react"
 import { DOC_LINKS } from "config/docs"
-import { KompleClient } from "komplejs"
 import Head from "next/head"
 import { useHubModuleStore, useAppStore } from "store"
 import { HubModuleModuleAddress } from "components/forms/query"
 import { showToast } from "utils/showToast"
+import { useKompleClient } from "hooks/kompleClient"
 
 const QUERIES = ["contract_config", "get_module_address", "contract_operators"]
 
 export default function HubModuleQuery() {
-  const { getSigningCosmWasmClient, offlineSigner, isWalletConnected } =
-    useWallet()
+  const { kompleClient } = useKompleClient()
 
   const store = useHubModuleStore((state) => state)
   const setLoading = useAppStore((state) => state.setLoading)
@@ -39,16 +37,12 @@ export default function HubModuleQuery() {
 
   const submit = async ({ contract }: { contract: string }) => {
     try {
-      if (!isWalletConnected) return showToast({ type: "wallet" })
-
       setLoading(true)
 
-      const signingClient = await getSigningCosmWasmClient()
-      if (signingClient === undefined || offlineSigner === undefined) {
-        throw new Error("client or signer is not ready")
+      if (!kompleClient) {
+        throw new Error("Komple client is not initialized")
       }
 
-      const kompleClient = new KompleClient(signingClient, offlineSigner)
       const hubModule = await kompleClient.hubModule(contract)
       const queryClient = hubModule.queryClient
 
@@ -71,7 +65,11 @@ export default function HubModuleQuery() {
 
       setLoading(false)
     } catch (error: any) {
-      setResponse(error.message)
+      showToast({
+        type: "error",
+        title: "Query Hub Error",
+        message: error.message,
+      })
       setLoading(false)
     }
   }

@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react"
 import { ContractHeader } from "components/contracts/ContractHeader"
 import { TextInput } from "components/TextInput"
-import { useWallet } from "@cosmos-kit/react"
 import { ContractForm } from "components/contracts/ContractLayout"
 import { DOC_LINKS } from "config/docs"
 import Head from "next/head"
 import { useHubModuleStore, useAppStore } from "store"
 import { MARBU_CONTROLLER_ADDRESS } from "config/marbu"
 import { showToast } from "utils/showToast"
+import { useKompleClient } from "hooks/kompleClient"
 
 export default function HubModuleCreate() {
-  const { getSigningCosmWasmClient, address, isWalletConnected } = useWallet()
+  const { kompleClient, address } = useKompleClient()
 
   const store = useHubModuleStore((state) => state)
   const setLoading = useAppStore((state) => state.setLoading)
@@ -29,16 +29,13 @@ export default function HubModuleCreate() {
 
   const submit = async () => {
     try {
-      if (!isWalletConnected) return showToast({ type: "wallet" })
-
       setLoading(true)
 
-      const signingClient = await getSigningCosmWasmClient()
-      if (signingClient === undefined) {
-        throw new Error("No signing client")
+      if (!kompleClient) {
+        throw new Error("Komple client is not initialized")
       }
 
-      const res = await signingClient.execute(
+      const res = await kompleClient.client.execute(
         address || "",
         MARBU_CONTROLLER_ADDRESS,
         {
@@ -60,7 +57,11 @@ export default function HubModuleCreate() {
       setResponse(res)
       setLoading(false)
     } catch (error: any) {
-      setResponse(error.message)
+      showToast({
+        type: "error",
+        title: "Create Hub Error",
+        message: error.message,
+      })
       setLoading(false)
     }
   }

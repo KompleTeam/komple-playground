@@ -3,10 +3,8 @@ import { DOC_LINKS } from "config/docs"
 import { useEffect, useState } from "react"
 import { ContractForm } from "components/contracts/ContractLayout"
 import { ContractHeader } from "components/contracts/ContractHeader"
-import { KompleClient } from "komplejs"
 import { ExecuteResult, toBinary } from "@cosmjs/cosmwasm-stargate"
 import Head from "next/head"
-import { useWallet } from "@cosmos-kit/react"
 import { useAppStore, useHubModuleStore } from "store"
 import {
   HubModuleDeregisterModule,
@@ -17,6 +15,7 @@ import {
 } from "components/forms/execute"
 import { InfoBoxProps } from "components/InfoBox"
 import { showToast } from "utils/showToast"
+import { useKompleClient } from "hooks/kompleClient"
 
 const EXECUTES = [
   "register_module",
@@ -27,8 +26,7 @@ const EXECUTES = [
 ]
 
 export default function HubModuleExecute() {
-  const { getSigningCosmWasmClient, offlineSigner, isWalletConnected } =
-    useWallet()
+  const { kompleClient } = useKompleClient()
 
   const store = useHubModuleStore((state) => state)
   const setLoading = useAppStore((state) => state.setLoading)
@@ -53,16 +51,12 @@ export default function HubModuleExecute() {
 
   const submit = async ({ contract }: { contract: string }) => {
     try {
-      if (!isWalletConnected) return showToast({ type: "wallet" })
-
       setLoading(true)
 
-      const signingClient = await getSigningCosmWasmClient()
-      if (signingClient === undefined || offlineSigner === undefined) {
-        throw new Error("client or signer is not ready")
+      if (!kompleClient) {
+        throw new Error("Komple client is not initialized")
       }
 
-      const kompleClient = new KompleClient(signingClient, offlineSigner)
       const hubModule = await kompleClient.hubModule(contract)
       const executeClient = hubModule.client
 
@@ -149,7 +143,11 @@ export default function HubModuleExecute() {
       setResponse(response)
       setLoading(false)
     } catch (error: any) {
-      setResponse(error.message)
+      showToast({
+        type: "error",
+        title: "Execute Hub Error",
+        message: error.message,
+      })
       setLoading(false)
     }
   }
