@@ -1,11 +1,9 @@
 import { Dropdown } from "components/Dropdown"
 import { DOC_LINKS } from "config/docs"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ContractForm } from "components/contracts/ContractLayout"
 import { ContractHeader } from "components/contracts/ContractHeader"
-import { KompleClient } from "komplejs"
 import Head from "next/head"
-import { useWallet } from "@cosmos-kit/react"
 import {
   MarketplaceModuleUpdateBuyLock,
   MarketplaceModuleListFixedToken,
@@ -17,6 +15,8 @@ import {
 } from "components/forms/execute"
 import { useMarketplaceModuleStore, useAppStore } from "store"
 import { coin } from "@cosmjs/proto-signing"
+import { useKompleClient } from "hooks/kompleClient"
+import { showToast } from "utils/showToast"
 
 const EXECUTES = [
   "update_marketplace_buy_lock",
@@ -30,13 +30,24 @@ const EXECUTES = [
 ]
 
 export default function MarketplaceModuleExecute() {
-  const { getSigningCosmWasmClient, offlineSigner } = useWallet()
+  const { kompleClient } = useKompleClient()
 
   const store = useMarketplaceModuleStore((state) => state)
   const setLoading = useAppStore((state) => state.setLoading)
 
   const [executeMsg, setExecuteMsg] = useState<string>("")
   const [response, setResponse] = useState<any>({})
+  const setResponseInfoBoxList = useAppStore(
+    (state) => state.setResponseInfoBoxList
+  )
+  const setShowResponse = useAppStore((state) => state.setShowResponse)
+
+  useEffect(() => {
+    store.clear()
+    setResponseInfoBoxList([])
+    setShowResponse(false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const dropdownOnChange = (index: number) => {
     let value = EXECUTES[index]
@@ -47,12 +58,10 @@ export default function MarketplaceModuleExecute() {
     try {
       setLoading(true)
 
-      const signingClient = await getSigningCosmWasmClient()
-      if (signingClient === undefined || offlineSigner === undefined) {
-        throw new Error("client or signer is not ready")
+      if (!kompleClient) {
+        throw new Error("Komple client is not initialized")
       }
 
-      const kompleClient = new KompleClient(signingClient, offlineSigner)
       const marketplaceModule = await kompleClient.marketplaceModule(contract)
       const executeClient = marketplaceModule.client
 
@@ -153,7 +162,11 @@ export default function MarketplaceModuleExecute() {
 
       setLoading(false)
     } catch (error: any) {
-      setResponse(error.message)
+      showToast({
+        type: "error",
+        title: "Execute Marketplace Module",
+        message: error.message,
+      })
       setLoading(false)
     }
   }
