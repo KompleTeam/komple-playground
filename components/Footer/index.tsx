@@ -44,7 +44,11 @@ export const Footer = () => {
             />
           </a>
         </Link>
-        <Link href="https://docs.komple.io" passHref legacyBehavior>
+        <Link
+          href="https://docs.komple.io/komple-framework-playground/overview"
+          passHref
+          legacyBehavior
+        >
           <a target="_blank" className="opacity-40 hover:opacity-100 mx-5">
             <Image
               src="/icons/docs.svg"
