@@ -22,7 +22,7 @@ export const ContractTabs = ({
   const router = useRouter()
 
   return (
-    <div className="flex sticky top-[100px]">
+    <div className="flex sticky top-[120px]">
       <div className="w-[350px]">
         {ITEMS.filter((item) => !hidden.includes(item.text)).map((item) => {
           return (
