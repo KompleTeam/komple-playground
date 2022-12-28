@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { ContractForm } from "components/contracts/ContractLayout"
 import { ContractHeader } from "components/contracts/ContractHeader"
 import Head from "next/head"
-import { toBinary } from "@cosmjs/cosmwasm-stargate"
+import { ExecuteResult, toBinary } from "@cosmjs/cosmwasm-stargate"
 import { useAppStore, useAttributePermissionStore } from "store"
 import { AttributePermissionCheck } from "components/forms/execute"
 import { InfoBoxProps } from "components/InfoBox"
@@ -51,13 +51,15 @@ export default function AttributePermissionExecute() {
       )
       const client = attributePermission.client
 
+      let response: ExecuteResult
+
       switch (executeMsg) {
         case "check_permission": {
           const msg = {
             data: store.data === undefined ? "" : toBinary(store.data),
           }
 
-          setResponse(await client.check(msg))
+          response = await client.check(msg)
           break
         }
         default:
