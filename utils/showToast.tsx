@@ -29,7 +29,7 @@ export const showToast = ({
 }) =>
   toast(
     <div>
-      <div className="font-semibold">
+      <div className="font-semibold capitalize">
         {title || (type === "wallet" && "Wallet Connection")}
       </div>
       <div>

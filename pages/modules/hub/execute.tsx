@@ -145,7 +145,7 @@ export default function HubModuleExecute() {
     } catch (error: any) {
       showToast({
         type: "error",
-        title: "Execute Hub Error",
+        title: "Execute Hub Module",
         message: error.message,
       })
       setLoading(false)

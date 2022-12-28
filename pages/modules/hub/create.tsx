@@ -22,6 +22,7 @@ export default function HubModuleCreate() {
   const [response, setResponse] = useState({})
 
   useEffect(() => {
+    store.clear()
     setResponseInfoBoxList([])
     setShowResponse(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -59,7 +60,7 @@ export default function HubModuleCreate() {
     } catch (error: any) {
       showToast({
         type: "error",
-        title: "Create Hub Error",
+        title: "Create Hub Module",
         message: error.message,
       })
       setLoading(false)

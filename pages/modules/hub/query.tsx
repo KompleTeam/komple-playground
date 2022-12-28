@@ -67,7 +67,7 @@ export default function HubModuleQuery() {
     } catch (error: any) {
       showToast({
         type: "error",
-        title: "Query Hub Error",
+        title: "Query Hub Module",
         message: error.message,
       })
       setLoading(false)
