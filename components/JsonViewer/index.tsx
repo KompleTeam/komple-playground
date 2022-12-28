@@ -33,7 +33,7 @@ export const JsonViewer = ({ title, json }: { title: string; json: any }) => {
           onClick={() => setShowResponse(!showResponse)}
         >
           <div className="flex items-center">
-            <div className="mr-2">{title}</div>
+            <div className="mr-2 text-white">{title}</div>
             <Image
               src="/icons/arrow.svg"
               width={14}
