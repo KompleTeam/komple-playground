@@ -1,11 +1,9 @@
 import { Dropdown } from "components/Dropdown"
 import { DOC_LINKS } from "config/docs"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ContractForm } from "components/contracts/ContractLayout"
 import { ContractHeader } from "components/contracts/ContractHeader"
-import { KompleClient } from "komplejs"
 import Head from "next/head"
-import { useWallet } from "@cosmos-kit/react"
 import {
   MintModuleCreateCollection,
   MintModuleMint,
@@ -19,9 +17,12 @@ import {
   MintModuleUpdateCollectionStatus,
 } from "components/forms/execute"
 import { useAppStore, useMintModuleStore } from "store"
-import { toBinary } from "@cosmjs/cosmwasm-stargate"
+import { ExecuteResult, toBinary } from "@cosmjs/cosmwasm-stargate"
 import { isInteger } from "utils/isInteger"
 import { METADATA_MODULE_CODE_ID, TOKEN_MODULE_CODE_ID } from "config/codeIds"
+import { showToast } from "utils/showToast"
+import { useKompleClient } from "hooks/kompleClient"
+import { InfoBoxProps } from "components/InfoBox"
 
 const EXECUTES = [
   "create_collection",
@@ -38,13 +39,24 @@ const EXECUTES = [
 ]
 
 export default function MintModuleExecute() {
-  const { getSigningCosmWasmClient, offlineSigner } = useWallet()
+  const { kompleClient } = useKompleClient()
 
   const store = useMintModuleStore((state) => state)
   const setLoading = useAppStore((state) => state.setLoading)
+  const setResponseInfoBoxList = useAppStore(
+    (state) => state.setResponseInfoBoxList
+  )
+  const setShowResponse = useAppStore((state) => state.setShowResponse)
 
   const [executeMsg, setExecuteMsg] = useState<string>("")
   const [response, setResponse] = useState<any>({})
+
+  useEffect(() => {
+    store.clear()
+    setResponseInfoBoxList([])
+    setShowResponse(false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const dropdownOnChange = (index: number) => {
     let value = EXECUTES[index]
@@ -55,14 +67,14 @@ export default function MintModuleExecute() {
     try {
       setLoading(true)
 
-      const signingClient = await getSigningCosmWasmClient()
-      if (signingClient === undefined || offlineSigner === undefined) {
-        throw new Error("client or signer is not ready")
+      if (!kompleClient) {
+        throw new Error("Komple client is not initialized")
       }
 
-      const kompleClient = new KompleClient(signingClient, offlineSigner)
       const mintModule = await kompleClient.mintModule(contract)
       const executeClient = mintModule.client
+
+      let response: ExecuteResult
 
       switch (executeMsg) {
         case "create_collection": {
@@ -105,7 +117,7 @@ export default function MintModuleExecute() {
             linkedCollections: [],
           }
 
-          setResponse(await executeClient.createCollection(msg))
+          response = await executeClient.createCollection(msg)
           break
         }
         case "update_public_collection_creation": {
@@ -113,7 +125,7 @@ export default function MintModuleExecute() {
             publicCollectionCreation: store.publicCollectionCreation,
           }
 
-          setResponse(await executeClient.updatePublicCollectionCreation(msg))
+          response = await executeClient.updatePublicCollectionCreation(msg)
           break
         }
         case "update_collection_mint_lock": {
@@ -122,7 +134,7 @@ export default function MintModuleExecute() {
             lock: store.lock,
           }
 
-          setResponse(await executeClient.updateCollectionMintLock(msg))
+          response = await executeClient.updateCollectionMintLock(msg)
           break
         }
         case "mint_NFT": {
@@ -131,7 +143,7 @@ export default function MintModuleExecute() {
             metadataId: store.metadataId === 0 ? undefined : store.metadataId,
           }
 
-          setResponse(await executeClient.mint(msg))
+          response = await executeClient.mint(msg)
           break
         }
         case "mint_NFT_as_admin": {
@@ -141,7 +153,7 @@ export default function MintModuleExecute() {
             metadataId: store.metadataId === 0 ? undefined : store.metadataId,
           }
 
-          setResponse(await executeClient.adminMint(msg))
+          response = await executeClient.adminMint(msg)
           break
         }
         case "mint_NFT_with_permissions": {
@@ -155,7 +167,7 @@ export default function MintModuleExecute() {
             },
           }
 
-          setResponse(await executeClient.permissionMint(msg))
+          response = await executeClient.permissionMint(msg)
           break
         }
         case "update_contract_operators": {
@@ -163,7 +175,7 @@ export default function MintModuleExecute() {
             addrs: store.addresses,
           }
 
-          setResponse(await executeClient.updateOperators(msg))
+          response = await executeClient.updateOperators(msg)
           break
         }
         case "update_linked_collections": {
@@ -180,7 +192,7 @@ export default function MintModuleExecute() {
             ),
           }
 
-          setResponse(await executeClient.updateLinkedCollections(msg))
+          response = await executeClient.updateLinkedCollections(msg)
           break
         }
         case "blacklist/whitelist_collection": {
@@ -189,11 +201,11 @@ export default function MintModuleExecute() {
             isBlacklist: store.isBlacklist,
           }
 
-          setResponse(await executeClient.updateCollectionStatus(msg))
+          response = await executeClient.updateCollectionStatus(msg)
           break
         }
         case "lock_execute_messages": {
-          setResponse(await executeClient.lockExecute())
+          response = await executeClient.lockExecute()
           break
         }
         case "update_collection_creators": {
@@ -201,14 +213,46 @@ export default function MintModuleExecute() {
             addrs: store.addresses,
           }
 
-          setResponse(await executeClient.updateCreators(msg))
+          response = await executeClient.updateCreators(msg)
           break
         }
+        default:
+          throw new Error("Invalid execute message")
+      }
+
+      const infoBoxList: InfoBoxProps[] = [
+        {
+          title: "Transaction Hash",
+          data: response.transactionHash,
+          short: true,
+        },
+      ]
+      if (executeMsg === "create_collection") {
+        const addresses = response.logs[0].events
+          .find((event) => event.type === "instantiate")
+          ?.attributes.filter((attr) => attr.key === "_contract_address")
+          ?.map((item) => item.value)
+        infoBoxList.push({
+          title: "Token Module Address",
+          data: addresses ? addresses[0] : undefined,
+          short: true,
+        })
+        infoBoxList.push({
+          title: "Metadata Module Address",
+          data: addresses ? addresses[1] : undefined,
+          short: true,
+        })
       }
 
       setLoading(false)
+      setResponse(response)
+      setResponseInfoBoxList(infoBoxList)
     } catch (error: any) {
-      setResponse(error.message)
+      showToast({
+        type: "error",
+        title: "Execute Mint Module",
+        message: error.message,
+      })
       setLoading(false)
     }
   }

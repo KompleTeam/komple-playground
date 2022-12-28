@@ -1,5 +1,6 @@
 import "../styles/globals.css"
 import "../styles/datepicker.css"
+import "react-toastify/dist/ReactToastify.css"
 import type { AppProps } from "next/app"
 import { Navbar } from "../components/Navbar"
 import { Layout } from "../components/Layout"
@@ -10,6 +11,7 @@ import { Chain } from "@chain-registry/types"
 import { wallets } from "@cosmos-kit/keplr"
 import { GasPrice } from "@cosmjs/stargate"
 import { Footer } from "components/Footer"
+import { ToastContainer } from "react-toastify"
 
 const JUNO_TESTNET = chains.filter((chain) => chain.chain_id === "uni-5")[0]
 const JUNO_MAINNET = chains.filter((chain) => chain.chain_id === "juno-1")[0]
@@ -48,6 +50,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <Footer />
         </div>
       </WalletProvider>
+      <ToastContainer style={{ top: "100px" }} />
     </div>
   )
 }

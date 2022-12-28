@@ -4,8 +4,8 @@ import { JsonViewer } from "../../JsonViewer"
 import { TextInput } from "components/TextInput"
 import { useRouter } from "next/router"
 import { Button } from "components/Button"
-import { isInteger } from "utils/isInteger"
 import { useAppStore } from "store"
+import { InfoBox } from "components/InfoBox"
 
 type ActionType = "create" | "execute" | "query"
 
@@ -29,6 +29,7 @@ export const ContractForm = ({
   const router = useRouter()
 
   const loading = useAppStore((state) => state.loading)
+  const responseInfoBoxList = useAppStore((state) => state.responseInfoBoxList)
 
   const [codeId, setCodeId] = useState(0)
   const [contract, setContract] = useState(
@@ -60,7 +61,7 @@ export const ContractForm = ({
           hidden={hidden}
         />
       </div>
-      <div className="w-20" />
+      <div className="w-28" />
       <div>
         {/* {action === "create" && (
           <TextInput
@@ -86,7 +87,7 @@ export const ContractForm = ({
           />
         )}
 
-        <div className="max-w-[380px]">{children}</div>
+        <div className="w-auto">{children}</div>
 
         <Button
           className="capitalize"
@@ -96,7 +97,19 @@ export const ContractForm = ({
         />
       </div>
       <div className="w-20" />
-      {response && <JsonViewer json={response} />}
+      <div className="block">
+        <div className="w-[550px] max-w-[550px] sticky top-[120px]">
+          {responseInfoBoxList.map((item) => (
+            <div key={item.title} className="mb-4">
+              <InfoBox {...item} />
+            </div>
+          ))}
+          <div className="h-3" />
+          {response && (
+            <JsonViewer title={`${action} Response`} json={response} />
+          )}
+        </div>
+      </div>
     </div>
   )
 }

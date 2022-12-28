@@ -1,31 +1,42 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ContractHeader } from "components/contracts/ContractHeader"
 import { TextInput } from "components/TextInput"
-import { useWallet } from "@cosmos-kit/react"
 import { ContractForm } from "components/contracts/ContractLayout"
 import { DOC_LINKS } from "config/docs"
 import Head from "next/head"
 import { useHubModuleStore, useAppStore } from "store"
 import { MARBU_CONTROLLER_ADDRESS } from "config/marbu"
+import { showToast } from "utils/showToast"
+import { useKompleClient } from "hooks/kompleClient"
 
 export default function HubModuleCreate() {
-  const { getSigningCosmWasmClient, address } = useWallet()
+  const { kompleClient, address } = useKompleClient()
 
   const store = useHubModuleStore((state) => state)
   const setLoading = useAppStore((state) => state.setLoading)
+  const setResponseInfoBoxList = useAppStore(
+    (state) => state.setResponseInfoBoxList
+  )
+  const setShowResponse = useAppStore((state) => state.setShowResponse)
 
   const [response, setResponse] = useState({})
+
+  useEffect(() => {
+    store.clear()
+    setResponseInfoBoxList([])
+    setShowResponse(false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const submit = async () => {
     try {
       setLoading(true)
 
-      const signingClient = await getSigningCosmWasmClient()
-      if (signingClient === undefined) {
-        throw new Error("No signing client")
+      if (!kompleClient) {
+        throw new Error("Komple client is not initialized")
       }
 
-      const res = await signingClient.execute(
+      const res = await kompleClient.client.execute(
         address || "",
         MARBU_CONTROLLER_ADDRESS,
         {
@@ -35,11 +46,23 @@ export default function HubModuleCreate() {
         },
         "auto"
       )
-      setResponse(res)
 
+      const hubAddress = res.logs[0].events
+        .find((event) => event.type === "instantiate")
+        ?.attributes.find((attr) => attr.key === "_contract_address")?.value
+
+      setResponseInfoBoxList([
+        { title: "Transaction Hash", data: res.transactionHash, short: true },
+        { title: "Hub Module Address", data: hubAddress, short: true },
+      ])
+      setResponse(res)
       setLoading(false)
     } catch (error: any) {
-      setResponse(error.message)
+      showToast({
+        type: "error",
+        title: "Create Hub Module",
+        message: error.message,
+      })
       setLoading(false)
     }
   }

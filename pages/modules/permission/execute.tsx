@@ -1,12 +1,10 @@
 import { Dropdown } from "components/Dropdown"
 import { DOC_LINKS } from "config/docs"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ContractForm } from "components/contracts/ContractLayout"
 import { ContractHeader } from "components/contracts/ContractHeader"
-import { KompleClient } from "komplejs"
-import { toBinary } from "@cosmjs/cosmwasm-stargate"
+import { ExecuteResult, toBinary } from "@cosmjs/cosmwasm-stargate"
 import Head from "next/head"
-import { useWallet } from "@cosmos-kit/react"
 import { useAppStore, usePermissionModuleStore } from "store"
 import {
   PermissionModuleCheck,
@@ -14,6 +12,9 @@ import {
   PermissionModuleUpdateModulePermissions,
   PermissionModuleUpdateOperators,
 } from "components/forms/execute"
+import { showToast } from "utils/showToast"
+import { InfoBoxProps } from "components/InfoBox"
+import { useKompleClient } from "hooks/kompleClient"
 
 const EXECUTES = [
   "register_permission",
@@ -24,13 +25,24 @@ const EXECUTES = [
 ]
 
 export default function PermissionModuleExecute() {
-  const { getSigningCosmWasmClient, offlineSigner } = useWallet()
+  const { kompleClient } = useKompleClient()
 
   const store = usePermissionModuleStore((state) => state)
   const setLoading = useAppStore((state) => state.setLoading)
+  const setResponseInfoBoxList = useAppStore(
+    (state) => state.setResponseInfoBoxList
+  )
+  const setShowResponse = useAppStore((state) => state.setShowResponse)
 
   const [executeMsg, setExecuteMsg] = useState<string>("")
   const [response, setResponse] = useState<any>({})
+
+  useEffect(() => {
+    store.clear()
+    setResponseInfoBoxList([])
+    setShowResponse(false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const dropdownOnChange = (index: number) => {
     let value = EXECUTES[index]
@@ -41,14 +53,14 @@ export default function PermissionModuleExecute() {
     try {
       setLoading(true)
 
-      const signingClient = await getSigningCosmWasmClient()
-      if (signingClient === undefined || offlineSigner === undefined) {
-        throw new Error("client or signer is not ready")
+      if (!kompleClient) {
+        throw new Error("Komple client is not initialized")
       }
 
-      const kompleClient = new KompleClient(signingClient, offlineSigner)
       const permissionModule = await kompleClient.permissionModule(contract)
       const executeClient = permissionModule.client
+
+      let response: ExecuteResult
 
       switch (executeMsg) {
         case "register_permission": {
@@ -58,7 +70,7 @@ export default function PermissionModuleExecute() {
             msg: store.msg !== undefined ? toBinary(store.msg) : undefined,
           }
 
-          setResponse(await executeClient.registerPermission(msg))
+          response = await executeClient.registerPermission(msg)
           break
         }
         case "update_permissions_for_module": {
@@ -67,7 +79,7 @@ export default function PermissionModuleExecute() {
             permissions: store.permissions,
           }
 
-          setResponse(await executeClient.updateModulePermissions(msg))
+          response = await executeClient.updateModulePermissions(msg)
           break
         }
         case "check_permission": {
@@ -80,7 +92,7 @@ export default function PermissionModuleExecute() {
             msg: store.msg,
           }
 
-          setResponse(await executeClient.check(msg))
+          response = await executeClient.check(msg)
           break
         }
         case "update_contract_operators": {
@@ -88,18 +100,44 @@ export default function PermissionModuleExecute() {
             addrs: store.addresses,
           }
 
-          setResponse(await executeClient.updateOperators(msg))
+          response = await executeClient.updateOperators(msg)
           break
         }
         case "lock_execute_messages": {
-          setResponse(await executeClient.lockExecute())
+          response = await executeClient.lockExecute()
           break
         }
+        default:
+          throw new Error("Invalid execute message")
       }
 
+      const infoBoxList: InfoBoxProps[] = [
+        {
+          title: "Transaction Hash",
+          data: response.transactionHash,
+          short: true,
+        },
+      ]
+      if (executeMsg === "register_permission") {
+        const permissionAddress = response.logs[0].events
+          .find((event) => event.type === "instantiate")
+          ?.attributes.find((attr) => attr.key === "_contract_address")?.value
+        infoBoxList.push({
+          title: `${store.module} Permission Address`,
+          data: permissionAddress,
+          short: true,
+        })
+      }
+
+      setResponseInfoBoxList(infoBoxList)
+      setResponse(response)
       setLoading(false)
     } catch (error: any) {
-      setResponse(error.message)
+      showToast({
+        type: "error",
+        title: "Execute Permission Module",
+        message: error.message,
+      })
       setLoading(false)
     }
   }

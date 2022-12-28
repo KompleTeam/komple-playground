@@ -1,25 +1,37 @@
 import { Dropdown } from "components/Dropdown"
 import { DOC_LINKS } from "config/docs"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ContractForm } from "components/contracts/ContractLayout"
 import { ContractHeader } from "components/contracts/ContractHeader"
-import { KompleClient } from "komplejs"
 import Head from "next/head"
-import { useWallet } from "@cosmos-kit/react"
-import { toBinary } from "@cosmjs/cosmwasm-stargate"
+import { ExecuteResult, toBinary } from "@cosmjs/cosmwasm-stargate"
 import { OwnershipPermissionCheck } from "components/forms/execute"
 import { useAppStore, useOwnershipPermissionStore } from "store"
+import { InfoBoxProps } from "components/InfoBox"
+import { showToast } from "utils/showToast"
+import { useKompleClient } from "hooks/kompleClient"
 
 const EXECUTES = ["check_permission"]
 
 export default function OwnershipPermissionExecute() {
-  const { getSigningCosmWasmClient, offlineSigner } = useWallet()
+  const { kompleClient } = useKompleClient()
 
   const store = useOwnershipPermissionStore((state) => state)
   const setLoading = useAppStore((state) => state.setLoading)
+  const setResponseInfoBoxList = useAppStore(
+    (state) => state.setResponseInfoBoxList
+  )
+  const setShowResponse = useAppStore((state) => state.setShowResponse)
 
   const [executeMsg, setExecuteMsg] = useState<string>("")
   const [response, setResponse] = useState<any>({})
+
+  useEffect(() => {
+    store.clear()
+    setResponseInfoBoxList([])
+    setShowResponse(false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const dropdownOnChange = (index: number) => {
     let value = EXECUTES[index]
@@ -30,16 +42,16 @@ export default function OwnershipPermissionExecute() {
     try {
       setLoading(true)
 
-      const signingClient = await getSigningCosmWasmClient()
-      if (signingClient === undefined || offlineSigner === undefined) {
-        throw new Error("client or signer is not ready")
+      if (!kompleClient) {
+        throw new Error("Komple client is not initialized")
       }
 
-      const kompleClient = new KompleClient(signingClient, offlineSigner)
       const ownershipPermission = await kompleClient.ownershipPermission(
         contract
       )
       const client = ownershipPermission.client
+
+      let response: ExecuteResult
 
       switch (executeMsg) {
         case "check_permission": {
@@ -47,14 +59,30 @@ export default function OwnershipPermissionExecute() {
             data: store.data === undefined ? "" : toBinary(store.data),
           }
 
-          setResponse(await client.check(msg))
+          response = await client.check(msg)
           break
         }
+        default:
+          throw new Error("Invalid execute message")
       }
 
+      const infoBoxList: InfoBoxProps[] = [
+        {
+          title: "Transaction Hash",
+          data: response.transactionHash,
+          short: true,
+        },
+      ]
+
+      setResponseInfoBoxList(infoBoxList)
+      setResponse(response)
       setLoading(false)
     } catch (error: any) {
-      setResponse(error.message)
+      showToast({
+        type: "error",
+        title: "Execute Ownership Permission",
+        message: error.message,
+      })
       setLoading(false)
     }
   }

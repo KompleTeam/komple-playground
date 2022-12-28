@@ -1,12 +1,10 @@
 import { Dropdown } from "components/Dropdown"
 import { DOC_LINKS } from "config/docs"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ContractForm } from "components/contracts/ContractLayout"
 import { ContractHeader } from "components/contracts/ContractHeader"
-import { KompleClient } from "komplejs"
-import { toBinary } from "@cosmjs/cosmwasm-stargate"
+import { ExecuteResult, toBinary } from "@cosmjs/cosmwasm-stargate"
 import Head from "next/head"
-import { useWallet } from "@cosmos-kit/react"
 import { useAppStore, useHubModuleStore } from "store"
 import {
   HubModuleDeregisterModule,
@@ -15,6 +13,9 @@ import {
   HubModuleUpdateHubInfo,
   HubModuleUpdateOperators,
 } from "components/forms/execute"
+import { InfoBoxProps } from "components/InfoBox"
+import { showToast } from "utils/showToast"
+import { useKompleClient } from "hooks/kompleClient"
 
 const EXECUTES = [
   "register_module",
@@ -25,13 +26,23 @@ const EXECUTES = [
 ]
 
 export default function HubModuleExecute() {
-  const { getSigningCosmWasmClient, offlineSigner } = useWallet()
+  const { kompleClient } = useKompleClient()
 
   const store = useHubModuleStore((state) => state)
   const setLoading = useAppStore((state) => state.setLoading)
+  const setResponseInfoBoxList = useAppStore(
+    (state) => state.setResponseInfoBoxList
+  )
+  const setShowResponse = useAppStore((state) => state.setShowResponse)
 
   const [executeMsg, setExecuteMsg] = useState<string>("")
   const [response, setResponse] = useState<any>({})
+
+  useEffect(() => {
+    setResponseInfoBoxList([])
+    setShowResponse(false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const dropdownOnChange = (index: number) => {
     let value = EXECUTES[index]
@@ -42,14 +53,14 @@ export default function HubModuleExecute() {
     try {
       setLoading(true)
 
-      const signingClient = await getSigningCosmWasmClient()
-      if (signingClient === undefined || offlineSigner === undefined) {
-        throw new Error("client or signer is not ready")
+      if (!kompleClient) {
+        throw new Error("Komple client is not initialized")
       }
 
-      const kompleClient = new KompleClient(signingClient, offlineSigner)
       const hubModule = await kompleClient.hubModule(contract)
       const executeClient = hubModule.client
+
+      let response: ExecuteResult
 
       switch (executeMsg) {
         case "register_module": {
@@ -59,7 +70,7 @@ export default function HubModuleExecute() {
             msg: store.msg !== undefined ? toBinary(store.msg) : undefined,
           }
 
-          setResponse(await executeClient.registerModule(msg))
+          response = await executeClient.registerModule(msg)
           break
         }
         case "remove_module": {
@@ -67,7 +78,7 @@ export default function HubModuleExecute() {
             module: store.module,
           }
 
-          setResponse(await executeClient.deregisterModule(msg))
+          response = await executeClient.deregisterModule(msg)
           break
         }
         case "update_hub_info": {
@@ -81,7 +92,7 @@ export default function HubModuleExecute() {
                 : store.hubInfo.external_link,
           }
 
-          setResponse(await executeClient.updateHubInfo(msg))
+          response = await executeClient.updateHubInfo(msg)
           break
         }
         case "update_contract_operators": {
@@ -89,7 +100,7 @@ export default function HubModuleExecute() {
             addrs: store.addresses,
           }
 
-          setResponse(await executeClient.updateOperators(msg))
+          response = await executeClient.updateOperators(msg)
           break
         }
         case "migrate_contracts": {
@@ -103,14 +114,40 @@ export default function HubModuleExecute() {
             msg: toBinary(store.msg),
           }
 
-          setResponse(await executeClient.migrateContracts(msg))
+          response = await executeClient.migrateContracts(msg)
           break
         }
+        default:
+          throw new Error("Invalid execute message")
       }
 
+      const infoBoxList: InfoBoxProps[] = [
+        {
+          title: "Transaction Hash",
+          data: response.transactionHash,
+          short: true,
+        },
+      ]
+      if (executeMsg === "register_module") {
+        const moduleAddress = response.logs[0].events
+          .find((event) => event.type === "instantiate")
+          ?.attributes.find((attr) => attr.key === "_contract_address")?.value
+        infoBoxList.push({
+          title: `${store.module} Module Address`,
+          data: moduleAddress,
+          short: true,
+        })
+      }
+
+      setResponseInfoBoxList(infoBoxList)
+      setResponse(response)
       setLoading(false)
     } catch (error: any) {
-      setResponse(error.message)
+      showToast({
+        type: "error",
+        title: "Execute Hub Module",
+        message: error.message,
+      })
       setLoading(false)
     }
   }

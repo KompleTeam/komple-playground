@@ -1,29 +1,40 @@
 import { Dropdown } from "components/Dropdown"
 import { DOC_LINKS } from "config/docs"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ContractForm } from "components/contracts/ContractLayout"
 import { ContractHeader } from "components/contracts/ContractHeader"
-import { KompleClient } from "komplejs"
 import { toBinary } from "@cosmjs/cosmwasm-stargate"
 import Head from "next/head"
-import { useWallet } from "@cosmos-kit/react"
 import { useFeeModuleStore, useAppStore } from "store"
 import {
   FeeModuleDistribute,
   FeeModuleRemoveFee,
   FeeModuleSetFee,
 } from "components/forms/execute"
+import { showToast } from "utils/showToast"
+import { useKompleClient } from "hooks/kompleClient"
 
 const EXECUTES = ["set_fee", "remove_fee", "distribute_fees", "lock_execute"]
 
 export default function FeeModuleExecute() {
-  const { getSigningCosmWasmClient, offlineSigner } = useWallet()
+  const { kompleClient } = useKompleClient()
 
   const store = useFeeModuleStore((state) => state)
   const setLoading = useAppStore((state) => state.setLoading)
+  const setResponseInfoBoxList = useAppStore(
+    (state) => state.setResponseInfoBoxList
+  )
+  const setShowResponse = useAppStore((state) => state.setShowResponse)
 
   const [executeMsg, setExecuteMsg] = useState<string>("")
   const [response, setResponse] = useState<any>({})
+
+  useEffect(() => {
+    store.clear()
+    setResponseInfoBoxList([])
+    setShowResponse(false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const dropdownOnChange = (index: number) => {
     let value = EXECUTES[index]
@@ -34,12 +45,10 @@ export default function FeeModuleExecute() {
     try {
       setLoading(true)
 
-      const signingClient = await getSigningCosmWasmClient()
-      if (signingClient === undefined || offlineSigner === undefined) {
-        throw new Error("client or signer is not ready")
+      if (!kompleClient) {
+        throw new Error("Komple client is not initialized")
       }
 
-      const kompleClient = new KompleClient(signingClient, offlineSigner)
       const feeModule = await kompleClient.feeModule(contract)
       const executeClient = feeModule.client
 
@@ -100,7 +109,11 @@ export default function FeeModuleExecute() {
 
       setLoading(false)
     } catch (error: any) {
-      setResponse(error.message)
+      showToast({
+        type: "error",
+        title: "Execute Fee Module",
+        message: error.message,
+      })
       setLoading(false)
     }
   }

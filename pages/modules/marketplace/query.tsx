@@ -1,17 +1,16 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ContractForm } from "components/contracts/ContractLayout"
 import { ContractHeader } from "components/contracts/ContractHeader"
 import { Dropdown } from "components/Dropdown"
-import { useWallet } from "@cosmos-kit/react"
 import { DOC_LINKS } from "config/docs"
-
-import { KompleClient } from "komplejs"
 import Head from "next/head"
 import { useMarketplaceModuleStore, useAppStore } from "store"
 import {
   MarketplaceModuleFixedListing,
   MarketplaceModuleFixedListings,
 } from "components/forms/query"
+import { useKompleClient } from "hooks/kompleClient"
+import { showToast } from "utils/showToast"
 
 const QUERIES = [
   "contract_config",
@@ -21,13 +20,24 @@ const QUERIES = [
 ]
 
 export default function FeeModuleQuery() {
-  const { getSigningCosmWasmClient, offlineSigner } = useWallet()
+  const { kompleClient } = useKompleClient()
 
   const store = useMarketplaceModuleStore((state) => state)
   const setLoading = useAppStore((state) => state.setLoading)
+  const setResponseInfoBoxList = useAppStore(
+    (state) => state.setResponseInfoBoxList
+  )
+  const setShowResponse = useAppStore((state) => state.setShowResponse)
 
   const [queryMsg, setQueryMsg] = useState<string>("")
   const [response, setResponse] = useState<any>({})
+
+  useEffect(() => {
+    store.clear()
+    setResponseInfoBoxList([])
+    setShowResponse(true)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const dropdownOnChange = (index: number) => {
     let value = QUERIES[index]
@@ -38,12 +48,10 @@ export default function FeeModuleQuery() {
     try {
       setLoading(true)
 
-      const signingClient = await getSigningCosmWasmClient()
-      if (signingClient === undefined || offlineSigner === undefined) {
-        throw new Error("client or signer is not ready")
+      if (!kompleClient) {
+        throw new Error("Komple client is not initialized")
       }
 
-      const kompleClient = new KompleClient(signingClient, offlineSigner)
       const marketplaceModule = await kompleClient.marketplaceModule(contract)
       const queryClient = marketplaceModule.queryClient
 
@@ -77,7 +85,11 @@ export default function FeeModuleQuery() {
 
       setLoading(false)
     } catch (error: any) {
-      setResponse(error.message)
+      showToast({
+        type: "error",
+        title: "Query Marketplace Module",
+        message: error.message,
+      })
       setLoading(true)
     }
   }

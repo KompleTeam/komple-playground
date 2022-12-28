@@ -1,11 +1,9 @@
 import { Dropdown } from "components/Dropdown"
 import { DOC_LINKS } from "config/docs"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ContractForm } from "components/contracts/ContractLayout"
 import { ContractHeader } from "components/contracts/ContractHeader"
-import { KompleClient } from "komplejs"
 import Head from "next/head"
-import { useWallet } from "@cosmos-kit/react"
 import {
   MarketplaceModuleUpdateBuyLock,
   MarketplaceModuleListFixedToken,
@@ -17,6 +15,10 @@ import {
 } from "components/forms/execute"
 import { useMarketplaceModuleStore, useAppStore } from "store"
 import { coin } from "@cosmjs/proto-signing"
+import { useKompleClient } from "hooks/kompleClient"
+import { showToast } from "utils/showToast"
+import { ExecuteResult } from "@cosmjs/cosmwasm-stargate"
+import { InfoBoxProps } from "components/InfoBox"
 
 const EXECUTES = [
   "update_marketplace_buy_lock",
@@ -30,13 +32,24 @@ const EXECUTES = [
 ]
 
 export default function MarketplaceModuleExecute() {
-  const { getSigningCosmWasmClient, offlineSigner } = useWallet()
+  const { kompleClient } = useKompleClient()
 
   const store = useMarketplaceModuleStore((state) => state)
   const setLoading = useAppStore((state) => state.setLoading)
+  const setResponseInfoBoxList = useAppStore(
+    (state) => state.setResponseInfoBoxList
+  )
+  const setShowResponse = useAppStore((state) => state.setShowResponse)
 
   const [executeMsg, setExecuteMsg] = useState<string>("")
   const [response, setResponse] = useState<any>({})
+
+  useEffect(() => {
+    store.clear()
+    setResponseInfoBoxList([])
+    setShowResponse(false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const dropdownOnChange = (index: number) => {
     let value = EXECUTES[index]
@@ -47,14 +60,14 @@ export default function MarketplaceModuleExecute() {
     try {
       setLoading(true)
 
-      const signingClient = await getSigningCosmWasmClient()
-      if (signingClient === undefined || offlineSigner === undefined) {
-        throw new Error("client or signer is not ready")
+      if (!kompleClient) {
+        throw new Error("Komple client is not initialized")
       }
 
-      const kompleClient = new KompleClient(signingClient, offlineSigner)
       const marketplaceModule = await kompleClient.marketplaceModule(contract)
       const executeClient = marketplaceModule.client
+
+      let response: ExecuteResult
 
       switch (executeMsg) {
         case "update_marketplace_buy_lock": {
@@ -62,7 +75,7 @@ export default function MarketplaceModuleExecute() {
             lock: store.lock,
           }
 
-          setResponse(await executeClient.updateBuyLock(msg))
+          response = await executeClient.updateBuyLock(msg)
           break
         }
         case "list_fixed_price_NFT": {
@@ -72,7 +85,7 @@ export default function MarketplaceModuleExecute() {
             price: store.price.toString(),
           }
 
-          setResponse(await executeClient.listFixedToken(msg))
+          response = await executeClient.listFixedToken(msg)
           break
         }
         case "remove_fixed_price_NFT": {
@@ -81,7 +94,7 @@ export default function MarketplaceModuleExecute() {
             tokenId: store.tokenId,
           }
 
-          setResponse(await executeClient.delistFixedToken(msg))
+          response = await executeClient.delistFixedToken(msg)
           break
         }
         case "update_listing_price": {
@@ -96,7 +109,7 @@ export default function MarketplaceModuleExecute() {
             price: store.price.toString(),
           }
 
-          setResponse(await executeClient.updatePrice(msg))
+          response = await executeClient.updatePrice(msg)
           break
         }
         case "buy_NFT": {
@@ -115,11 +128,9 @@ export default function MarketplaceModuleExecute() {
             tokenId: store.tokenId,
           }
 
-          setResponse(
-            await executeClient.buy(msg, "auto", undefined, [
-              coin(priceRes.data.price, "ujunox"),
-            ])
-          )
+          response = await executeClient.buy(msg, "auto", undefined, [
+            coin(priceRes.data.price, "ujunox"),
+          ])
           break
         }
         case "buy_NFT_with_permissions": {
@@ -134,7 +145,7 @@ export default function MarketplaceModuleExecute() {
             buyer: store.buyer,
           }
 
-          setResponse(await executeClient.permissionBuy(msg))
+          response = await executeClient.permissionBuy(msg)
           break
         }
         case "update_contract_operators": {
@@ -142,18 +153,34 @@ export default function MarketplaceModuleExecute() {
             addrs: store.addresses,
           }
 
-          setResponse(await executeClient.updateOperators(msg))
+          response = await executeClient.updateOperators(msg)
           break
         }
         case "lock_execute_messages": {
-          setResponse(await executeClient.lockExecute())
+          response = await executeClient.lockExecute()
           break
         }
+        default:
+          throw new Error("Invalid execute message")
       }
 
+      const infoBoxList: InfoBoxProps[] = [
+        {
+          title: "Transaction Hash",
+          data: response.transactionHash,
+          short: true,
+        },
+      ]
+
+      setResponseInfoBoxList(infoBoxList)
+      setResponse(response)
       setLoading(false)
     } catch (error: any) {
-      setResponse(error.message)
+      showToast({
+        type: "error",
+        title: "Execute Marketplace Module",
+        message: error.message,
+      })
       setLoading(false)
     }
   }

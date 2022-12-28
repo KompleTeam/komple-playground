@@ -23,7 +23,12 @@ export const TokenModuleInitWhitelistContract = () => {
         title="Whitelist Members"
         subtitle="List of addresses to whitelist"
         placeholder="juno...."
-        onChange={(value) => store.setAddresses(value)}
+        onChange={(value) =>
+          store.setWhitelistInstantiateMsg({
+            ...store.whitelistInstantiateMsg,
+            members: value,
+          })
+        }
         value={store.addresses}
       />
       <InputDateTime

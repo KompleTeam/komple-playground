@@ -23,6 +23,7 @@
     "react": "18.2.0",
     "react-datetime-picker": "^4.1.1",
     "react-dom": "18.2.0",
+    "react-toastify": "^9.1.1",
     "zustand": "^4.1.4"
   },
   "devDependencies": {

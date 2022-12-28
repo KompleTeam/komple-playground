@@ -5,19 +5,26 @@ import { ContractForm } from "components/contracts/ContractLayout"
 import { DOC_LINKS } from "config/docs"
 import Head from "next/head"
 import { useFeeModuleStore, useAppStore } from "store"
-import { useWallet } from "@cosmos-kit/react"
 import { FEE_MODULE_CODE_ID } from "config/codeIds"
+import { useKompleClient } from "hooks/kompleClient"
+import { showToast } from "utils/showToast"
 
 export default function FeeModuleCreate() {
-  const { getSigningCosmWasmClient, address } = useWallet()
+  const { kompleClient, address } = useKompleClient()
 
   const store = useFeeModuleStore((state) => state)
   const setLoading = useAppStore((state) => state.setLoading)
+  const setResponseInfoBoxList = useAppStore(
+    (state) => state.setResponseInfoBoxList
+  )
+  const setShowResponse = useAppStore((state) => state.setShowResponse)
 
   const [response, setResponse] = useState({})
 
   useEffect(() => {
     store.clear()
+    setResponseInfoBoxList([])
+    setShowResponse(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -25,12 +32,11 @@ export default function FeeModuleCreate() {
     try {
       setLoading(true)
 
-      const signingClient = await getSigningCosmWasmClient()
-      if (signingClient === undefined) {
-        throw new Error("No signing client")
+      if (!kompleClient) {
+        throw new Error("Komple client is not initialized")
       }
 
-      const res = await signingClient.instantiate(
+      const res = await kompleClient.client.instantiate(
         address || "",
         FEE_MODULE_CODE_ID,
         {
@@ -43,7 +49,11 @@ export default function FeeModuleCreate() {
       setResponse(res)
       setLoading(false)
     } catch (error: any) {
-      setResponse(error.message)
+      showToast({
+        type: "error",
+        title: "Create Fee Module",
+        message: error.message,
+      })
       setLoading(false)
     }
   }
