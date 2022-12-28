@@ -66,6 +66,15 @@ export default function MintModuleQuery() {
         case "get_contract_config":
           setResponse(await queryClient.config())
           break
+        case "list_collections":
+          const msg = {
+            blacklist: store.isBlacklist,
+            startAfter: store.startAfter,
+            limit: store.limit,
+          }
+
+          setResponse(await queryClient.collections(msg))
+          break
         case "get_collection_address": {
           const msg = {
             collectionId: store.collectionId,
