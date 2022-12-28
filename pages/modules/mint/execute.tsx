@@ -234,12 +234,12 @@ export default function MintModuleExecute() {
           ?.map((item) => item.value)
         infoBoxList.push({
           title: "Token Module Address",
-          data: addresses ? addresses[0] : "",
+          data: addresses ? addresses[0] : undefined,
           short: true,
         })
         infoBoxList.push({
           title: "Metadata Module Address",
-          data: addresses ? addresses[1] : "",
+          data: addresses ? addresses[1] : undefined,
           short: true,
         })
       }

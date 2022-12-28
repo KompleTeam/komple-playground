@@ -1,13 +1,11 @@
 import { Dropdown } from "components/Dropdown"
 import { DOC_LINKS } from "config/docs"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ContractForm } from "components/contracts/ContractLayout"
 import { ContractHeader } from "components/contracts/ContractHeader"
-import { KompleClient } from "komplejs"
 import Head from "next/head"
-import { useWallet } from "@cosmos-kit/react"
 import { useAppStore, useTokenModuleStore } from "store"
-import { toBinary } from "@cosmjs/cosmwasm-stargate"
+import { ExecuteResult, toBinary } from "@cosmjs/cosmwasm-stargate"
 import {
   TokenModuleUpdateModuleOperators,
   TokenModuleUpdateLocks,
@@ -24,6 +22,9 @@ import {
   TokenModuleRevokeAll,
 } from "components/forms/execute"
 import { WHITELIST_MODULE_CODE_ID } from "config/codeIds"
+import { showToast } from "utils/showToast"
+import { InfoBoxProps } from "components/InfoBox"
+import { useKompleClient } from "hooks/kompleClient"
 
 const EXECUTES = [
   "give_operator_access_to_NFT",
@@ -42,13 +43,24 @@ const EXECUTES = [
 ]
 
 export default function TokenModuleExecute() {
-  const { getSigningCosmWasmClient, offlineSigner } = useWallet()
+  const { kompleClient } = useKompleClient()
 
   const store = useTokenModuleStore((state) => state)
   const setLoading = useAppStore((state) => state.setLoading)
+  const setResponseInfoBoxList = useAppStore(
+    (state) => state.setResponseInfoBoxList
+  )
+  const setShowResponse = useAppStore((state) => state.setShowResponse)
 
   const [executeMsg, setExecuteMsg] = useState<string>("")
   const [response, setResponse] = useState<any>({})
+
+  useEffect(() => {
+    store.clear()
+    setResponseInfoBoxList([])
+    setShowResponse(false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const dropdownOnChange = (index: number) => {
     let value = EXECUTES[index]
@@ -59,14 +71,14 @@ export default function TokenModuleExecute() {
     try {
       setLoading(true)
 
-      const signingClient = await getSigningCosmWasmClient()
-      if (signingClient === undefined || offlineSigner === undefined) {
-        throw new Error("client or signer is not ready")
+      if (!kompleClient) {
+        throw new Error("Komple client is not initialized")
       }
 
-      const kompleClient = new KompleClient(signingClient, offlineSigner)
       const tokenModule = await kompleClient.tokenModule(contract)
       const executeClient = tokenModule.client
+
+      let response: ExecuteResult
 
       switch (executeMsg) {
         case "give_operator_access_to_NFT": {
@@ -75,7 +87,7 @@ export default function TokenModuleExecute() {
             tokenId: store.tokenId,
           }
 
-          setResponse(await executeClient.approve(msg))
+          response = await executeClient.approve(msg)
           break
         }
         case "remove_operator_access_from_NFT": {
@@ -84,7 +96,7 @@ export default function TokenModuleExecute() {
             tokenId: store.tokenId,
           }
 
-          setResponse(await executeClient.revoke(msg))
+          response = await executeClient.revoke(msg)
           break
         }
         case "give_operator_access_to_all_NFTs": {
@@ -92,7 +104,7 @@ export default function TokenModuleExecute() {
             operator: store.recipient,
           }
 
-          setResponse(await executeClient.approveAll(msg))
+          response = await executeClient.approveAll(msg)
           break
         }
         case "remove_operator_access_from_all_NFTs": {
@@ -100,7 +112,7 @@ export default function TokenModuleExecute() {
             operator: store.recipient,
           }
 
-          setResponse(await executeClient.approveAll(msg))
+          response = await executeClient.revokeAll(msg)
           break
         }
         case "transfer_NFT": {
@@ -109,7 +121,7 @@ export default function TokenModuleExecute() {
             tokenId: store.tokenId,
           }
 
-          setResponse(await executeClient.transferNft(msg))
+          response = await executeClient.transferNft(msg)
           break
         }
         case "send_NFT": {
@@ -119,7 +131,7 @@ export default function TokenModuleExecute() {
             msg: toBinary(store.sendMsg),
           }
 
-          setResponse(await executeClient.sendNft(msg))
+          response = await executeClient.sendNft(msg)
           break
         }
         case "burn_NFT": {
@@ -127,7 +139,7 @@ export default function TokenModuleExecute() {
             tokenId: store.tokenId,
           }
 
-          setResponse(await executeClient.burn(msg))
+          response = await executeClient.burn(msg)
           break
         }
         case "update_contract_operators": {
@@ -135,7 +147,7 @@ export default function TokenModuleExecute() {
             addrs: store.addresses,
           }
 
-          setResponse(await executeClient.updateModuleOperators(msg))
+          response = await executeClient.updateModuleOperators(msg)
           break
         }
         case "transfer_NFT_as_admin": {
@@ -144,7 +156,7 @@ export default function TokenModuleExecute() {
             tokenId: store.tokenId,
           }
 
-          setResponse(await executeClient.adminTransferNft(msg))
+          response = await executeClient.adminTransferNft(msg)
           break
         }
         case "update_contract_locks": {
@@ -152,7 +164,7 @@ export default function TokenModuleExecute() {
             locks: store.locks,
           }
 
-          setResponse(await executeClient.updateLocks(msg))
+          response = await executeClient.updateLocks(msg)
           break
         }
         case "update_NFT_locks": {
@@ -161,7 +173,7 @@ export default function TokenModuleExecute() {
             locks: store.locks,
           }
 
-          setResponse(await executeClient.updateTokenLocks(msg))
+          response = await executeClient.updateTokenLocks(msg)
           break
         }
         case "update_collection_config": {
@@ -169,7 +181,7 @@ export default function TokenModuleExecute() {
             collectionConfig: store.collectionConfig,
           }
 
-          setResponse(await executeClient.updateCollectionConfig(msg))
+          response = await executeClient.updateCollectionConfig(msg)
           break
         }
         case "add_whitelist_module": {
@@ -178,14 +190,40 @@ export default function TokenModuleExecute() {
             instantiateMsg: store.whitelistInstantiateMsg,
           }
 
-          setResponse(await executeClient.initWhitelistContract(msg))
+          response = await executeClient.initWhitelistContract(msg)
           break
         }
+        default:
+          throw new Error("Invalid execute message")
       }
 
+      const infoBoxList: InfoBoxProps[] = [
+        {
+          title: "Transaction Hash",
+          data: response.transactionHash,
+          short: true,
+        },
+      ]
+      if (executeMsg === "add_whitelist_module") {
+        const whitelistAddress = response.logs[0].events
+          .find((event) => event.type === "instantiate")
+          ?.attributes.find((attr) => attr.key === "_contract_address")?.value
+        infoBoxList.push({
+          title: "Whitelist Module Address",
+          data: whitelistAddress,
+          short: true,
+        })
+      }
+
+      setResponseInfoBoxList(infoBoxList)
+      setResponse(response)
       setLoading(false)
     } catch (error: any) {
-      setResponse(error.message)
+      showToast({
+        type: "error",
+        title: "Execute Token Module",
+        message: error.message,
+      })
       setLoading(false)
     }
   }
