@@ -17,6 +17,8 @@ import { useMarketplaceModuleStore, useAppStore } from "store"
 import { coin } from "@cosmjs/proto-signing"
 import { useKompleClient } from "hooks/kompleClient"
 import { showToast } from "utils/showToast"
+import { ExecuteResult } from "@cosmjs/cosmwasm-stargate"
+import { InfoBoxProps } from "components/InfoBox"
 
 const EXECUTES = [
   "update_marketplace_buy_lock",
@@ -65,13 +67,15 @@ export default function MarketplaceModuleExecute() {
       const marketplaceModule = await kompleClient.marketplaceModule(contract)
       const executeClient = marketplaceModule.client
 
+      let response: ExecuteResult
+
       switch (executeMsg) {
         case "update_marketplace_buy_lock": {
           const msg = {
             lock: store.lock,
           }
 
-          setResponse(await executeClient.updateBuyLock(msg))
+          response = await executeClient.updateBuyLock(msg)
           break
         }
         case "list_fixed_price_NFT": {
@@ -81,7 +85,7 @@ export default function MarketplaceModuleExecute() {
             price: store.price.toString(),
           }
 
-          setResponse(await executeClient.listFixedToken(msg))
+          response = await executeClient.listFixedToken(msg)
           break
         }
         case "remove_fixed_price_NFT": {
@@ -90,7 +94,7 @@ export default function MarketplaceModuleExecute() {
             tokenId: store.tokenId,
           }
 
-          setResponse(await executeClient.delistFixedToken(msg))
+          response = await executeClient.delistFixedToken(msg)
           break
         }
         case "update_listing_price": {
@@ -105,7 +109,7 @@ export default function MarketplaceModuleExecute() {
             price: store.price.toString(),
           }
 
-          setResponse(await executeClient.updatePrice(msg))
+          response = await executeClient.updatePrice(msg)
           break
         }
         case "buy_NFT": {
@@ -124,11 +128,9 @@ export default function MarketplaceModuleExecute() {
             tokenId: store.tokenId,
           }
 
-          setResponse(
-            await executeClient.buy(msg, "auto", undefined, [
-              coin(priceRes.data.price, "ujunox"),
-            ])
-          )
+          response = await executeClient.buy(msg, "auto", undefined, [
+            coin(priceRes.data.price, "ujunox"),
+          ])
           break
         }
         case "buy_NFT_with_permissions": {
@@ -143,7 +145,7 @@ export default function MarketplaceModuleExecute() {
             buyer: store.buyer,
           }
 
-          setResponse(await executeClient.permissionBuy(msg))
+          response = await executeClient.permissionBuy(msg)
           break
         }
         case "update_contract_operators": {
@@ -151,15 +153,27 @@ export default function MarketplaceModuleExecute() {
             addrs: store.addresses,
           }
 
-          setResponse(await executeClient.updateOperators(msg))
+          response = await executeClient.updateOperators(msg)
           break
         }
         case "lock_execute_messages": {
-          setResponse(await executeClient.lockExecute())
+          response = await executeClient.lockExecute()
           break
         }
+        default:
+          throw new Error("Invalid execute message")
       }
 
+      const infoBoxList: InfoBoxProps[] = [
+        {
+          title: "Transaction Hash",
+          data: response.transactionHash,
+          short: true,
+        },
+      ]
+
+      setResponseInfoBoxList(infoBoxList)
+      setResponse(response)
       setLoading(false)
     } catch (error: any) {
       showToast({

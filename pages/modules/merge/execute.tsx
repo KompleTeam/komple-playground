@@ -4,7 +4,7 @@ import { useEffect, useState } from "react"
 import { ContractForm } from "components/contracts/ContractLayout"
 import { ContractHeader } from "components/contracts/ContractHeader"
 import Head from "next/head"
-import { toBinary } from "@cosmjs/cosmwasm-stargate"
+import { ExecuteResult, toBinary } from "@cosmjs/cosmwasm-stargate"
 import { useAppStore, useMergeModuleStore } from "store"
 import {
   MergeModuleMerge,
@@ -14,6 +14,7 @@ import {
 } from "components/forms/execute"
 import { showToast } from "utils/showToast"
 import { useKompleClient } from "hooks/kompleClient"
+import { InfoBoxProps } from "components/InfoBox"
 
 const EXECUTES = [
   "update_merge_lock",
@@ -59,13 +60,15 @@ export default function MergeModuleExecute() {
       const mergeModule = await kompleClient.mergeModule(contract)
       const executeClient = mergeModule.client
 
+      let response: ExecuteResult
+
       switch (executeMsg) {
         case "update_merge_lock": {
           const msg = {
             lock: store.lock,
           }
 
-          setResponse(await executeClient.updateMergeLock(msg))
+          response = await executeClient.updateMergeLock(msg)
           break
         }
         case "merge_NFTs": {
@@ -79,7 +82,7 @@ export default function MergeModuleExecute() {
             },
           }
 
-          setResponse(await executeClient.merge(msg))
+          response = await executeClient.merge(msg)
           break
         }
         case "merge_NFTs_with_permissions": {
@@ -93,7 +96,7 @@ export default function MergeModuleExecute() {
             },
           }
 
-          setResponse(await executeClient.permissionMerge(msg))
+          response = await executeClient.permissionMerge(msg)
           break
         }
         case "update_contract_operators": {
@@ -101,15 +104,27 @@ export default function MergeModuleExecute() {
             addrs: store.addresses,
           }
 
-          setResponse(await executeClient.updateOperators(msg))
+          response = await executeClient.updateOperators(msg)
           break
         }
         case "lock_execute_messages": {
-          setResponse(await executeClient.lockExecute())
+          response = await executeClient.lockExecute()
           break
         }
+        default:
+          throw new Error("Invalid execute message")
       }
 
+      const infoBoxList: InfoBoxProps[] = [
+        {
+          title: "Transaction Hash",
+          data: response.transactionHash,
+          short: true,
+        },
+      ]
+
+      setResponseInfoBoxList(infoBoxList)
+      setResponse(response)
       setLoading(false)
     } catch (error: any) {
       showToast({

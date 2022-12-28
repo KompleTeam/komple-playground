@@ -17,6 +17,8 @@ import {
 } from "components/forms/execute"
 import { showToast } from "utils/showToast"
 import { useKompleClient } from "hooks/kompleClient"
+import { ExecuteResult } from "@cosmjs/cosmwasm-stargate"
+import { InfoBoxProps } from "components/InfoBox"
 
 const EXECUTES = [
   "add_metadata",
@@ -65,6 +67,8 @@ export default function MetadataModuleExecute() {
       const metadataModule = await kompleClient.metadataModule(contract)
       const executeClient = metadataModule.client
 
+      let response: ExecuteResult
+
       switch (executeMsg) {
         case "add_metadata": {
           const msg = {
@@ -72,7 +76,7 @@ export default function MetadataModuleExecute() {
             attributes: store.attributes,
           }
 
-          setResponse(await executeClient.addMetadata(msg))
+          response = await executeClient.addMetadata(msg)
           break
         }
         case "update_metadata_info": {
@@ -82,7 +86,7 @@ export default function MetadataModuleExecute() {
             metaInfo: store.metaInfo,
           }
 
-          setResponse(await executeClient.updateMetaInfo(msg))
+          response = await executeClient.updateMetaInfo(msg)
           break
         }
         case "add_attribute": {
@@ -95,7 +99,7 @@ export default function MetadataModuleExecute() {
             },
           }
 
-          setResponse(await executeClient.addAttribute(msg))
+          response = await executeClient.addAttribute(msg)
           break
         }
         case "update_attribute": {
@@ -108,7 +112,7 @@ export default function MetadataModuleExecute() {
             },
           }
 
-          setResponse(await executeClient.updateAttribute(msg))
+          response = await executeClient.updateAttribute(msg)
           break
         }
         case "remove_attribute": {
@@ -118,7 +122,7 @@ export default function MetadataModuleExecute() {
             traitType: store.traitType,
           }
 
-          setResponse(await executeClient.removeAttribute(msg))
+          response = await executeClient.removeAttribute(msg)
           break
         }
         case "link_metadata_to_NFT": {
@@ -127,7 +131,7 @@ export default function MetadataModuleExecute() {
             metadataId: store.metadataId === 0 ? undefined : store.metadataId,
           }
 
-          setResponse(await executeClient.linkMetadata(msg))
+          response = await executeClient.linkMetadata(msg)
           break
         }
         case "unlink_metadata_from_NFT": {
@@ -135,7 +139,7 @@ export default function MetadataModuleExecute() {
             tokenId: store.id,
           }
 
-          setResponse(await executeClient.unlinkMetadata(msg))
+          response = await executeClient.unlinkMetadata(msg)
           break
         }
         case "update_contract_operators": {
@@ -143,11 +147,23 @@ export default function MetadataModuleExecute() {
             addrs: store.addresses,
           }
 
-          setResponse(await executeClient.updateOperators(msg))
+          response = await executeClient.updateOperators(msg)
           break
         }
+        default:
+          throw new Error("Invalid execute message")
       }
 
+      const infoBoxList: InfoBoxProps[] = [
+        {
+          title: "Transaction Hash",
+          data: response.transactionHash,
+          short: true,
+        },
+      ]
+
+      setResponseInfoBoxList(infoBoxList)
+      setResponse(response)
       setLoading(false)
     } catch (error: any) {
       showToast({
