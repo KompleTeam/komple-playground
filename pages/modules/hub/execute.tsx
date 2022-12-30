@@ -155,10 +155,10 @@ export default function HubModuleExecute() {
   return (
     <div className="h-full w-full">
       <Head>
-        <title>Hub Module | Komple Framework Playground</title>
+        <title>Hub Module | Komple Playground</title>
         <meta
           property="og:title"
-          content="Hub Module | Komple Framework Playground"
+          content="Hub Module | Komple Playground"
           key="title"
         />
       </Head>

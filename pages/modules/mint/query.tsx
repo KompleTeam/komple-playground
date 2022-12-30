@@ -139,10 +139,10 @@ export default function MintModuleQuery() {
   return (
     <div className="h-full w-full">
       <Head>
-        <title>Mint Module | Komple Framework Playground</title>
+        <title>Mint Module | Komple Playground</title>
         <meta
           property="og:title"
-          content="Mint Module | Komple Framework Playground"
+          content="Mint Module | Komple Playground"
           key="title"
         />
       </Head>

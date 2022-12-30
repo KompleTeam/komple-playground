@@ -4,11 +4,17 @@ export default function NotFound() {
   return (
     <div className="h-full w-full">
       <Head>
-        <title>Komple Framework Playground</title>
+        <title>Komple Playground</title>
+        <meta property="og:title" content="Komple Playground" key="title" />
+        <meta name="twitter:title" content="Komple Playground" />
         <meta
-          property="og:title"
-          content="Komple Framework Playground"
-          key="title"
+          name="twitter:description"
+          content="Website to test out and build Komple applications."
+        />
+        <meta name="twitter:image" content="/card.png" />
+        <meta
+          name="twitter:card"
+          content="Website to test out and build Komple applications."
         />
       </Head>
 

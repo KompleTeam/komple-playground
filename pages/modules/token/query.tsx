@@ -189,10 +189,10 @@ export default function FeeModuleQuery() {
   return (
     <div className="h-full w-full">
       <Head>
-        <title>Token Module | Komple Framework Playground</title>
+        <title>Token Module | Komple Playground</title>
         <meta
           property="og:title"
-          content="Token Module | Komple Framework Playground"
+          content="Token Module | Komple Playground"
           key="title"
         />
       </Head>

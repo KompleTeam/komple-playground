@@ -6,16 +6,12 @@ export default function Home() {
   return (
     <div className="h-full w-full">
       <Head>
-        <title>Komple Framework Playground</title>
-        <meta
-          property="og:title"
-          content="Komple Framework Playground"
-          key="title"
-        />
+        <title>Komple Playground</title>
+        <meta property="og:title" content="Komple Playground" key="title" />
       </Head>
 
       <ContractHeader
-        title="Welcome to Komple Framework Playground!"
+        title="Welcome to Komple Playground!"
         description="This playground is here to help you to try out Komple Framework and configure your project the way you want it to be."
         documentation="https://docs.komple.io"
       />

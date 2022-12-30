@@ -178,10 +178,10 @@ export default function MetadataModuleExecute() {
   return (
     <div className="h-full w-full">
       <Head>
-        <title>Metadata Module | Komple Framework Playground</title>
+        <title>Metadata Module | Komple Playground</title>
         <meta
           property="og:title"
-          content="Metadata Module | Komple Framework Playground"
+          content="Metadata Module | Komple Playground"
           key="title"
         />
       </Head>

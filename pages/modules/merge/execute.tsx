@@ -139,10 +139,10 @@ export default function MergeModuleExecute() {
   return (
     <div className="h-full w-full">
       <Head>
-        <title>Merge Module | Komple Framework Playground</title>
+        <title>Merge Module | Komple Playground</title>
         <meta
           property="og:title"
-          content="Merge Module | Komple Framework Playground"
+          content="Merge Module | Komple Playground"
           key="title"
         />
       </Head>

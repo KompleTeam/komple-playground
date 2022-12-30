@@ -95,10 +95,10 @@ export default function FeeModuleQuery() {
   return (
     <div className="h-full w-full">
       <Head>
-        <title>Whitelist Module | Komple Framework Playground</title>
+        <title>Whitelist Module | Komple Playground</title>
         <meta
           property="og:title"
-          content="Whitelist Module | Komple Framework Playground"
+          content="Whitelist Module | Komple Playground"
           key="title"
         />
       </Head>
