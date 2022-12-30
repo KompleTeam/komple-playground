@@ -64,10 +64,10 @@ export default function LinkPermissionQuery() {
   return (
     <div className="h-full w-full">
       <Head>
-        <title>Link Permission | Komple Framework Playground</title>
+        <title>Link Permission | Komple Playground</title>
         <meta
           property="og:title"
-          content="Link Permission | Komple Framework Playground"
+          content="Link Permission | Komple Playground"
           key="title"
         />
       </Head>

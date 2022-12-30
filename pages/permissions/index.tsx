@@ -7,10 +7,10 @@ const Permissions = () => {
   return (
     <div>
       <Head>
-        <title>Permissions | Komple Framework Playground</title>
+        <title>Permissions | Komple Playground</title>
         <meta
           property="og:title"
-          content="Permissions | Komple Framework Playground"
+          content="Permissions | Komple Playground"
           key="title"
         />
       </Head>

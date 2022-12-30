@@ -69,10 +69,10 @@ export const Upload = () => {
   return (
     <div className="h-full w-full">
       <Head>
-        <title>Upload Contract | Komple Framework Playground</title>
+        <title>Upload Contract | Komple Playground</title>
         <meta
           property="og:title"
-          content="Upload Contract | Komple Framework Playground"
+          content="Upload Contract | Komple Playground"
           key="title"
         />
       </Head>

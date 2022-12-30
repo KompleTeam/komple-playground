@@ -188,10 +188,10 @@ export default function MarketplaceModuleExecute() {
   return (
     <div className="h-full w-full">
       <Head>
-        <title>Marketplace Module | Komple Framework Playground</title>
+        <title>Marketplace Module | Komple Playground</title>
         <meta
           property="og:title"
-          content="Marketplace Module | Komple Framework Playground"
+          content="Marketplace Module | Komple Playground"
           key="title"
         />
       </Head>

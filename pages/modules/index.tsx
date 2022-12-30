@@ -7,10 +7,10 @@ const Modules = () => {
   return (
     <div>
       <Head>
-        <title>Modules | Komple Framework Playground</title>
+        <title>Modules | Komple Playground</title>
         <meta
           property="og:title"
-          content="Modules | Komple Framework Playground"
+          content="Modules | Komple Playground"
           key="title"
         />
       </Head>
