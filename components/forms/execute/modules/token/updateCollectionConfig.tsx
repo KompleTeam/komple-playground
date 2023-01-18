@@ -36,7 +36,6 @@ export const TokenModuleUpdateCollectionConfig = () => {
             per_address_limit: isInteger(value) ? Number(value) : 0,
           })
         }
-        isRequired
         value={
           store.collectionConfig.per_address_limit === 0
             ? ""
@@ -53,7 +52,6 @@ export const TokenModuleUpdateCollectionConfig = () => {
             max_token_limit: isInteger(value) ? Number(value) : 0,
           })
         }
-        isRequired
         value={
           store.collectionConfig.max_token_limit === 0
             ? ""
@@ -70,7 +68,6 @@ export const TokenModuleUpdateCollectionConfig = () => {
             ipfs_link: value,
           })
         }
-        isRequired
         value={store.collectionConfig.ipfs_link?.toString()}
       />
     </div>
