@@ -6,6 +6,7 @@ import { InfoBox } from "components/InfoBox"
 import Head from "next/head"
 import { useEffect, useRef, useState } from "react"
 import { useAppStore } from "store"
+import { showToast } from "utils/showToast"
 
 export const Upload = () => {
   const { isWalletConnected, address, getSigningCosmWasmClient } = useWallet()
@@ -61,7 +62,11 @@ export const Upload = () => {
 
       store.setLoading(false)
     } catch (err: any) {
-      setResponse(err.message)
+      showToast({
+        type: "error",
+        title: "Upload Contract",
+        message: err.message,
+      })
       store.setLoading(false)
     }
   }
