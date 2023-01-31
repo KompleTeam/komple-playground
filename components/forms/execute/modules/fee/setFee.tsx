@@ -56,7 +56,7 @@ export const FeeModuleSetFee = () => {
       value: "",
     })
   }
-  console.log(feeType)
+
   const customFeeTypeOnChange = (index: number) => {
     let value = (index === 0 ? "percentage" : "fixed") as Fees
     store.setFeeType(value)

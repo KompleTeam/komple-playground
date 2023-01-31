@@ -51,7 +51,7 @@ export const PermissionModuleRegisterPermission = () => {
     setPermission(value)
     store.setPermission(value)
   }
-  console.log(permission)
+
   return (
     <div>
       <Dropdown
