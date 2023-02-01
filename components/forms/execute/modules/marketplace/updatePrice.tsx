@@ -43,13 +43,11 @@ export const MarketplaceModuleUpdatePrice = () => {
       />
       <TextInput
         title="New Listing Price"
-        subtitle="New price to list the NFT for - $JUNO"
+        subtitle="New price for listing the NFT"
         placeholder="35"
-        onChange={(value) =>
-          store.setPrice(isInteger(value) ? Number(value) : 0)
-        }
+        onChange={store.setPrice}
         isRequired
-        value={store.price === 0 ? "" : store.price.toString()}
+        value={store.price}
       />
     </div>
   )
