@@ -58,12 +58,17 @@ export default function FeeModuleExecute() {
             throw Error("fee type is undefined")
           }
 
+          let feeValue = store.paymentInfo.value
+          if (store.feeType === "fixed") {
+            feeValue = (Number(feeValue) * 1000000).toString()
+          }
+
           const msg = {
             feeType: store.feeType,
             moduleName: store.moduleName,
             feeName: store.feeName,
             data: toBinary({
-              value: store.paymentInfo.value,
+              value: feeValue,
               address:
                 store.paymentInfo.address === ""
                   ? undefined

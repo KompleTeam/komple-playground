@@ -29,13 +29,11 @@ export const MarketplaceModuleListFixedToken = () => {
       />
       <TextInput
         title="Listing Price"
-        subtitle="Price to list the NFT for - $JUNO"
+        subtitle="Price for listing the NFT"
         placeholder="35"
-        onChange={(value) =>
-          store.setPrice(isInteger(value) ? Number(value) : 0)
-        }
+        onChange={store.setPrice}
         isRequired
-        value={store.price === 0 ? "" : store.price.toString()}
+        value={store.price}
       />
     </div>
   )
