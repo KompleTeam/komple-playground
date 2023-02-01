@@ -82,7 +82,7 @@ export default function MarketplaceModuleExecute() {
           const msg = {
             collectionId: store.collectionId,
             tokenId: store.tokenId,
-            price: store.price.toString(),
+            price: (Number(store.price) * 1000000).toString(),
           }
 
           response = await executeClient.listFixedToken(msg)
@@ -106,7 +106,7 @@ export default function MarketplaceModuleExecute() {
             listingType: store.listingType,
             collectionId: store.collectionId,
             tokenId: store.tokenId,
-            price: store.price.toString(),
+            price: (Number(store.price) * 1000000).toString(),
           }
 
           response = await executeClient.updatePrice(msg)
