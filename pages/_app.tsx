@@ -13,8 +13,10 @@ import { GasPrice } from "@cosmjs/stargate"
 import { Footer } from "components/Footer"
 import { ToastContainer } from "react-toastify"
 
-const JUNO_TESTNET = chains.filter((chain) => chain.chain_id === "uni-5")[0]
-const JUNO_MAINNET = chains.filter((chain) => chain.chain_id === "juno-1")[0]
+const JUNO_TESTNET = chains.filter(
+  (chain) => chain.chain_name === "junotestnet"
+)[0]
+const JUNO_MAINNET = chains.filter((chain) => chain.chain_name === "juno")[0]
 
 const signerOptions: SignerOptions = {
   signingCosmwasm: (chain: Chain) => {
