@@ -43,8 +43,8 @@ export default function App({ Component, pageProps }: AppProps) {
         signerOptions={signerOptions}
         endpointOptions={{
           junotestnet: {
-            rpc: ["https://juno-rpc.reece.sh/"],
-            rest: ["https://juno-api.reece.sh/"],
+            rpc: ["https://uni-rpc.reece.sh"],
+            rest: ["https://uni-api.reece.sh"],
           },
         }}
       >
