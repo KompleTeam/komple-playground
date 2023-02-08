@@ -2254,7 +2254,7 @@ caniuse-lite@^1.0.30001400, caniuse-lite@^1.0.30001406, caniuse-lite@^1.0.300014
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001425.tgz#52917791a453eb3265143d2cd08d80629e82c735"
   integrity sha512-/pzFv0OmNG6W0ym80P3NtapU0QEiDS3VuYAZMGoLLqiC7f6FJFe1MjpQDREGApeenD9wloeytmVDj+JLXPC6qw==
 
-chain-registry@^1.5.0:
+chain-registry@^1.7.0:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/chain-registry/-/chain-registry-1.7.0.tgz#cad6d47cddad92a631b89147e12a75fb6b66f109"
   integrity sha512-mPV/fT8GECUaP+uKCJPrDup+Lgp0mMZlfC/yL3+eJiDraAroGsDp3493G3V03/Pw0uhGGgAbBrMKtwMouv2AqA==

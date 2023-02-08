@@ -41,6 +41,12 @@ export default function App({ Component, pageProps }: AppProps) {
         assetLists={assets}
         wallets={wallets}
         signerOptions={signerOptions}
+        endpointOptions={{
+          junotestnet: {
+            rpc: ["https://juno-rpc.reece.sh/"],
+            rest: ["https://juno-api.reece.sh/"],
+          },
+        }}
       >
         <div className="min-h-screen flex flex-col justify-between">
           <div>
