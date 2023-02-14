@@ -5,7 +5,8 @@ import { HoverDropdown } from "../Dropdown"
 import { Logo } from "../Logo"
 import { getShortAddress } from "../../utils/getShortAddress"
 import Image from "next/image"
-import { useWallet } from "@cosmos-kit/react"
+import { useChain } from "@cosmos-kit/react"
+import { useAppStore } from "store"
 
 const MODULES = [
   "Fee",
@@ -41,34 +42,34 @@ const CONTRACT_URLS = {
 }
 
 export const Navbar = () => {
-  const walletManager = useWallet()
-
-  const { walletStatus, username, address, isWalletConnecting } = walletManager
-  const { connect, disconnect, setCurrentChain, currentChainName } =
-    walletManager
-
-  const isConnected = walletStatus === "Connected"
+  const { currentChain } = useAppStore((state) => state)
+  const {
+    username,
+    address,
+    isWalletConnecting,
+    isWalletConnected,
+    connect,
+    disconnect,
+  } = useChain(currentChain)
 
   const handleConnect = async () => {
-    if (!isConnected) {
-      setCurrentChain("junotestnet")
-      await connect()
-    } else await disconnect()
+    if (!isWalletConnected) await connect()
+    else await disconnect()
   }
 
   const copyAddress = () => {
     navigator.clipboard.writeText(address || "")
   }
 
-  const switchNetwork = async () => {
-    await disconnect()
-    if (currentChainName === "junotestnet") {
-      setCurrentChain("juno")
-    } else {
-      setCurrentChain("junotestnet")
-    }
-    await connect()
-  }
+  // const switchNetwork = async () => {
+  //   await disconnect()
+  //   if (currentChainName === "junotestnet") {
+  //     setCurrentChain("juno")
+  //   } else {
+  //     setCurrentChain("junotestnet")
+  //   }
+  //   await connect()
+  // }
 
   return (
     <div
@@ -124,7 +125,7 @@ export const Navbar = () => {
         </div>
 
         <div className="w-[230px] flex justify-end">
-          {isConnected ? (
+          {isWalletConnected ? (
             <div>
               <div className="flex justify-end items-center">
                 <button onClick={handleConnect}>

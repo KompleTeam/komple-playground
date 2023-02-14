@@ -4,7 +4,7 @@ import "react-toastify/dist/ReactToastify.css"
 import type { AppProps } from "next/app"
 import { Navbar } from "../components/Navbar"
 import { Layout } from "../components/Layout"
-import { WalletProvider } from "@cosmos-kit/react"
+import { ChainProvider } from "@cosmos-kit/react"
 import { SignerOptions } from "@cosmos-kit/core"
 import { chains, assets } from "chain-registry"
 import { Chain } from "@chain-registry/types"
@@ -36,7 +36,7 @@ const signerOptions: SignerOptions = {
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <div className="min-h-screen">
-      <WalletProvider
+      <ChainProvider
         chains={[JUNO_MAINNET, JUNO_TESTNET]}
         assetLists={assets}
         wallets={wallets}
@@ -47,6 +47,7 @@ export default function App({ Component, pageProps }: AppProps) {
             rest: ["https://uni-api.reece.sh"],
           },
         }}
+        walletModal="simple_v2"
       >
         <div className="min-h-screen flex flex-col justify-between">
           <div>
@@ -57,7 +58,7 @@ export default function App({ Component, pageProps }: AppProps) {
           </div>
           <Footer />
         </div>
-      </WalletProvider>
+      </ChainProvider>
       <ToastContainer style={{ top: "100px" }} />
     </div>
   )

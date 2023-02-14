@@ -1,14 +1,16 @@
-import { useWallet } from "@cosmos-kit/react"
+import { useChain } from "@cosmos-kit/react"
 import { KompleClient } from "komplejs"
 import { useEffect, useState } from "react"
+import { useAppStore } from "store"
 
 export const useKompleClient = () => {
+  const { currentChain } = useAppStore((state) => state)
   const {
     getSigningCosmWasmClient,
-    offlineSigner,
+    getOfflineSigner,
     isWalletConnected,
     address,
-  } = useWallet()
+  } = useChain(currentChain)
 
   const [kompleClient, setKompleClient] = useState<KompleClient | undefined>(
     undefined
@@ -18,6 +20,7 @@ export const useKompleClient = () => {
     const getClient = async () => {
       if (isWalletConnected) {
         const signingClient = await getSigningCosmWasmClient()
+        const offlineSigner = await getOfflineSigner()
 
         if (signingClient === undefined || offlineSigner === undefined) return
 
