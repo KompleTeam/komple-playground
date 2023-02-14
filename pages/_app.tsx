@@ -47,7 +47,6 @@ export default function App({ Component, pageProps }: AppProps) {
             rest: ["https://uni-api.reece.sh"],
           },
         }}
-        walletModal="simple_v2"
       >
         <div className="min-h-screen flex flex-col justify-between">
           <div>
