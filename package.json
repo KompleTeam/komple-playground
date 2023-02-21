@@ -1,5 +1,5 @@
 {
-  "name": "komple-framework-playground",
+  "name": "komple-playground",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -12,9 +12,9 @@
     "@cosmjs/cosmwasm-stargate": "^0.29.3",
     "@cosmjs/proto-signing": "^0.29.3",
     "@cosmjs/stargate": "^0.29.3",
-    "@cosmos-kit/core": "^1.0.4",
-    "@cosmos-kit/keplr": "^0.32.21",
-    "@cosmos-kit/react": "^1.0.4",
+    "@cosmos-kit/core": "^1.0.10",
+    "@cosmos-kit/keplr": "^0.32.27",
+    "@cosmos-kit/react": "^1.0.13",
     "chain-registry": "^1.7.0",
     "clsx": "^1.2.1",
     "framer-motion": "^7.6.8",
