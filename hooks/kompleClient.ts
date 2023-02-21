@@ -10,6 +10,7 @@ export const useKompleClient = () => {
     getOfflineSigner,
     isWalletConnected,
     address,
+    chain,
   } = useChain(currentChain)
 
   const [kompleClient, setKompleClient] = useState<KompleClient | undefined>(
@@ -20,7 +21,7 @@ export const useKompleClient = () => {
     const getClient = async () => {
       if (isWalletConnected) {
         const signingClient = await getSigningCosmWasmClient()
-        const offlineSigner = await getOfflineSigner()
+        const offlineSigner = await getOfflineSigner(chain.chain_id)
 
         if (signingClient === undefined || offlineSigner === undefined) return
 
