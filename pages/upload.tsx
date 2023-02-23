@@ -1,4 +1,4 @@
-import { useWallet } from "@cosmos-kit/react"
+import { useChain } from "@cosmos-kit/react"
 import clsx from "clsx"
 import { Button } from "components/Button"
 import { ContractHeader } from "components/contracts/ContractHeader"
@@ -9,7 +9,9 @@ import { useAppStore } from "store"
 import { showToast } from "utils/showToast"
 
 export const Upload = () => {
-  const { isWalletConnected, address, getSigningCosmWasmClient } = useWallet()
+  const currentChain = useAppStore((state) => state.currentChain)
+  const { isWalletConnected, address, getSigningCosmWasmClient } =
+    useChain(currentChain)
 
   const inputFile = useRef<HTMLInputElement>(null)
 
