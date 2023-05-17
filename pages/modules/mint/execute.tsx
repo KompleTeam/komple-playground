@@ -23,6 +23,8 @@ import { METADATA_MODULE_CODE_ID, TOKEN_MODULE_CODE_ID } from "config/codeIds"
 import { showToast } from "utils/showToast"
 import { useKompleClient } from "hooks/kompleClient"
 import { InfoBoxProps } from "components/InfoBox"
+import { Coin, coin } from "@cosmjs/proto-signing"
+import queryContractRaw from "utils/queryContractRaw"
 
 const EXECUTES = [
   "create_collection",
@@ -39,7 +41,7 @@ const EXECUTES = [
 ]
 
 export default function MintModuleExecute() {
-  const { kompleClient } = useKompleClient()
+  const { kompleClient, address } = useKompleClient()
 
   const store = useMintModuleStore((state) => state)
   const setLoading = useAppStore((state) => state.setLoading)
@@ -138,12 +140,46 @@ export default function MintModuleExecute() {
           break
         }
         case "mint_NFT": {
+          const funds: Coin[] = []
           const msg = {
-            collectionId: store.collectionId,
-            metadataId: store.metadataId === 0 ? undefined : store.metadataId,
+            collection_id: store.collectionId,
+            metadata_id: store.metadataId === 0 ? undefined : store.metadataId,
           }
 
-          response = await executeClient.mint(msg)
+          /* TODO: Change this code piece with library implementation */
+          const hubModuleAddress = await queryContractRaw.item(
+            kompleClient.client,
+            executeClient.contractAddress,
+            "parent_addr"
+          )
+          const feeModuleAddress = (
+            await (
+              await kompleClient.hubModule(hubModuleAddress)
+            ).queryClient.moduleAddress({ module: "fee" })
+          ).data
+          const mintFee = await (
+            await kompleClient.feeModule(feeModuleAddress)
+          ).queryClient
+            .fixedFee({
+              feeName: `price:${store.collectionId}`,
+              moduleName: "mint",
+            })
+            .catch((e) => {})
+
+          if (mintFee) {
+            funds.push(coin(mintFee.data.value, "ujunox"))
+          }
+
+          response = await executeClient.client.execute(
+            address || "",
+            executeClient.contractAddress,
+            {
+              mint: msg,
+            },
+            "auto",
+            "",
+            funds
+          )
           break
         }
         case "mint_NFT_as_admin": {
